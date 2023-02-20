@@ -16,14 +16,20 @@ Beberapa topik yang menjadi pemahaman penulis dan mungkin menjadi kerangka tulis
 ## Siapa?
 Blog ini ditulis oleh Muhammad **Rafky** Alfarrakhan.S (a.k.a *FatMan* di beberapa forum), seorang mahasiwa teknik elektro yang memiliki *passion* di pemrosesan sinyal dan pemrograman.
 
-[![deadman's](https://github-readme-stats.vercel.app/api?username=deadManAlive&count_private=true&card_width=495)](https://github.com/anuraghazra/github-readme-stats){: .light}
-[![deadman's](https://github-readme-stats.vercel.app/api?username=deadManAlive&count_private=true&card_width=495&theme=gotham)](https://github.com/anuraghazra/github-readme-stats){: .dark}
+[![deadman's](https://github-readme-stats.vercel.app/api?username=deadManAlive&count_private=true&card_width=495)](https://github.com/anuraghazra/github-readme-stats)
+{: .light data-proofer-ignore}
+[![deadman's](https://github-readme-stats.vercel.app/api?username=deadManAlive&count_private=true&card_width=495&theme=gotham)](https://github.com/anuraghazra/github-readme-stats)
+{: .dark data-proofer-ignore}
 
-[![deadman's](https://github-readme-stats.vercel.app/api/top-langs/?username=deadManAlive&layout=compact&card_width=445)](https://github.com/anuraghazra/github-readme-stats){: .light}
-[![deadman's](https://github-readme-stats.vercel.app/api/top-langs/?username=deadManAlive&layout=compact&card_width=445&theme=gotham)](https://github.com/anuraghazra/github-readme-stats){: .dark}
+[![deadman's](https://github-readme-stats.vercel.app/api/top-langs/?username=deadManAlive&layout=compact&card_width=445)](https://github.com/anuraghazra/github-readme-stats)
+{: .light data-proofer-ignore}
+[![deadman's](https://github-readme-stats.vercel.app/api/top-langs/?username=deadManAlive&layout=compact&card_width=445&theme=gotham)](https://github.com/anuraghazra/github-readme-stats)
+{: .dark data-proofer-ignore}
 
-[![deadman's](https://github-readme-stats.vercel.app/api/wakatime?username=@deadmanalive&layout=compact&langs_count=5&custom_title=Most%20Used%20Languages%20%28by%20Time,%20since%20Sept.%202022%29)](https://github.com/anuraghazra/github-readme-stats){: .light}
-[![deadman's](https://github-readme-stats.vercel.app/api/wakatime?username=@deadmanalive&layout=compact&langs_count=5&custom_title=Most%20Used%20Languages%20%28by%20Time,%20since%20Sept.%202022%29&theme=gotham)](https://github.com/anuraghazra/github-readme-stats){: .dark}
+[![deadman's](https://github-readme-stats.vercel.app/api/wakatime?username=@deadmanalive&layout=compact&langs_count=5&custom_title=Most%20Used%20Languages%20%28by%20Time,%20since%20Sept.%202022%29)](https://github.com/anuraghazra/github-readme-stats)
+{: .light data-proofer-ignore}
+[![deadman's](https://github-readme-stats.vercel.app/api/wakatime?username=@deadmanalive&layout=compact&langs_count=5&custom_title=Most%20Used%20Languages%20%28by%20Time,%20since%20Sept.%202022%29&theme=gotham)](https://github.com/anuraghazra/github-readme-stats)
+{: .dark data-proofer-ignore}
 
 ## Kapan?
 Ide penulisan ini sudah ada sejak 2021, tetapi baru terealisasi di sekitar 2023. Penulis sendiri memulai pemrograman sejak awal dekade 2010-an ketika penulis mencoba manjadi seorang *heker* dengan mempelajari `JavaScript`.
