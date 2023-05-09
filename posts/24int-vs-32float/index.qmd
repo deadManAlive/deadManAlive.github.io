@@ -245,8 +245,7 @@ Dalam kalimat yang lebih familiar dalam audio, tidak adanya rentang denormal dan
 
 Sampai di sini, pembaca seharusnya sudah memiliki pemahaman dasar terkait perbedaan kerja data `int` dan `float`. [Artikel selanjutnya]() akan menyediakan analisis perbedaan **integer 24-bit** vs. **floating-point 32-bit** dan beberapa miskonsepsi terkait.
 
-<hr>
+...
 
-# Footnotes
 [^overflow]: **Overflow** terjadi ketika data yang diterima oleh suatu tipe melebihi nilai maksimum yang dapat disimpannya, misal data 8-bit `11111111` ($255$). Ketika bilangan tersebut ditambah dengan 1: `11111111` + `00000001`, hasil yang seharusnya ialah `100000000` ($256$). Tetapi karena lebar data dibatasi 8-bit, hanya 8-bit pertama (dihitung dari kanan) yang tersimpan sehingga hasil penjumlahan menjadi `0000000` ($\boldsymbol{0}$), jauh dari nilai yang diharapkan. **Overflow** merupakan salah satu sumber *bug*. **Underflow** adalah kebalikan dari overflow (hasil operasi lebih kecil dari nilai minimum yang dapat disimpan).
 [^point]: Sistem bilangan inggris menggunakan koma (*comma*) dan titik (*point*) secara terbalik dengan Indonesia (dan sejumlah negara eropa): $,$ adalah pemisah digit, seperti $1,000$ sebagai "seribu", sedangkan $1.000$ adalah "satu koma nol nol nol" di Indonesia.

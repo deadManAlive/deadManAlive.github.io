@@ -454,3 +454,5 @@ consteval bool isPrime(int n) {
 ---
 
 Artikel ini ditulis bersamaan dengan penulisan *header-only C++ 11 library* [***comptime***](https://github.com/deadManAlive/comptime) oleh penulis yang berisi kumpulan fungsi-fungsi *compile-time*. Hingga saat ini, *library* masih dalam status WIP. Jika pembaca ingin berkontribusi, penulis persilahkan dengan senang hati ❤.
+
+...

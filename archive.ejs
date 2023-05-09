@@ -1,0 +1,36 @@
+<%
+  var groupedItems = {};
+
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    var date = new Date(item.date);
+    var month = date.toLocaleString('default', { month: 'long' });
+    var year = date.getFullYear().toString();
+
+    var key = month + ' ' + year;
+
+    if (!groupedItems[key]) {
+      groupedItems[key] = [];
+    }
+
+    groupedItems[key].push(item);
+  }
+
+  // Sort the items within each group by the newest first
+  Object.keys(groupedItems).forEach(function(key) {
+    groupedItems[key].sort(function(a, b) {
+      var dateA = new Date(a.date);
+      var dateB = new Date(b.date);
+      return dateB - dateA;
+    });
+  });
+%>
+
+<% Object.keys(groupedItems).forEach(function(key) { %>
+  <h2><%= key %></h2>
+  <ul>
+    <% groupedItems[key].forEach(function(item) { %>
+      <li><b>[<%= item.date %>]</b> <a href="<%- item.path %>"><%= item.title %></a></li>
+    <% }); %>
+  </ul>
+<% }); %>

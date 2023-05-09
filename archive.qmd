@@ -1,0 +1,6 @@
+---
+title: Arsip
+listing:
+    contents: posts
+    template: archive.ejs
+---

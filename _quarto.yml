@@ -14,8 +14,13 @@ website:
         file: index.qmd
       - text: Tentang
         file: about.qmd
-      - text: Lainnya
-        file: miscellaneous.qmd
+      - icon: three-dots
+        text: Lainnya
+        menu:
+          - text: Arsip
+            file: archive.qmd
+          - text: "Catatan"
+            file: notes.qmd
     tools:
       - icon: github
         text: Github

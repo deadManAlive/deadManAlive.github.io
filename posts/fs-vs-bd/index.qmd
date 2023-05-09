@@ -238,3 +238,7 @@ Dalam pemrosesan sinyal 2D, seperti gambar atau video, juga dapat terjadi aliasi
 Berbeda dengan aliasing, *sampling rate* atau pun *bit depth* tidak memiliki pengaruh langsung terhadap fenomena ini. *Overshoot* oleh **fenomena Gibbs** terjadi ketika sinyal dengan diskontinuitas (tidak *smooth*) seperti *square wave* diinterpolasi ke bentuk analog. Pada simulasi diatas, atur sehingga *bit depth* $b$ berada pada nilai $1$ dan $f_s$ setinggi mungkin untuk membentuk sinyal digital *square wave* yang dapat dilihat pada @fig-adc. Perhatikan output interpolasi pada @fig-dac, alih-alih mendapatkan gelombang input, *square wave* yang dibentuk dengan parameter di atas pun tidak dihasilkan dengan tepat dan menyebabkan *clipping* di sana sini.
 
 ![*Overshoot*](il1.jpg){#fig-os}
+
+Demikian terkait *sample rate*, *bit depth*, dan implikasinya.
+
+...
