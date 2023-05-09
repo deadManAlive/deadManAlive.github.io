@@ -1,0 +1,15 @@
+---
+title: "Dead Man's Blog"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: grid
+  categories: cloud
+  sort-ui: false
+  filter-ui: true
+  fields: [title, author, description, date, image, reading-time, categories]
+page-layout: full
+title-block-banner: true
+---
+
+

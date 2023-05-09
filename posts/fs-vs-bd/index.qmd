@@ -1,0 +1,240 @@
+---
+title: "Musitech: Sample Rate & Bit Depth"
+author: "Dead Man"
+date: "2023-04-28"
+categories: [Musictech, Back To Basic]
+image: "image.jpg"
+format:
+  html:
+    echo: false
+---
+
+# Amplitudo ($A$), Frekuensi ($f$), dan Fasa ($\phi$)
+
+Untuk mengetahui perihal *sample rate* dan *bit depth*, maka parameter-parameter penting dari sebuah gelombang wajib untuk dipahami, yaitu:
+
+* Amplitudo ($A$): Besaran perpindahan gelombang.
+* Frekuensi ($f$): Besaran kecepatan osilasi gelombang.
+* Fasa ($\phi$): Besaran posisi gelombang.
+
+Yang membentuk fungsi gelombang (terhadap waktu $t$):
+
+$$
+y(t) = A\sin(2\pi f t + \phi)
+$$
+
+Untuk lebih jelasnya gunakan simulasi berikut:
+
+```{ojs}
+//| panel: input
+viewof amplitude = Inputs.range(
+  [-2, 2],
+  {
+    value: 1,
+    step: 0.1,
+    label: tex`A`
+  }
+);
+
+viewof frequency = Inputs.range(
+  [5, 20],
+  {
+    value: 10,
+    step: 0.1,
+    label: tex`f`
+  }
+);
+
+viewof phase = Inputs.range(
+  [-6, 6],
+  {
+    value: 0.00,
+    step: 0.1,
+    label: tex`\phi`
+  }
+);
+```
+
+```{ojs}
+T = Array.from({length: 1000}, (_, i) => i * 0.002);
+sine = (amplitude, phase, frequency) => T.map((t) => {
+  return {
+    x: t,
+    y: amplitude * Math.sin(2 * frequency * t + phase)
+  }
+});
+```
+
+```{ojs}
+//| label: fig-source
+//| fig-cap: "Sinyal analog sumber."
+
+Plot.plot({
+  grid: true,
+  x: {
+    label: "t"
+  },
+  y: {
+    label: "y",
+    domain: [-2, 2],
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.ruleX([0]),
+    Plot.line(sine(amplitude, phase, frequency), {x: "x", y: "y", stroke: "blue"}),
+    Plot.frame()
+  ]
+})
+```
+
+# Sample Rate ($f_s$) dan Bit Depth ($b$)
+
+Dari simulasi di atas, dapat dilihat bahwa sebuah gelombang menduduki dimensi 2 $\mathbb{R}^2$ atas sumbu waktu $t$ dan ruang $y$. Sebuah gambar digital dapat dibilang berada pada ruang 3 dimensi (2 dimensi ruang $x$ dan $y$ serta 1 dimensi warna $c$, meskipun sebenarnya dimensi warna lebih rumit dari pada itu). Seperti yang pembaca pasti ketahui, sebuah gambar memiliki resolusi pada ketiga dimensi tersebut, yaitu **pixel** pada $x$ dan $y$, **bit** pada $c$. Demikian pula dengan gelombang (audio), ***sample rate*** ($f_s$) **adalah resolusi waktu** $t$ dan ***bit depth*** ($b$) **adalah resolusi ruang** $y$.
+
+Hal tersebut dapat dilihat dari simulasi berikut dimana *sample rate* mempengaruhi kerapatan *sample* terhadap sumbu $t$, sementara *bit depth* mempengaruhi kerapatan *sample* terhadap sumbu $y$.
+
+```{ojs}
+//| panel: input
+viewof samplerate = Inputs.range(
+  [10, 100],
+  {
+    value: 40,
+    step: 1,
+    label: tex`f_s`
+  }
+);
+
+viewof bitdepth = Inputs.range(
+  [1, 5],
+  {
+    value: 3,
+    step: 1,
+    label: tex`b`
+  }
+);
+```
+
+```{ojs}
+q = Array.from({length: Math.pow(2, bitdepth)}, (_, i) => -1 + ( 2 / (Math.pow(2, bitdepth) - 1) * i));
+s = sine(amplitude, phase, frequency).filter((_, index) => index % Math.round(1000 / samplerate) === 0)
+discrete_sine = s.map((point) => {
+  return {
+    x: point.x,
+    y: q.reduce((prev, curr) => {
+        return Math.abs(curr - point.y) < Math.abs(prev - point.y) ? curr : prev
+       })
+  }; 
+})
+
+ylin = (val) => {
+  return [
+    {
+      x: 0,
+      y: val,
+    }, {
+      x: 2,
+      y: val,
+    }
+  ]
+};
+```
+
+```{ojs}
+//| label: fig-adc
+//| fig-cap: "Hasil *sampling* ke sinyal digital."
+
+Plot.plot({
+  x: {
+    label: "t",
+    labelAnchor: "center"
+  },
+  y: {
+    label: "y",
+    domain: [-2, 2],
+    labelAnchor: "center"
+  },
+  color: {legend: true},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.ruleX([0]),
+    Plot.line(sine(amplitude, phase, frequency), {x: "x", y: "y", stroke: "blue", strokeOpacity: 0.5}),
+    Plot.ruleY([-1, 1], {stroke: "red", strokeOpacity: 0.5, strokeWidth: 2}),
+    Plot.dot(discrete_sine, {x: "x", y: "y", r: 4, stroke: "green"}),
+    Plot.line(discrete_sine, {x: "x", y: "y", stroke: "green", strokeOpacity: 0.75, strokeWidth: 2, curve: "step-after"}),
+    ...discrete_sine.map((point) => {
+      return Plot.ruleX([point.x], {stroke: "green", strokeDasharray: [5, 5], strokeOpacity: 0.4});
+    }),
+    ...q.map((level) => {
+      return Plot.ruleY([level], {stroke: "red", strokeDasharray: [5, 5], strokeOpacity: 0.4});
+    }),
+    Plot.area(ylin(1.0), {x1: "x", y1: "y", x2: [0, 2], y2: [2, 2], fill: "red", fillOpacity: 0.2}),
+    Plot.area(ylin(-1.0), {x1: "x", y1: "y", x2: [0, 2], y2: [-2, -2], fill: "red", fillOpacity: 0.2}),
+    Plot.frame()
+  ]
+})
+```
+
+Pada grafik di atas, <b style="color:green;">titik-titik</b> dan <b style="color:green;">garis hijau</b> menunjukkan representasi digital dari sinyal <b style="color:blue;">input biru</b>, masing-masing adalah titik *sample* dan sinyal [*sample-and-hold*](https://www.keithmcmillen.com/blog/simple-synthesis-part-11-sample-and-hold/). <b style="color:red;">Garis mendatar merah</b> pada $-1.0$ dan $1.0$ adalah batas *clipping* (<b style="color:red;">area merah</b>), sementara itu <b style="color:red;">garis putus-putus mendatar merah</b> di antara rentang tersebut yang terlihat samar ialah level-level kuantisasi yang dipengaruhi oleh *bit depth* dengan hubungan $N=2^n$ dengan $N$ jumlah level kuantisasi dan $b$ *bit-depth*. <b style="color:green;">Garis-garis hijau putus-putus mendatar</b> adalah posisi *sampling* yang dipengaruhi oleh *sample rate*.
+
+```{ojs}
+//| label: fig-dac
+//| fig-cap: "Interpolasi kembali ke sinyal analog."
+
+Plot.plot({
+  grid: true,
+  x: {
+    label: "t",
+    labelAnchor: "center"
+  },
+  y: {
+    label: "y",
+    domain: [-2, 2],
+    labelAnchor: "center"
+  },
+  color: {legend: true},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.ruleX([0]),
+    Plot.line(sine(amplitude, phase, frequency), {x: "x", y: "y", stroke: "blue", strokeOpacity: 0.5}),
+    Plot.ruleY([-1, 1], {stroke: "red", strokeOpacity: 0.5, strokeWidth: 2}),
+    Plot.dot(discrete_sine, {x: "x", y: "y", r: 2, stroke: "green"}),
+    Plot.line(discrete_sine, {x: "x", y: "y", stroke: "green", strokeOpacity: 0.75, strokeWidth: 2, curve: "natural"}),
+    Plot.area(ylin(1.0), {x1: "x", y1: "y", x2: [0, 2], y2: [2, 2], fill: "red", fillOpacity: 0.2}),
+    Plot.area(ylin(-1.0), {x1: "x", y1: "y", x2: [0, 2], y2: [-2, -2], fill: "red", fillOpacity: 0.2}),
+    Plot.frame()
+  ]
+})
+```
+
+Pada grafik berikutnya ini, <b style="color:green;">kurva hijau</b> adalah hasil [**interpolasi**]() dari sinyal digital yang bersumber dari <b style="color:blue;">sinyal input</b>. 
+
+:::{.callout-note collapse="true" title="Interpolasi"}
+Interpolasi yang digunakan di grafik di atas menggunakan interpolasi "*natural cubic spline*", sementara itu interpolasi pada DAC umumnya berupa interpolasi fungsi sinc *a.k.a* *low-pass filter*. Grafik hanya pendekatan dari LPF.
+:::
+
+Dari simulasi anda dapat melihat bagaimana kualitas/akurasi output dipengaruhi oleh *sample rate* dan *bit depth*. Disamping itu, dari berbagai nilai dan kombinasi kedua parameter tersebut, dapat terjadi beberapa fenomena yang dapat diamati, diantaranya ialah ***aliasing*** dan ***fenomena Gibbs*** (*overshoot*).
+
+## *Aliasing*
+Dalam pemrosesan sinyal digital, dikenal istilah **frequensi Nyquist** yang merupakan frekuensi maksimum yang dapat direkam oleh sebuah sistem digital dengan benar sebelum sistem melakukan "misidentifikasi" terhadap frekuensi tersebut. Nilai dari frekuensi Nyquist adalah setengah dari *sampling rate* ($f_N = \frac{1}{2}f_s$). Ini berkaitan dengan aturan Nyquist yang menyatakan bahwa setiap gelombang sinusoidal setidaknya membutuhkan 2 titik *sample* untuk dapat direplika dengan akurat. Hal ini pasti akan mengingatkan sebagian dari pembaca perihal dunia audio bahwa *sampling rate* 40 kHz hanya dapat merekam sinyal hingga 20 kHz, $f_s$ 44.1 kHz hingga 22.05 kHz, $f_s$ 96 kHz hingga 48, dan seterusnya. Inilah penyebab batasan tersebut.
+
+Merekam atau menyimpan sinyal dengan frekuensi yang lebih tinggi dari frekuensi Nyquist akan memperkenalkan *spectral noise* berupa **lipatan** dari frekuensi diatas frekuensi Nyquist ke rentang frekuensi normal. Misal, jika anda merekam frekuensi 32 kHz pada sistem dengan *sample rate* 40 kHz, maka frekuensi yang terekam ialah 8 kHz.
+
+<a title="Davidjessop, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:FFT_aliasing_600.gif"><img width="512" alt="FFT aliasing 600" src="https://upload.wikimedia.org/wikipedia/commons/8/83/FFT_aliasing_600.gif"></a>
+
+Ilustrasi di atas menunjukkan terjadinya aliasing, perhatikan bahwa <b style="color:orange;">sinyal output</b> memiliki frekuensi yang sama dengan <b style="color:blue;">sinyal input</b> hingga sinyal input melewat frekuensi Nyquist ($f_2/2$). Di atas nilai tersebut, terjadi aliasing di mana frekuensi output adalah "lipatan" atau "cerminan" frekuensi input terhadap frekuensi Nyquist. Perhatikan juga bahwa polarisasi sinyal juga berbalik.
+
+:::{.callout-tip title="Simulasi *aliasing*" collapse="true"}
+Dalam simulasi di atas, anda dapat mengatur frekuensi sinyal lebih tinggi dari setengah *sampling rate* ($f \ge 0.5\cdot f_s$), misal $f = 20$, $f_s = 16$, dan menemukan bahwa sinyal output memiliki frekuensi yang berbeda dengan input, hal yang sangat tidak diinginkan dalam pemrosesan sinyal.
+:::
+
+Dalam praktikny, sinyal audio dapat bersifat nondeterministik sehingga terkadang sulit untuk membatasi frekuensi maksimal yang ditangkap suatu sistem, oleh karena itu peralatan *sampling* umumnya dilengkapi dengan *anti-aliasing* filter berupa LPF analog sebelum sirkuit *sampling* yang bekerja disekitar frekuensi Nyquist.
+
+:::{.callout-tip collapse="true" title="*2D Aliasing*"}
+Dalam pemrosesan sinyal 2D, seperti gambar atau video, juga dapat terjadi aliasing dimana pola pada gambar memiliki frekuensi yang lebih tinggi dari resolusi *samping*, membentuk sebuah pola pada gambar hasil. Hal ini dikenal dengan sebutan [**efek *moiré***](https://photographylife.com/what-is-moire).
+:::
+
+## *Overshoot*
+
+Berbeda dengan aliasing, *sampling rate* atau pun *bit depth* tidak memiliki pengaruh langsung terhadap fenomena ini. *Overshoot* oleh **fenomena Gibbs** terjadi ketika sinyal dengan diskontinuitas (tidak *smooth*) seperti *square wave* diinterpolasi ke bentuk analog. Pada simulasi diatas, atur sehingga *bit depth* $b$ berada pada nilai $1$ dan $f_s$ setinggi mungkin untuk membentuk sinyal digital *square wave* yang dapat dilihat pada @fig-adc. Perhatikan output interpolasi pada @fig-dac, alih-alih mendapatkan gelombang input, *square wave* yang dibentuk dengan parameter di atas pun tidak dihasilkan dengan tepat dan menyebabkan *clipping* di sana sini.
+
+![*Overshoot*](il1.jpg){#fig-os}

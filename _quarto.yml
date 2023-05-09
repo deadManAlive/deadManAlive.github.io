@@ -1,0 +1,58 @@
+project:
+  type: website
+website:
+  favicon: favicon.png
+  image: index.png
+  title: "DMB"
+  twitter-card:
+    creator: "@lngtmknmndng_"
+  page-navigation: true
+  navbar:
+    pinned: true
+    left: 
+      - text: Beranda
+        file: index.qmd
+      - text: Tentang
+        file: about.qmd
+      - text: Lainnya
+        file: miscellaneous.qmd
+    tools:
+      - icon: github
+        text: Github
+        href: https://github.com/deadManAlive
+      - icon: three-dots
+        text: More...
+        menu:
+          - text: LinkedIn
+            url: https://www.linkedin.com/in/rafky-alfa
+          - text: Twitter
+            url: https://twitter.com/lngtmknmndng_
+  page-footer:
+    left: "@2023 Muhammad Rafky Alfarrakhan.S"
+    right: "Website ini dibangun dengan Quarto"
+    center:
+      - icon: github
+        href: https://github.com/deadManAlive
+      - icon: twitter
+        href: https://twitter.com/lngtmknmndng_
+  search:
+    type: textbox
+  comments:
+    hypothesis:
+      theme: clean
+      openSidebar: false
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    css: styles.css
+    smooth-scroll: true
+    toc: true
+    toc-location: right
+    toc-title: Konten
+    code-fold: true
+    tbl-cap-location: bottom
+lang: id
+
+

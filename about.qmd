@@ -1,0 +1,57 @@
+---
+title: "Tentang"
+image: profile.jpg
+about:
+  template: marquee
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/lngtmknmndng_
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/rafky-alfa
+    - icon: github
+      text: Github
+      href: https://github.com/deadManAlive
+toc: false
+---
+
+## Siapa?
+Blog ini ditulis oleh *Muhammad **Rafky** Alfarrakhan.S*, (a.k.a FatMan di beberapa forum), seorang mahasiswa teknik elektro yang ber-*passion* dalam pemrograman dan pemrosesan sinyal.
+
+:::{layout="[[100], [40,-5, 40]]"}
+
+[![](https://github-readme-stats.vercel.app/api?username=deadManAlive&count_private=true&card_width=495)](https://github.com/deadManAlive)
+
+[![](https://github-readme-stats.vercel.app/api/top-langs/?username=deadManAlive&layout=compact&card_width=495&custom_title=Most%20Used%20Languages%20%28by%20Repo%29)](https://github.com/deadManAlive)
+
+[![](https://github-readme-stats.vercel.app/api/wakatime?username=@deadmanalive&layout=compact&langs_count=5&custom_title=Most%20Used%20Languages%20%28by%20Time,%20since%20Sept.%202022%29)](https://github.com/deadManAlive)
+
+:::
+
+## Apa?
+Beberapa topik yang menjadi pemahaman penulis dan mungkin menjadi kerangka tulisan-tulisan dalam blog ini:
+
+* **Seputar konsep dasar sinyal**, terutama audio digital dan **pemrosesannya** (DSP).
+* **pemrograman aplikasi *desktop* dan web** menggunakan `C++`, `Python`, `Rust`, dll.
+* ***scripting desktop* dan web** menggunkan `Python` dan `JavaScript`.
+* **Pemrograman *embedded*** menggunakan Arduino (`C++`) dan ESP-IDF (`C`).
+* **Lebih detail tentang pemrograman** seperti tentang `CMake`, `mingw`, `Docker`, dll.
+* **Hal-hal lain terkait *computer science*** seperti *open-source software*, *Linux*, *WAV*, dll.
+
+
+## Kapan?
+Ide penulisan ini sudah ada sejak 2021, meskipun baru terealisasi di sekitar 2023. Penulis sendiri memulai pemrograman sejak awal 2010-an ketika penulis mencoba manjadi seorang *heker* dengan mempelajari `JavaScript` dan `Python`. Setelah sekian lama tanpa perkembangan sebagai "*script kiddie*", penulis memutuskan untuk mempelajari pemrograman secara lebih terstruktur: dengan mempelajari `C++`.
+
+## Dimana?
+Jawa Barat atau Sumatra Barat? Tergantung kesempatan dan waktu.
+
+## Kenapa?
+Penulisan blog ini didorong oleh beberapa motivasi berbeda dari penulis, diurut dari urgensinya:
+
+* **Tingginya miskonsepsi** terkait pemrosesan sinyal digital di forum-forum nasional berbau musik modern.
+* **Minimnya sumber** berbahasa Indonesia terkait DSP dan musik digital, juga pemrograman *low-level* dengan `C`, `C++`, dkk.
+* Penulis ingin **mendokumentasikan** pengetahuan dan pengalamannya.
+
+## Bagaimana?
+Blog ini ditulis dengan framework [Quarto](https://quarto.org/) dan di-*host* di [GitHub Pages](https://pages.github.com/).

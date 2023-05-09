@@ -1,0 +1,9 @@
+# folders
+/.quarto/
+/.venv/
+/_site/
+/_freeze/
+/_extensions/
+
+# files
+.python-version

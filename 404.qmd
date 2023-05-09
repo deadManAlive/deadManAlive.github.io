@@ -1,0 +1,7 @@
+---
+title: "Halaman Tidak Ditemukan"
+---
+
+# `404`
+
+Halaman yang anda tuju tidak dapat ditemukan (mungkin telah **dipindahkan** atau **dihapus**).

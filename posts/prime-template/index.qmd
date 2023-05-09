@@ -1,0 +1,456 @@
+---
+title: "CXX: Template Metaprogramming Praktis Pada C++11"
+author: "Dead Man"
+date: "2023-04-14"
+categories: [C++, Pemrograman]
+image: "image.jpg"
+---
+
+***Template metaprogramming*** merupakan salah satu fitur paling *powerful* dari C++. *Template metaprogramming*, alih-alih menulis program untuk di*compile* seperti pada umumnya, dapat disebut sebagai pemrograman pada *compiler* itu sendiri ("*metaprogramming*"): sebuah template memerintahkan *compiler* untuk "menulis" source code *intermediate* tergantung pada parameter-parameter dan aturan-aturan *template*nya.
+
+*Template metaprogramming* merupakan salah satu bentuk polimorfisme, tepatnya *compile-time polymorpism*  karena implementasi *generic* dari tiap tipe ditentukan pada *compile-time*, dibanding pada *runtime* (*runtime polymorphism*) secara dinamis. Kelebihan *compile-time polymorphisme* tentu adalah tidak adanya *overhead* untuk *dynamic dispatch* seperti pada *runtime polymorphism* dan **error** pada interface dapat diketahui dari awal di tahap kompilasi, meskipun penggunaan *compile-time polymorpism* mengorbankan fleksibilitas dari penggunaan **RTPm**.
+
+Pada artikel ini, *template metaprogramming* akan didalami dengan membuat *compile-time function* untuk mengecek apakah suatu bilangan adalah bilangan prima (*primality test*). Beberapa hal yang diharapkan untuk didapatkan setelah mengikuti artikel ini ialah:
+
+* Dasar Template Metaprogramming pada C++
+* `constexpr`
+* *Template specialization*
+* *Partial template specialization*
+
+Pembaca diharapkan sudah memiliki pengetahuan dasar tentang C++, pengetahuan dasar *metaprogamming* tentu akan sangat membantu.
+
+:::{.callout-note}
+Versi C++ yang digunakan pada artikel ini ialah C++11, mengingat versi tersebut yang masih cukup umum digunakan secara *cross-platform* termasuk *embedded*.
+:::
+
+# Template Metaprogramming Secara Singkat
+**TMp** memungkinkan penulisan sebuah kode generik untuk data dan/atau struktur serta fungsi. Sebagai contoh kita membuat fungsi yang menghitung perbedaan absolut antara dua nilai:
+
+```c++
+int delta(int a, int b) {
+    return std::abs(a - b);
+}
+```
+
+Kemudian ternyata kita juga ingin menulis fungsi tersebut untuk `float`:
+
+```c++
+float delta(float a, float b) {
+    return std::abs(a - b);
+}
+```
+
+Meskipun konsep `overloading` memungkinkan definisi beberapa fungsi berbeda dengan nama yang sama untuk parameter berbeda, penulisan fungsi `delta` akan lebih sederhana menggunakan **TMp**:
+
+```c++
+template <typename T>
+T delta (T a, T b) {
+    return std::abs(a - b);
+}
+```
+
+Tanpa harus menulis dua fungsi berbeda, fungsi `delta` sekarang dapat bekerja untuk `int` dan `float`, tetapi juga `double` dan bahkan `std::complex`, dan juga tipe-tipe data lainnya asalkan tipe tersebut valid dalam operasi pengurangan `-` dan `std::abs`:
+
+```c++
+auto e = delta(10, 8); // int, d = int(2)
+auto d = delta(5.f, 9.f); // float, e = float(4.)
+
+using namespace std::complex_literals;
+auto c = delta((1. + 2i), (2. - 2i)); // std::complex<double>, c = std::complex<double>(4.123, 0) atau (4.123 + 0i);
+```
+
+:::{.callout-note}
+notasi `(1. + 2i)` menggunakan `std::complex_literals` yang baru tersedia pada **C++14**. Pada **C++11** masih digunakan konstruktor non-literal `std::complex<T>(val)`. Literal digunkan untuk memudahkan penulisan dan pembaca.
+:::
+
+## Definisi Eksplisit Parameter
+
+Perhatikan bahwa pada fungsi-fungsi diatas, tidak diperlukan argumen *template* secara eksplisit (`T`), karena *compiler* "mendeduksikannya" dari tipe `a` dan `b`. Lain halnya jika fungsi didefinisikan sebagai:
+
+```c++
+template <typename T, typename U>
+U delta(T a, T b) {
+    return std::abs(a - b);
+}
+```
+
+Dimana dua parameter template `T` dan `U` menunjukkan bahwa tipe output `U` pada fungsi dapat berbeda dengan tipe input `T`. Pada kasus ini, parameter `T` dapat dideduksi dari tipe `a` dan `b` tetapi tipe output `U` harus ditentukan secara eksplisit:
+
+```c++
+auto v = delta<int>(5., 8.); // input double, keluaran int.
+```
+
+Seperti halnya parameter pada fungsi normal, parameter pada template juga dapat memiliki nilai/kondisi default, sebagai contoh, pada fungsi delta versi terkahir diatas:
+
+## Default Argument
+
+```c++
+template <typename T, typename U = T>
+U delta(T a, T b) {
+    return std::abs(a - b);
+}
+```
+
+Fungsi delta kini dapat kembali digunakan tanpa harus eksplisit menentukan tipe `U`, dimana `U` akan default ke tipe yang sama dengan `T` jika tidak diberikan. Atau default ke tipe tertentu secara spesifik:
+
+```c++
+template <typename T, typename U = int>
+U delta<T a, T b> {
+    return std::abs(a - b);
+}
+```
+
+## Non-Type Argument
+
+Pada kasus diatas, `T` dan `U` merupakan generik dari tipe, alias `T` dan `U` dapat berupa `int`, `double`, `std::complex`, dan semacamnya. Tetapi, parameter template tidak hanya sebatas tipe, tetapi juga non-tipe atau variabel biasa, sebagai contoh yaitu pada deklarasi `std::array`:
+
+```c++
+std::array<int, 3> arr = {1, 2, 3};
+```
+
+Dimana `std::array` didefinisikan sebagai:
+
+```c++
+/*
+* Umumnya, `class` dan `typename` dapat digunakan secara
+* bergantian untuk parameter tipe pada template.
+*/
+template<class T, std::size_t N>
+struct array {
+    // implementasi...
+}
+```
+
+`std::size_t` adalah tipe `unsigned integer` yang biasa digunakan dalam *indexing*.
+
+## Template Specialization
+
+Sedikit berbeda dengan *default argument*, *template specialization*, sesuai dengan namanya, dapat memberikan implementasi berbeda untuk parameter berbeda. Sebagai contoh, sebuah *templated* `struct` didefinisikan sebagai:
+
+```c++
+template <Source T, int G>
+struct Car {
+    void throttle();
+    void brake();
+};
+```
+
+Kemudian kita ingin membuat spesialisasi pada `Car` yang memiliki `T` sebuah tipe `enum` sumber daya `Gasoline` dengan 4 akselerasi `G`:
+
+```c++
+template <>
+struct Car<Source::Gasoline, 4> {
+    void throttle();
+    void brake();
+    void rev();
+};
+```
+
+Maka sebuah object `Car` yang diinisiasi dengan `Car<Source::Gasoline, 4>` akan memiliki *method* `rev()` tetapi tidak dengan lainnya. Pada kasus ini, spesialisasi dilakukan ketika semua (kedua) parameter template tertentu, sehingga disebut sebagai *full-specialization*. *Partial specialization* dilakukan ketika hanya sebagian parameter ditentukan dalam spesialisasinya, sebagai contoh:
+
+```c++
+template <int G>
+struct Car<Source::Electric, G> {
+    void throttle();
+    void brake();
+    void charge();
+};
+```
+
+Pada spesialisasi berikut ini, terjadi *partial specialization* dimana hanya parameter `T` yang ditentukan, sementara parameter `G` bebas. Dengan kata lain, asalkan `T` bernilai `Source::Electrical`, berapapun nilai `G`, objek *template* `Car` yang diinisiasi akan memiliki *method* `charge()`. Perhatikan bahwa hanya parameter bebas yang ditulis pada parameter template (`template <int G>`). Jika anda belum memperhatikan, pada contoh *full specialization*, karena kedua parameter ditentukan, maka digunakan `template<>`.
+
+## `constexpr`
+
+Yang perlu diperhatikan selanjutnya adalah bahwa parameter non-tipe pada template **harus berupa *compile-time constant* atau nilai yang diketahui saat kompilasi**, istilahnya *constant expression*.
+
+Misal, sebuah struct data didefinisikan sebagai:
+
+```c++
+template<int V>
+struct Data {
+    void value() const {
+        std::cout << V << std::endl;
+    }
+}
+```
+
+Kompilasi akan error jika digunakan dengan fungsi `mean` sebagai berikut:
+
+```c++
+int mean(int a, int b) {
+    return (a + b) / 2;
+}
+
+int main() {
+    int n = mean(4, 9);
+    Data<n>{}.value(); // error, "`n` is not usable in constant expression", dsb.
+}
+```
+
+Hal ini terjadi karena fungsi `mean` dieksekusi ketika `runtime` sementara insiasi template `Data` memerlukan keluaran `mean` pada saat `compile-time`. Pada kasus sederhana ini, fungsi sederhana `mean` dapat dialihkan segera menjadi `compile-time function` menggunakan *keyword* `constexpr`:
+
+```c++
+constexpr int mean(int a, int b) {
+    return (a + b) / 2;
+}
+```
+
+Selain itu, `n` juga harus konstan:
+
+```c++
+const int n  = mean(4, 9);
+```
+
+Setelah dua modifikasi tersebut, inisiasi `Data<n>` dan pemanggulan *method* `value` akan terkompilasi dan berjalan normal.
+
+:::{.callout-note}
+Tipe sederhana dan primitif `int` dengan *modifier* `const` secara implisit adalah *constant expression* sehingga tidak perlu eksplisit menyatakan `n` dengan:
+```c++
+constexpr int n
+```
+:::
+
+# Compile-Time Primality Test
+
+Salah satu kekuatan dari *template metaprogramming* adalah evaluasi pada kompilasi (*compile-time evaluation*) terhadap nilai-nilai konstan sehingga pemrosesan pada *runtime* dapat diminimalisir. *Template metaprogramming* jauh lebih *powerful* dari pada *macro*, bahkan bisa dibilang merupakan bahasa pemrograman tersendiri karena sifatnya yang [*turing complete*](https://rtraba.files.wordpress.com/2015/05/cppturing.pdf). Untuk itu, mari kita coba untuk mengadaptasi fungsi yang digunakan untuk mengecek apakah suatu bilangan adalah bilangan prima atau tidak ke *compile-time function* menggunakan template. Fungsi `isPrime` berikut merupakan fungsi *runtime* yang akan kita adaptasi menjadi *compile-time* function (dicomot dari [wikipedia](https://en.wikipedia.org/wiki/Compile-time_function_execution#C++)).
+
+```c++
+bool isPrime(int n) {
+    if (n == 2 || n == 3) {                      // <1>
+        return true;
+    }
+
+    if (n <= 1 || n % 2 == 0 || n % 3 == 0) {    // <2>
+        return false;
+    }
+
+    for (int i = 5; i * i <= n; i += 6) {       // <3>
+        if (n % i == 0 || n % (i + 2) == 0) {   // <4>
+            return false;
+        }
+    }
+
+    return true;
+}
+```
+1. **Pengecekan I**
+2. **Pengecekan II**
+3. **Perulangan**
+4. **Pengecekan III**
+
+:::{.callout-tip}
+Sebagai catatan, kita tidak perlu paham cara kerja matematis fungsi diatas, tetapi cukup alur kerjanya saja.
+:::
+
+## `IsPrime`
+Hal yang pertama kali diperhatikan ialah bahwa pada **Pengecekan I** dan **II**, fungsi melakukan pengecekan secara sederhana dan mengembalikan `bool`. Sementara itu, **Pengecekan III** terjadi pada beberapa nilai melalui **Perulangan**. Untuk itu, kita dapat membagi program manjadi dua alur dengan kerja berbeda secara berurutan: **Pengecekan I** dan **II** secara langsung, serta pengecekan dalam **Perulangan**. Karena terdapat perulangan, sementara fungsi `constexpr` pada C++ tidak mendukungnya, maka kita akan menggunakan *template* `struct`, dengan *member* `value` sebagai `bool` yang menunjukkan keprimaan inputnya:
+
+```c++
+template<int N>
+struct IsPrime {
+    static constexpr bool value;
+};
+```
+
+Dengan `N` sebagai input.
+
+*Member* yang digunakan dalam *compile-time evaluation* haruslah menggunakan *modifier* `constexpr`, juga disarankan menjadikan variable tersebut `static`.
+
+`struct` `IsPrime` disini akan kita gunakan sebagai pengvaluasi alur pertama, yaitu yang terdiri dari pengecekan langsung **I** dan **II**. Anggap `X` dan `Y` sebagai kondisi **I** dan **II**, jadikan keduanya sebagai input *template* *non-type*:
+
+```C++
+template<int N, bool X, bool Y>
+struct IsPrime {
+    static constexpr bool value;
+};
+```
+
+Menggunakan *template default argument*, nilai `bool` `X` dan `Y` kemudian diatur sesuai kondisi **I** dan **II**:
+
+```c++
+template<int N, bool X = (N == 2 || N == 3), bool Y = (N <= 1 || N % 2 == 0 || N % 3 == 0)>
+struct IsPrime {
+    static constexpr bool value;
+};
+```
+
+Hal ini membuat inisiasi `X` dan `Y` dapat terjadi cukup hanya dengan menyediakan input `N`. Sebagai contoh:
+
+* `IsPrime<2>` akan menginisiasi template `IsPrime<2, true, true>`.
+* `IsPrime<10>` akan menginisiasi template `IsPrime<10, false, true>`.
+* `IsPrime<17>` akan menginisiasi template `IsPrime<17, false, false>`.
+
+Selanjutnya, **Pengecekan I** menunjukkan jika kondisi `X` terpenuhi, maka `N` adalah bilangan prima (`value = true`) dan sebaliknya jika `Y` terpenuhi maka bilangan adalah non-prima (`value = false`). Maka, kita akan menggunakan *partial specialization* untuk masing-masing kondisi `X` dan `Y`.
+
+```c++
+template <int N, bool Y>
+struct IsPrime<N, true, Y> {
+    static constexpr bool value = true;
+};
+```
+
+Berikut adalah spesialiasi pertama `IsPrime` dengan `X = true`. Perhatikan bahwa `bool X` tidak ada pada parameter *template* (`template <int N, bool Y>`) dan `true` menjadi nilai argument `X` pada spesialisasi (`IsPrime<N, true, Y>`). Serupa dengan kondisi `X` di atas, kondisi `Y` menggunakan *partial specialization* yang persis, tetapi nilai `value` menjadi `false` (menurut **Pengecekan II**).
+
+```c++
+template <int N, bool X>
+struct IsPrime<N, X, true> {
+    static constexpr bool value = false;
+};
+```
+
+## `IsPrimeLoop`
+
+Alur awal untuk pengecekan **I** dan **II** sudah dapat didapatkan dengan `struct` `IsPrime` dan 2 spesialisasinya di atas. Untuk alur selanjutnya, yang terdiri dari perulangan, maka kita gunakan `struct` pembantu, sebut saja `IsPrimeLoop`. Karena perulangan `for` dan `while` tidak tersedia dalam operasi *template* maka kita akan menggunakan **rekursi**.
+
+Berdasarkan fungsi asal, perulangan terjadi dengan:
+
+```c++
+for (int i = 5; i * i <= n; i += 6) {
+    //...
+}
+```
+
+Sehingga kita akan menggunakan sebuah index `I` yang dimulai dari $5$, dengan *increment* sebesar $6$, dan kondisional $I^2 \leq N$. Agar nilai `I` dapat *persist* dalam tiap perulangan rekursi, maka `I` haruslah menjadi salah satu input dari evaluasi `IsPrimeLoop`, dan *partial specialization* seperti pada `IsPrime` dapat digunakan untuk pengecekan kondisional perulangannya, disini mari kita lambangkan dengan `C`:
+
+```c++
+template<int N, int I, bool C = (I * I <= N)>
+struct IsPrimeLoop {
+    static constexpr bool value;
+};
+```
+
+***Pengecekan III*** yang terjadi dalam perulangan adalah kondisional lainnya, sehingga juga dapat dijadikan parameter untuk `IsPrimeLoop`, dan mari kita lambangkan dengan `Z` (berurut dengan pengecekan **I**, **II**, dan **III**):
+
+```c++
+template<int N, int I, bool C = (I * I <= N), bool Z = (N % I == 0 || N % (I + 2) == 0)>
+struct IsPrimeLoop {
+    static constexpr bool value;
+};
+```
+
+Berdasarkan nilai `C` dan `Z`, maka `IsPrimeLoop` akan berada pada 3 kondisi, yang dapat dispesialisasi dengan *partial specialization*:
+
+(@) `<..., true, false>`
+
+Loop belum berakhir, pengecekan **III** memberikan `false`, maka `value` diset ke rekursi `isPrimeLoop<N, I + 6>::value` karena menurut fungsi asal, *increment*-nya ialah `i += 6`. Hal ini memberikan spesialisasi berupa:
+
+```c++
+template<int N, int I>
+struct IsPrimeLoop<N, I, true, false> {
+    static constexpr bool value = IsPrimeLoop<N, I + 6>::value;
+};
+```
+
+(@) `<..., false, E>`
+
+Kondisi `C` menjadi `false`, artinya loop sudah berakhir tanpa ada `I` dan `I + 2` yang dapat membagi habis `N` (menutur fungsi asal `isPrime`), sehingga `N` adalah prima (`value = true`).
+
+```c++
+template<int N, int I, bool E>
+struct IsPrimeLoop<N, I, false, E> {
+    static constexpr bool value = true;
+};
+```
+
+(@) `<..., true, true>`
+
+Pada *state* ini, loop belum berakhir dan nilai `N` memenuhi kondisi pengecekan **III**, yang berarti bilangan adalah non-prima (`value = false`).
+
+```c++
+template<auto N, int I>
+struct IsPrimeLoop<N, I, true, true> {
+    static constexpr bool value = false;
+};
+```
+
+`IsPrimeLoop` dan 3 spesialisasinya diatas telah mengadaptasi bagian kedua dari fungsi `isPrime`, tetapi bagaimana hubungan `struct` `IsPrime` dan `IsPrimeLoop`? Alur perulangan terjadi ketika kondisi **I** dan **II** tidak terpenuhi, yang mana akan mengakibatkan *early return* jika terpenuhi. Hal ini menunjukkan bahwa alur kedua (**Perulangan** dan pengecekan **III**) terjadi hanya jika kondisi **I** dan kemudian **II** bernilai tidak terpenuhi. Dengan kata lain, `IsPrimeLoop` terjadi ketika `X` dan `Y` bernilai `false`. Tanpa menambahkan spesialisasi untuk kondisi tersebut, `IsPrimeLoop` dapat dievaluasi ketika spesialisasi tidak terjadi (pada definisi `IsPrime`):
+
+```c++
+template<int N, bool X = (N == 2 || N == 3), bool Y = (N <= 1 || N % 2 == 0 || N % 3 == 0)>
+struct IsPrime {
+    static constexpr bool value = IsPrimeLoop<N, 5>::value;
+};
+```
+
+Dengan `I = 5` sebagai indeks awal.
+
+## *Wrapping Up...*
+
+Sampai di sini, kita telah berhasil mengadaptasi fungsi *runtime* `isPrime` ke evaluasi *compile-time* `IsPrime`. Berikut kode *full*-nya (dalam bentuk *header*):
+
+```c++
+// isprime.h
+#pragma once
+
+template<int N, int I, bool C = (I * I <= N), bool Z = (N % I == 0 || N % (I + 2) == 0)>
+struct IsPrimeLoop {
+    static constexpr bool value;
+};
+
+template<int N, int I>
+struct IsPrimeLoop<N, I, true, false> {
+    static constexpr bool value = IsPrimeLoop<N, I + 6>::value;
+};
+
+template<int N, int I, bool E>
+struct IsPrimeLoop<N, I, false, E> {
+    static constexpr bool value = true;
+};
+
+template<auto N, int I>
+struct IsPrimeLoop<N, I, true, true> {
+    static constexpr bool value = false;
+};
+
+template<int N, bool X = (N == 2 || N == 3), bool Y = (N <= 1 || N % 2 == 0 || N % 3 == 0)>
+struct IsPrime {
+    static constexpr bool value = IsPrimeLoop<N, 5>::value;
+};
+
+template <int N, bool Y>
+struct IsPrime<N, true, Y> {
+    static constexpr bool value = true;
+};
+
+template <int N, bool X>
+struct IsPrime<N, X, true> {
+    static constexpr bool value = false;
+};
+```
+
+Fungsi ini dapat digunakan dengan mengakses *member* `value` pada `struct` `IsPrime<N>`:
+
+```c++
+
+int main() {
+    bool is_6127_prime = IsPrime<6127>::value;
+    std::cout << "6127 " << is_6127_prime ? "is " : "is not " << "prime." << std::endl;
+}
+
+```
+
+Anda telah berhasil membuat *compile-time function* menggunakan template pada C++11!
+
+:::{.callout-important collapse="true" title="`template instantiation depth exceed...`"}
+Jika anda menggunakan input yang sangat besar, kompiler bisa saja komplain karena terdapat template dengan rekursi yang cukup dalam. Dalam kasus ini, dapat digunakan *flag* `-ftemplate-depth=K` dengan `K` *depth* yang baru. Sebagai contoh dengan input $1746987019$, maka kompilasi yang bekerja ialah:
+
+```bash
+gcc main.cpp -ftemplate-depth=20000
+```
+
+Anda dapat bereksperimen untuk berbagai nilai *depth* dan input, tetapi cukup diperhatikan bahwa fungsi-fungsi *compile-time* akan menambah waktu kompilasi, apa lagi fungsi yang berat dan kompleks.
+:::
+
+:::{.callout-note collapse="true" title="`consteval`"}
+**C++20** memperkenalkan *keyword* baru `consteval` yang digunakan pada sebuah fungsi untuk menjadikannya *immediate function* yang akan dievaluasi pada *compile=time*, jadi tidak usah repot-repot menggunakan cara di atas jika menggunakan keyword ini. Maka jerih payah kita di atas dapat secara praktis ditukar dengan:
+
+```c++
+consteval bool isPrime(int n) {
+    // ...persis fungsi di atas...
+}
+```
+:::
+
+---
+
+Artikel ini ditulis bersamaan dengan penulisan *header-only C++ 11 library* [***comptime***](https://github.com/deadManAlive/comptime) oleh penulis yang berisi kumpulan fungsi-fungsi *compile-time*. Hingga saat ini, *library* masih dalam status WIP. Jika pembaca ingin berkontribusi, penulis persilahkan dengan senang hati ❤.
