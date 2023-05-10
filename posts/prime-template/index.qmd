@@ -23,7 +23,7 @@ Pembaca diharapkan sudah memiliki pengetahuan dasar tentang C++, pengetahuan das
 Versi C++ yang digunakan pada artikel ini ialah C++11, mengingat versi tersebut yang masih cukup umum digunakan secara *cross-platform* termasuk *embedded*.
 :::
 
-# Template Metaprogramming Secara Singkat
+## Template Metaprogramming Secara Singkat
 **TMp** memungkinkan penulisan sebuah kode generik untuk data dan/atau struktur serta fungsi. Sebagai contoh kita membuat fungsi yang menghitung perbedaan absolut antara dua nilai:
 
 ```c++
@@ -63,7 +63,7 @@ auto c = delta((1. + 2i), (2. - 2i)); // std::complex<double>, c = std::complex<
 notasi `(1. + 2i)` menggunakan `std::complex_literals` yang baru tersedia pada **C++14**. Pada **C++11** masih digunakan konstruktor non-literal `std::complex<T>(val)`. Literal digunkan untuk memudahkan penulisan dan pembaca.
 :::
 
-## Definisi Eksplisit Parameter
+### Definisi Eksplisit Parameter
 
 Perhatikan bahwa pada fungsi-fungsi diatas, tidak diperlukan argumen *template* secara eksplisit (`T`), karena *compiler* "mendeduksikannya" dari tipe `a` dan `b`. Lain halnya jika fungsi didefinisikan sebagai:
 
@@ -82,7 +82,7 @@ auto v = delta<int>(5., 8.); // input double, keluaran int.
 
 Seperti halnya parameter pada fungsi normal, parameter pada template juga dapat memiliki nilai/kondisi default, sebagai contoh, pada fungsi delta versi terkahir diatas:
 
-## Default Argument
+### Default Argument
 
 ```c++
 template <typename T, typename U = T>
@@ -100,7 +100,7 @@ U delta<T a, T b> {
 }
 ```
 
-## Non-Type Argument
+### Non-Type Argument
 
 Pada kasus diatas, `T` dan `U` merupakan generik dari tipe, alias `T` dan `U` dapat berupa `int`, `double`, `std::complex`, dan semacamnya. Tetapi, parameter template tidak hanya sebatas tipe, tetapi juga non-tipe atau variabel biasa, sebagai contoh yaitu pada deklarasi `std::array`:
 
@@ -123,7 +123,7 @@ struct array {
 
 `std::size_t` adalah tipe `unsigned integer` yang biasa digunakan dalam *indexing*.
 
-## Template Specialization
+### Template Specialization
 
 Sedikit berbeda dengan *default argument*, *template specialization*, sesuai dengan namanya, dapat memberikan implementasi berbeda untuk parameter berbeda. Sebagai contoh, sebuah *templated* `struct` didefinisikan sebagai:
 
@@ -159,7 +159,7 @@ struct Car<Source::Electric, G> {
 
 Pada spesialisasi berikut ini, terjadi *partial specialization* dimana hanya parameter `T` yang ditentukan, sementara parameter `G` bebas. Dengan kata lain, asalkan `T` bernilai `Source::Electrical`, berapapun nilai `G`, objek *template* `Car` yang diinisiasi akan memiliki *method* `charge()`. Perhatikan bahwa hanya parameter bebas yang ditulis pada parameter template (`template <int G>`). Jika anda belum memperhatikan, pada contoh *full specialization*, karena kedua parameter ditentukan, maka digunakan `template<>`.
 
-## `constexpr`
+### `constexpr`
 
 Yang perlu diperhatikan selanjutnya adalah bahwa parameter non-tipe pada template **harus berupa *compile-time constant* atau nilai yang diketahui saat kompilasi**, istilahnya *constant expression*.
 
@@ -210,7 +210,7 @@ constexpr int n
 ```
 :::
 
-# Compile-Time Primality Test
+## Compile-Time Primality Test
 
 Salah satu kekuatan dari *template metaprogramming* adalah evaluasi pada kompilasi (*compile-time evaluation*) terhadap nilai-nilai konstan sehingga pemrosesan pada *runtime* dapat diminimalisir. *Template metaprogramming* jauh lebih *powerful* dari pada *macro*, bahkan bisa dibilang merupakan bahasa pemrograman tersendiri karena sifatnya yang [*turing complete*](https://rtraba.files.wordpress.com/2015/05/cppturing.pdf). Untuk itu, mari kita coba untuk mengadaptasi fungsi yang digunakan untuk mengecek apakah suatu bilangan adalah bilangan prima atau tidak ke *compile-time function* menggunakan template. Fungsi `isPrime` berikut merupakan fungsi *runtime* yang akan kita adaptasi menjadi *compile-time* function (dicomot dari [wikipedia](https://en.wikipedia.org/wiki/Compile-time_function_execution#C++)).
 
@@ -242,7 +242,7 @@ bool isPrime(int n) {
 Sebagai catatan, kita tidak perlu paham cara kerja matematis fungsi diatas, tetapi cukup alur kerjanya saja.
 :::
 
-## `IsPrime`
+### `IsPrime`
 Hal yang pertama kali diperhatikan ialah bahwa pada **Pengecekan I** dan **II**, fungsi melakukan pengecekan secara sederhana dan mengembalikan `bool`. Sementara itu, **Pengecekan III** terjadi pada beberapa nilai melalui **Perulangan**. Untuk itu, kita dapat membagi program manjadi dua alur dengan kerja berbeda secara berurutan: **Pengecekan I** dan **II** secara langsung, serta pengecekan dalam **Perulangan**. Karena terdapat perulangan, sementara fungsi `constexpr` pada C++ tidak mendukungnya, maka kita akan menggunakan *template* `struct`, dengan *member* `value` sebagai `bool` yang menunjukkan keprimaan inputnya:
 
 ```c++
@@ -298,7 +298,7 @@ struct IsPrime<N, X, true> {
 };
 ```
 
-## `IsPrimeLoop`
+### `IsPrimeLoop`
 
 Alur awal untuk pengecekan **I** dan **II** sudah dapat didapatkan dengan `struct` `IsPrime` dan 2 spesialisasinya di atas. Untuk alur selanjutnya, yang terdiri dari perulangan, maka kita gunakan `struct` pembantu, sebut saja `IsPrimeLoop`. Karena perulangan `for` dan `while` tidak tersedia dalam operasi *template* maka kita akan menggunakan **rekursi**.
 
@@ -374,7 +374,7 @@ struct IsPrime {
 
 Dengan `I = 5` sebagai indeks awal.
 
-## *Wrapping Up...*
+### *Wrapping Up...*
 
 Sampai di sini, kita telah berhasil mengadaptasi fungsi *runtime* `isPrime` ke evaluasi *compile-time* `IsPrime`. Berikut kode *full*-nya (dalam bentuk *header*):
 

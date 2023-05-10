@@ -1,5 +1,6 @@
 ---
 title: "Halaman Tidak Ditemukan"
+sidebar: false
 ---
 
 # `404`

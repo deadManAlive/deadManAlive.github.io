@@ -1,5 +1,7 @@
 ---
 title: Arsip
+page-layout: full
+title-block-banner: true
 listing:
     contents: posts
     template: archive.ejs

@@ -2,12 +2,12 @@
   var groupedItems = {};
 
   for (var i = 0; i < items.length; i++) {
-    var item = items[i];
-    var date = new Date(item.date);
-    var month = date.toLocaleString('default', { month: 'long' });
-    var year = date.getFullYear().toString();
+    const item = items[i];
+    const date = new Date(item.date);
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear().toString();
 
-    var key = month + ' ' + year;
+    const key = month + ' ' + year;
 
     if (!groupedItems[key]) {
       groupedItems[key] = [];
@@ -30,7 +30,8 @@
   <h2><%= key %></h2>
   <ul>
     <% groupedItems[key].forEach(function(item) { %>
-      <li><b>[<%= item.date %>]</b> <a href="<%- item.path %>"><%= item.title %></a></li>
+      <% const t2 = item.date.split(" "); %>
+      <li><b>[<%= t2[0] %> <%= t2[1] %>]</b> <a href="<%- item.path %>"><%= item.title %></a></li>
     <% }); %>
   </ul>
 <% }); %>
