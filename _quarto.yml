@@ -1,5 +1,8 @@
 project:
   type: website
+  preview: 
+    port: 8765
+    browser: false
 website:
   favicon: favicon.png
   image: index.png
