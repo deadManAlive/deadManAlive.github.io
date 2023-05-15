@@ -1,0 +1,104 @@
+---
+title: "Musitech: EXTRA - Konverter `float32` dan `int24`"
+author: "Dead Man"
+date: "2023-05-14"
+categories: [Musictech, Extra]
+image: "image.jpg"
+format:
+  html:
+    echo: false
+description: Beberapa tools konversi data 
+---
+
+```{ojs}
+wasmResp = await fetch("assets/lib.wasm");
+wasmBuff = await wasmResp.arrayBuffer();
+wasmMod = await WebAssembly.instantiate(wasmBuff);
+bfloat_to_binary= wasmMod.instance.exports.float_to_binary;
+
+f2b = (val) => {
+  const bRepPtr = bfloat_to_binary(val);
+  const bRepPtrArr = new Uint8Array(wasmMod.instance.exports.memory.buffer, bRepPtr, 32);
+  return new TextDecoder('utf-8').decode(bRepPtrArr);
+}
+
+bi24_to_binary = wasmMod.instance.exports.i24_to_binary;
+
+i2b = (val) => {
+  const bRepPtr = bi24_to_binary(val);
+  const bRepPtrArr = new Uint8Array(wasmMod.instance.exports.memory.buffer, bRepPtr, 24);
+  return new TextDecoder('utf-8').decode(bRepPtrArr);
+}
+```
+
+### `float32` ke biner
+
+:::{.callout-note collapse="true" title="Algoritma Konversi `float32` ke biner"}
+```rust
+float_to_binary(num: f32) -> *const u8 {
+    let binary_rep = format!("{:032b}", num.to_bits());
+    binary_rep.as_ptr()
+}
+```
+:::
+
+```{ojs}
+//| panel: input
+viewof val = Inputs.number([-Infinity, Infinity], {
+  label: "Bilangan desimal:",
+  value: 0,
+  placeholder: "0.0"
+});
+```
+
+```{ojs}
+//| panel: fill
+res = f2b(val);
+Inputs.text({label: tex`\verb|float32|`, value: res, disabled: true, width: 400});
+Inputs.text({label: "Sign bit", value: res.slice(0, 1), disabled: true, width: 300});
+Inputs.text({label: "Exponent bits", value: res.slice(1, 9), disabled: true, width: 300});
+Inputs.text({label: "Mantissa bits", value: res.slice(9), disabled: true, width: 300});
+```
+
+### `int24` ke biner
+
+Karena 24-bit bukanlah ukuran data *native* pada komputer, maka konversi `int24` dilakukan dengan mengekstrak 1-bit *sign* dan 23-bit *least significat bits* dari sebuah `int32` bit.
+
+:::{.callout-note collapse="true" title="Algoritma Konversi `int24` ke biner"}
+Di sini digunakan `rust` karena manipulasi bit lebih mudah dilakukan (bagi penulis) dan juga kedua konverter pada halaman ini sebenarnya ditulis dengan `rust` dan `wasm`.
+
+```rust
+fn i24_to_binary(num: i32) -> *const u8 {
+    let sign = if num < 0 { 1 } else { 0 };
+    let abs_num = num.abs();
+
+    let mut b_repr = String::new();
+
+    b_repr.push_str(&sign.to_string());
+
+    for i in (0..23).rev() {
+        b_repr.push_str(&(((abs_num >> i) & 1).to_string()));
+    }
+
+    b_repr.as_ptr()
+}
+```
+:::
+
+```{ojs}
+//| panel: input
+viewof val2 = Inputs.number([-8388608, 8388607], {
+  label: "Bilangan bulat:",
+  value: 0,
+  placeholder: 0,
+  step: 1
+});
+```
+
+```{ojs}
+//| panel: fill
+res2 = i2b(val2);
+Inputs.text({label: tex`\verb|int24|`, value: res2, disabled: true, width: 400});
+Inputs.text({label: "Sign bit", value: res2.slice(0, 1), disabled: true, width: 300});
+Inputs.text({label: "Number bit", value: res2.slice(1), disabled: true, width: 300});
+```

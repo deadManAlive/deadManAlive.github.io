@@ -26,6 +26,8 @@ website:
             file: archive.qmd
           - text: "Catatan"
             file: notes.qmd
+          - text: Lisensi
+            file: disclaimer.qmd
     tools:
       - icon: github
         text: Github
@@ -36,10 +38,10 @@ website:
       - icon: three-dots
         text: More...
         menu:
+          - text: Email
+            href: "javascript:location.href = 'mailto:' + ['embryon.id','gmail.com'].join('@')"
           - text: LinkedIn
             url: https://www.linkedin.com/in/rafky-alfa
-          - text: Disclaimer
-            file: disclaimer.qmd
   sidebar:
     contents:
       - section: "Laman"
@@ -55,7 +57,7 @@ website:
     style: floating
     alignment: center
   page-footer:
-    left: "@2023 Muhammad Rafky Alfarrakhan.S"
+    left: "[![cc-by-sa](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)](http://creativecommons.org/licenses/by-sa/4.0/ \"Dilisensikan oleh Muhammad Rafky Alfarrakhan.S\")"
     right: "Website ini dibangun dengan [Quarto](https://quarto.org/)."
     center:
       - icon: github
@@ -83,8 +85,9 @@ format:
     code-fold: true
     tbl-cap-location: bottom
     code-line-numbers: true
+    code-block-bg: true
     code-block-border-left: true
     highlight-style: breeze
 lang: id
-
-
+resources:
+  - "posts/**/assets/*"

@@ -374,7 +374,7 @@ struct IsPrime {
 
 Dengan `I = 5` sebagai indeks awal.
 
-### *Wrapping Up...*
+## *Wrapping Up...*
 
 Sampai di sini, kita telah berhasil mengadaptasi fungsi *runtime* `isPrime` ke evaluasi *compile-time* `IsPrime`. Berikut kode *full*-nya (dalam bentuk *header*):
 

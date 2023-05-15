@@ -3,11 +3,11 @@
 
   for (var i = 0; i < items.length; i++) {
     const item = items[i];
-    const date = new Date(item.date);
-    const month = date.toLocaleString('default', { month: 'long' });
+    const date = new Date(+item.sortableValues.date);
+    const month = date.toLocaleDateString('id-ID', { month: 'numeric' });
     const year = date.getFullYear().toString();
 
-    const key = month + ' ' + year;
+    const key = year + '.' + month;
 
     if (!groupedItems[key]) {
       groupedItems[key] = [];
@@ -19,17 +19,25 @@
   // Sort the items within each group by the newest first
   Object.keys(groupedItems).forEach(function(key) {
     groupedItems[key].sort(function(a, b) {
-      var dateA = new Date(a.date);
-      var dateB = new Date(b.date);
+      var dateA = new Date(+a.sortableValues.date);
+      var dateB = new Date(+b.sortableValues.date);
       return dateB - dateA;
     });
   });
+
+  var orderedGroupedItems = Object.keys(groupedItems).sort().reverse().reduce(
+    (obj, key) => {
+      obj[key] = groupedItems[key];
+      return obj;
+    },
+    {}
+  );
 %>
 
-<% Object.keys(groupedItems).forEach(function(key) { %>
-  <h2><%= key %></h2>
+<% Object.keys(orderedGroupedItems).forEach(function(key) { %>
+  <h2><%= orderedGroupedItems[key][0].date.split(" ").slice(1).join(" ") %></h2>
   <ul>
-    <% groupedItems[key].forEach(function(item) { %>
+    <% orderedGroupedItems[key].forEach(function(item) { %>
       <% const t2 = item.date.split(" "); %>
       <li><b>[<%= t2[0] %> <%= t2[1] %>]</b> <a href="<%- item.path %>"><%= item.title %></a></li>
     <% }); %>

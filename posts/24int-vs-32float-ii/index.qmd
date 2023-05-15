@@ -1,0 +1,167 @@
+---
+title: "Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part II"
+author: "Dead Man"
+date: "2023-05-12"
+categories: [Musictech, Analisis]
+image: "image.jpg"
+format:
+  html:
+    echo: false 
+---
+
+Setelah membahas sedikit tentang dasar sistem *floating-point* pada [bagian pertama](../24int-vs-32float/index.qmd), mari kita lanjutkan pembahasan secara lebih spesifik mengenai perbandingan **24-bit integer** vs. **32-bit *floating-point***.
+
+:::{.callout-note collapse="true" title="\"24-bit vs 32-bit\""}
+Sebagai pengingat, dalam dunia musik sering kali *bit depth* hanya disebutkan nilainya, tanpa embel-embel *integer*, *floating-point*, dsb. Hal ini lumrah dilakukan karena dalam dunia audio professional, hanya 3 mode yang sering digunakan: 16 dan 24-bit **integer** dan 32-bit **floating-point** meskipun faktanya di luar itu juga terdapat 16-bit *floating-point*, 32-bit *integer*, dsb. Perhatikan [video berikut](https://www.youtube.com/watch?v=lwyx5mpO35Q) yang tidak menyinggung *integer* ataupun *floating-point*, tetapi secara implisit membandingkan kedua tipe tersebut.
+:::
+
+## *Headroom*
+
+Sekilas kelebihan dari 32-bit *floating-point* yang dapat diperhatikan adalah terkait *headroom*-nya, dimana *floating-point* dapat menyimpan data dengan gain yang sangat besar bahkan hingga beberapa ratus dB di atas 0 dBFS tanpa memperkenalkan distorsi akibat *clipping* seperti yang terjadi pada tipe *integer* yang instan muncul ketika sinyal melewati 0 dB. **Kenapa hal ini dapat terjadi?**
+
+:::{.callout-important title="IEEE 754"}
+Artikel ini dan artikel [bagian pertama](../24int-vs-32float/index.qmd) membatasi bahasan pada *floating-point* 32-bit yang terstandardisasi dalam IEEE 754 (IEEE *Standard for Floating-Point Arithmetic*) `binary32` (*single-precision floating-point format*), yang dalam artikel ini akan dirujuk secara bergantian sebagai "*floating-point*", `float`, ataupun `float32`. *Floating-point* dengan lebar data lainnya, seperi *double-precision* (64-bit), memiliki struktur yang berbeda dan mungkin akan dibahas di lain kesempatan.
+:::
+
+### "$[-1,1]$"
+
+Jawaban dari pertanyaan di atas ialah meskipun format `float32` mampu menyimpan data yang sangat besar, hingga $3.40 \times 10 ^{38}$, penggunaan `float32` pada dunia audio menggunakan nilai ternormalisasi. Dengan kata lain, dalam dunia digital audio, **nilai yang digunakan hanya pada rentang $-1$ hingga $1$**, dan umumnya juga dibatasi menggunakan nilai [normal](../24int-vs-32float/index.qmd/#nilai-subnormaldenormal).
+
+Apa konsekuensi dari hal ini? Dengan begitu maka 0 dBFS berada pada nilai $-1$ atau $1$, dan dapat menyimpan nilai yang lebih besar $3.40 \times 10 ^{38}$ ($+770\;\mathrm{dB}$) kali ataupun $8.51 \times 10 ^{38}$ kali lebih kecil ($-759\;\mathrm{dB}$) relatif dari 0 dBFS. Sangat besar (dan kecil) dan sangat lebih dari cukup untuk mendukung rekaman audio seekstrim apa pun.
+
+:::{.callout-tip title="$+770\;\mathrm{dB}$??" collapse="true"}
+Ingin tahu dari mana angka itu muncul? Mari kita gunakan bantuan pemrograman yaitu dengan `Python` dan modul `numpy`.
+
+Dimulai dengan mengimpor `numpy`:
+```python
+import numpy as np
+```
+
+Kemudian anda dapat melihat nilai-nilai penting, seperti nilai terbesar, terkecil, *epsilon*, dsb. ([detail](https://numpy.org/doc/stable/reference/generated/numpy.finfo.html)) dari `float32` dengan fungsi `np.finfo`:
+```python
+print(np.finfo(np.float32))
+```
+Nilai terbesar dan terkecil (relatif terhadap 0) dari informasi di atas ialah `max` dan `tiny`.
+
+Selanjutnya, definisikan fungsi untuk mengkonversi nilai *gain* (*magnitude*) ke nilai desibel yang memiliki rumus $d=20\log_{10}(M)$:
+```python
+mag2db = lambda x: 20 * np.log10(x)
+```
+
+Gunakan `mag2db` untuk menentukan *range* desibel dari `float32`:
+```python
+print(mag2db(np.finfo(np.float32).max) # "770.638...", desibel maksimum
+print(mag2db(np.finfo(np.float32).tiny) # "-758.595...", desibel minimum
+```
+:::
+
+### Mubazir?
+
+Sebagian dari kita kemudian bertanya-tanya "kenapa hanya digunakan rentang $-1$ ke $1$ saja?", "kenapa tidak dimaksimalkan seperti pada *integer*?", atau "lalu apakah data yang berada diluar rentang $-1$-$1$ akan tersia-siakan saja?", dan sebagainya.
+
+Jawabannya berada pada kata ***floating-point*** itu sendiri.
+
+Bagian 1 dari [artikel ini](../24int-vs-32float/index.qmd/#floating-menggantikan-fixed) telah membahas cara kerja `float` yang menunjukkan bahwa posisi desimal (koma) pada bilangan float bersifat tidak tetap (*floating*), berbeda dengan tipe data *fixed-point*. Pada representasi `float` selalu hanya ada satu digit di depan koma (pada mode **normal** selalu bernilai `1` dan implisit), dan nilai yang berbeda direpresentasikan dengan nilai eksponen dan koefisien/*mantissa* yang berbeda.
+
+Sebagai contoh, karena hanya 1 digit di depan koma, maka `float` tidak dapat menyimpan `1011.001` secara langsung, tetapi bentuk tersebut dapat diubah ke `1.011001 * 10`^`101`^ (atau $2^3$ dalam desimal) yang dapat disimpan oleh `float`. Mekanisme seperti ini lah yang membuat `float` dapat menyimpan angka yang sangat besar dan sangat kecil. Tetapi disamping itu, terdapat satu hal yang menjadi konsekuensi hal di atas: **semakin kecil angka yang direpresentasikan `float`, semakin tinggi resolusinya**. Sehingga digunakanlah nilai ternormalisasi pada rentang $[-1,1]$ untuk memaksimalkan resolusi sinyal.
+
+:::{.callout-tip collapse="true" title="Tinggi dan Berat"}
+Untuk mempermudah, mari kita analogikan dengan bilangan desimal. Misalkan anda sedang mengisi isian biodata untuk sebuah pendaftaran, dan kemudian anda sampai pada isian tinggi badan. Pada formulir ini, diberikan 6 kotak untuk mengisi angka tinggi badan, dengan catatan semua kotak harus terisi tetapi anda bebas untuk meletakkan dimana posisi koma, apakah di antara kotak 1 dan 2, 2 dan 3, dan seterusnya.
+
+Misalkan tinggi badan anda adalah tepat $174$ cm, maka anda akan mengisi $174.000$ pada isian tersebut dan meletakkan koma antara kotak 3 dan 4. Pertanyaannya adalah, jika angka paling kanan diubah 1 digit, berapakah perubahan yang terjadi pada angka? Pada isian anda, misalkan angka terkakhir diubah 1 sehingga menjadi $174.001$, maka perubahan angka yang terjadi ialah $0.001$. Nilai tersebut merupakan perubahan terkecil yang masih dapat direkam oleh isian 6 kotak tersebut, dalam matematika sering disebut sebagai **epsilon** ($\varepsilon$)[^ulp].
+
+$$
+\boxed{1}\boxed{7}\boxed{4},\boxed{0}\boxed{0}\boxed{0}
+$$
+
+Bagaimana jika selanjutnya dengan aturan yang sama, anda diperintahkan mengisi isian berat badan? Misalkan kali ini anda dengan lebih detail mengetahui berat anda $89.5$ kg, maka isian kotak anda ialah $89.5000$. Perhatikan bahwa kali ini, $\varepsilon$ menjadi $10$ kali lebih kecil ($0.0001$) dengan posisi desimal yang berubah satu tempat. **$\varepsilon$ yang semakin kecil menunjukkan nilai yang semakin presisi**.
+
+$$
+\boxed{8}\boxed{9},\boxed{5}\boxed{0}\boxed{0}\boxed{0}
+$$
+:::
+
+Lalu kenapa tidak digunakan [nilai subnormal](../24int-vs-32float/index.qmd/#nilai-subnormaldenormal) untuk merepresentasikan nilai tersebut? Angka yang direpresentasikan diantara $-1$ dan $1$ sehingga wajar menggunakan subnormal yang diawali dengan $0.$ bukan? Jawababnya adalah karena nilai pada rentang ***subnormal* memiliki performa pemrosesan yang lebih lambat**[^slow-subnormal]. Bahkan, sering kali dalam beberapa kondisi yang membutuhkan performa lebih, rentang subnormal dapat saja dinonaktifkan (sebagai contoh dalam algoritma pemrosesan VST[^nodenormals])
+
+## 24-Bit Signed Integer vs 32-Bit Floating-Point
+
+Kembali ke pertanyaan pemicu dari seri artikel ini, "Seberapa jauh perbedaan kualitas 24-bit int dengan 32-bit FP?". Sekilas, cukup dari lebar data kita bisa saja menyebut bahwa `float32` memiliki resolusi sebesar $2^{31-23} = 256$ kali resolusi `int24`. Tetapi, mengingat aturan representasi pada `float` tidak sesederhana pada `int`, maka kita akan mencoba menghitung level kuantisasi pada masing-masing tipe, dimana kualitas dari tipe data pembawa sinyal dapat dilihat dari jumlah level kuantisasi ini (divisualisasikan di [laman ini](../fs-vs-bd/index.qmd/), yang pada jenis data **integer** memiliki hubungan $N=2^b$ dengan $N$ jumlah level kuantisasi dan $b$ bit-depth.
+
+Dari sini, dapat kita ketahui untuk tipe 24-bit integer, yang dalam dunia audio menggunakan data type `unsigned int`, memiliki nilai $0$ atau $-\infty\;\mathrm{dB}$ sebagai nilai minimum dan $2^{23}-1=8388607$ sebagai nilai maksimum ($0\;\mathrm{dB}$). $8 388 607$ adalah jumlah level kuantisasi pada satu sisi gelombang pada `int24`, di sini dapat disebut sebagai resolusinya.
+
+Bagaimana dengan `float`? Karena aturannya yang lebih rumit dan rentang yang dibatasi $\pm 1$, maka kita akan mengunakan bantuan pemrograman, kali ini dengan `C++` karena manipulasi `bit` sebuah data paling mudah dilakukan di `C++`.
+
+### Menghitung level kuantisasi `float32`
+
+Seperti pada `int24` di atas, kita akan menghitung resolusi satu sisi ($0$ ke titik maksimal, dalam `float` berarti $1$).
+
+Pertama, kita impor beberapa *header* yang diperlukan:
+
+```c++
+#include <iostream>
+#include <cmath>
+```
+
+Kemudian masuk ke fungsi `main`, kita cek apakah tipe data `float` memiliki lebar data yang sama dengan `unsigned float` pada perangkat, sebagai syarat dari algoritma berikutnya.
+
+```c++
+int main() {
+    static_assert(sizeof(unsigned int) == sizeof(float));
+    // ...
+```
+
+Kemudian untuk memasukkan nilai heksadesimal ke `float`, yang dibutuhkan untuk mendapatkan data yang tepat, gunakan cara berikut:
+
+```c++
+    unsigned int uint_repr = 0x00800000;
+    float start = *(float*)&uint_repr;
+
+    uint_repr = 0x3f80000;
+    float end = *(float*)&uint_repr;
+```
+Pada potongan kode diatas, nilai heksadesimal `0x00800000` dan `0x03f80000` masing-masing merupakan nilai normal terkecil setelah $0$, dan $1$. Kemudian dilakukan perhitungan jumlah angka `float` yang tersedia di antara kedua nilai tersebut dengan cara:
+
+```c++
+    size_t nstep = 0;
+
+    while(start < end) {
+        start = std::nextafter(start, end);
+        nstep++;
+    }
+
+    cout << "Jumlah level " << nstep << endl;
+}
+```
+
+Fungsi `std::nextafter(start, end)` mengembalikan nilai `float` selanjutnya yang dari `start` menuju `end`. Jumlah perulangan hingga nilai `start` mencapai nilai `end` disimpan pada variabel `nstep`, yang menjadi nilai yang kita cari.
+
+:::{.callout-note title="`0x00800000`?" collapse="true"}
+Kenapa kita mulai dari nilai normal terkecil `0x00800000` bukan dari $0$ itu sendiri? Karena pada dunia audio digital, pemrosesan sinyal float umumnya dilakukan dengan men*disable* subnormal sehingga nilai tersebut dianggap 0, dengan tujuan meningkatkan performa[^slow-subnormal].
+:::
+
+Ketika program di atas dikompilasi dan dijalankan, nilai yang dikeluarkan ialah sebesar $1 056 964 608$. Jumlah level itu, adalah **persis $126$ kali level dari 24-bit *integer***. Tentu nilai ini meleset dari perkiraan intuitif $256$ kali, sedikit kurang dari setengahnya.
+
+Meskipun begitu, angka tersebut masih lebih dari cukup untuk memberikan peningkatan resolusi yang signifikan. Sebagai pembanding, perbandingan jumlah pixel antara resolusi 4K ($3840\times2160$) terhadap 360p ($640\times360$) hanyalah sebesar $36$ kali lipat, dan anda tentu tahu seberapa jauh peningkatan kualitas video yang dapat anda rasakan dari perbedaan kedua resolusi tersebut.
+
+:::{.callout-note title="dari $0$" collapse="true"}
+Jika anda memasukkan nilai subnormal dalam kalkulasi program di atas dengan mengatur nilai start dengan `0` alih alih `0x00800000` seperti pada kode diatas:
+
+```c++
+// ...
+    unsigned int uint_repr = 0x0;
+    float start = *(float*)&uint_repr;
+// ...
+```
+
+maka program akan memberikan keluaran $1065353216$, dan kini resolusinya menjadi $127$ kali lipat `int24`. *Worth it?*
+:::
+
+## *Wrapping Up*
+
+Dari percobaan dan analisis kecil-kecilan di atas, kita dapat mengambil kesimpulan bahwa tipe data 32-bit *floating-point* memang lebih memiliki resolusi yang lebih tinggi, $126$ kali, dari 24-bit *signed integer*. Hal ini menunjukkan bahwa `float32` memang lebih baik dari `int24` dalam menyimpan data audio, **secara kuantitatif**.
+
+> "*Enter Psychoacoustics*"
+
+[^slow-subnormal]: <https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues>
+[^ulp]: Istilah yang lebih tepat disini sebenarnya ialah [**ulp**](https://en.wikipedia.org/wiki/Unit_in_the_last_place) atau *unit of least precision*, tetapi untuk tidak memperkeruh istilah, mari gunakan saja $\varepsilon$ yang pada beberapa kondisi berkorespondensi terhadap **ulp** sebagai hal yang sama.
+[^nodenormals]: <https://docs.juce.com/master/classScopedNoDenormals.html>, sebuah fitur *high-level* untuk menonaktifkan subnormal pada CPU untuk sementara pada JUCE, framework yang dapat digunakan untuk memprogram VST. Mekanisme dasarnya sendiri dapat dilihat di [sini](https://en.wikipedia.org/wiki/Subnormal_number#Disabling_subnormal_floats_at_the_code_level).

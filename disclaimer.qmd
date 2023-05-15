@@ -1,10 +1,24 @@
 ---
-title: Disclaimer
+title: License and Disclaimer
 sidebar: false
+navbar: false
+icon: dash-circle
+back-to-top-navigation: false
+format:
+  html:
+    echo: false
 ---
 
-This blog is licensed as [**CC-BY-SA**](https://creativecommons.org/licenses/by-sa/4.0/) so you are **free to share and modify** this blog BUT you **must attribute me** and **redistribute with the exact license as this original project**, located on this [repo](https://github.com/deadManAlive/deadManAlive.github.io).
+> Go back to [main page](#go-back).
+
+:::{#go-back}
+[<img src="https://picsum.photos/600/400" style="width: 100%;">](index.qmd "Maybe click here?")
+:::
+
+This blog is licensed as [**CC-BY-SA**](https://creativecommons.org/licenses/by-sa/4.0/) so you are **free to share and modify** this blog BUT you **must attribute me** and **redistribute with the exact license as this original project**, located on this [repo](https://github.com/deadManAlive/deadManAlive.github.io), except otherwise stated.
 
 For mistakes and error, you can email me at <a href = "mailto: embryon.id@gmail.com">`embryon.id@gmail.com`</a>.
 
 All that is it written in this blog is **intentional** by and **only** by writer (Dead Man). If some statements in this blog offend you, **I don't care**. Maybe I **intentionally** tried to offend people like you, who knows?
+
+> Click here to go back to the [main page](#go-back).
