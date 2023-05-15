@@ -1,3 +1,5 @@
+```{=html}
+
 <%
   var groupedItems = {};
 
@@ -36,10 +38,70 @@
 
 <% Object.keys(orderedGroupedItems).forEach(function(key) { %>
   <h2><%= orderedGroupedItems[key][0].date.split(" ").slice(1).join(" ") %></h2>
-  <ul>
-    <% orderedGroupedItems[key].forEach(function(item) { %>
-      <% const t2 = item.date.split(" "); %>
-      <li><b>[<%= t2[0] %> <%= t2[1] %>]</b> <a href="<%- item.path %>"><%= item.title %></a></li>
-    <% }); %>
-  </ul>
+  <div>
+  <% orderedGroupedItems[key].forEach(function(item) { %>
+    <div>
+      <a href="<%- item.path %>" style="text-decoration: none;">
+        <div class="arc-card">
+          <div class="arc-card-image" style="background-image: url('<%- item.image %>');">
+          </div>
+          <div style="padding: 1em;">
+            <% const ptitle = item.title.replace(/`([^`]+)`/g, '<code>$1</code>'); %>
+            <b class="arc-card-title"><%= ptitle %></b>
+            <hr>
+            <div class="arc-date">
+              <%- item.date %>
+            </div>
+            <div>
+              <% const desc = item.description; %>
+              <% const dalt = `<!-- desc(5A0113B34292)[max=50]:${item.outputHref} -->`; %>
+              <% const descf = /^<!--.*-->$/g.test(desc) ? `${dalt}` : desc; %>
+              <%= descf %>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  <% }); %>
+  </div>
 <% }); %>
+
+<style>
+  .arc-month-div {
+    justify-content: start;
+  }
+  .arc-card {
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    min-height: 160px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 7px -3px rgba(#000, .4);
+    width: 75%;
+    max-width: 90%;
+    overflow: hidden;
+    &:hover {
+      .arc-card-image {
+        min-width: 20%;
+      }
+    }
+  }
+  .arc-card-image {
+    border-radius: 10px 0 0 10px;
+    min-width: 30%;
+    background-size: cover;
+    transition: all .2s;
+    background-position: center;
+    box-shadow: 8px 0 2px 1px rgba(#000, .4);
+  }
+  .arc-card-title {
+    color: cornflowerblue;
+  }
+  .arc-date {
+    font-size: small;
+    color: blanchedalmond;
+  }
+</style>
+
+```

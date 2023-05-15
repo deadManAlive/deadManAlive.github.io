@@ -20,10 +20,10 @@ website:
         file: index.qmd
       - text: Tentang
         file: about.qmd
+      - text: Arsip
+        file: archive.qmd
       - icon: three-dots
         menu:
-          - text: Arsip
-            file: archive.qmd
           - text: "Catatan"
             file: notes.qmd
           - text: Lisensi
