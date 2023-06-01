@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.336">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dead Man">
+<meta name="dcterms.date" content="2023-04-28">
+
+<title>DMB - Musitech: Sample Rate &amp; Bit Depth</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Tidak ada hasil",
+    "search-matching-documents-text": "dokumen cocok",
+    "search-copy-link-title": "Salin tautan untuk mencari",
+    "search-hide-matches-text": "Sembunyikan kecocokan lainnya",
+    "search-more-match-text": "kecocokan lainnya di dokumen ini",
+    "search-more-matches-text": "kecocokan lainnya di dokumen ini",
+    "search-clear-button-title": "Hapus",
+    "search-detached-cancel-button-title": "Batal",
+    "search-submit-button-title": "Kirim"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script type="application/json" class="js-hypothesis-config">
+{
+  "theme": "clean",
+  "openSidebar": false
+}
+</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="DMB - Musitech: Sample Rate &amp; Bit Depth">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://deadManAlive.github.io/posts/fs-vs-bd/image.jpg">
+<meta property="og:site-name" content="DMB">
+<meta name="twitter:title" content="DMB - Musitech: Sample Rate &amp; Bit Depth">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://deadManAlive.github.io/posts/fs-vs-bd/image.jpg">
+<meta name="twitter:creator" content="@lngtmknmndng_">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">DMB</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Beranda</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Tentang</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Arsip</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-three-dots" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-three-dots" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-bi-three-dots">    
+        <li>
+    <a class="dropdown-item" href="../../notes.html" rel="" target="">
+ <span class="dropdown-text">Catatan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools ms-auto tools-wide">
+    <a href="https://github.com/deadManAlive" title="Github" class="quarto-navigation-tool px-1" aria-label="Github"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/lngtmknmndng_" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+    <div class="dropdown">
+      <a href="" title="More..." id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More..."><i class="bi bi-three-dots"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="javascript:location.href = 'mailto:' + ['embryon.id','gmail.com'].join('@')">
+            Email
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="https://www.linkedin.com/in/rafky-alfa">
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Musitech: Sample Rate &amp; Bit Depth</li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Mencari" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Musitech: Sample Rate &amp; Bit Depth</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Musictech</div>
+                <div class="quarto-category">Back To Basic</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Penulis</div>
+      <div class="quarto-title-meta-contents">
+               <p>Dead Man </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Diterbitkan</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">28 April 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Mencari"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Laman</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beranda</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tentang</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../archive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Arsip</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Catatan</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">Konten</h2>
+   
+  <ul>
+  <li><a href="#amplitudo-a-frekuensi-f-dan-fasa-phi" id="toc-amplitudo-a-frekuensi-f-dan-fasa-phi" class="nav-link active" data-scroll-target="#amplitudo-a-frekuensi-f-dan-fasa-phi">Amplitudo (<span class="math inline">\(A\)</span>), Frekuensi (<span class="math inline">\(f\)</span>), dan Fasa (<span class="math inline">\(\phi\)</span>)</a></li>
+  <li><a href="#sample-rate-f_s-dan-bit-depth-b" id="toc-sample-rate-f_s-dan-bit-depth-b" class="nav-link" data-scroll-target="#sample-rate-f_s-dan-bit-depth-b">Sample Rate (<span class="math inline">\(f_s\)</span>) dan Bit Depth (<span class="math inline">\(b\)</span>)</a>
+  <ul>
+  <li><a href="#aliasing" id="toc-aliasing" class="nav-link" data-scroll-target="#aliasing"><em>Aliasing</em></a></li>
+  <li><a href="#overshoot" id="toc-overshoot" class="nav-link" data-scroll-target="#overshoot"><em>Overshoot</em></a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="amplitudo-a-frekuensi-f-dan-fasa-phi" class="level2">
+<h2 class="anchored" data-anchor-id="amplitudo-a-frekuensi-f-dan-fasa-phi">Amplitudo (<span class="math inline">\(A\)</span>), Frekuensi (<span class="math inline">\(f\)</span>), dan Fasa (<span class="math inline">\(\phi\)</span>)</h2>
+<p>Untuk mengetahui perihal <em>sample rate</em> dan <em>bit depth</em>, maka parameter-parameter penting dari sebuah gelombang wajib untuk dipahami, yaitu:</p>
+<ul>
+<li>Amplitudo (<span class="math inline">\(A\)</span>): Besaran perpindahan gelombang.</li>
+<li>Frekuensi (<span class="math inline">\(f\)</span>): Besaran kecepatan osilasi gelombang.</li>
+<li>Fasa (<span class="math inline">\(\phi\)</span>): Besaran posisi gelombang.</li>
+</ul>
+<p>Yang membentuk fungsi gelombang (terhadap waktu <span class="math inline">\(t\)</span>):</p>
+<p><span class="math display">\[
+y(t) = A\sin(2\pi f t + \phi)
+\]</span></p>
+<p>Untuk lebih jelasnya gunakan simulasi berikut:</p>
+<div class="cell panel-input card bg-light p-2">
+<details class="hidden">
+<summary>Kode</summary>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="30" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 29;"><span id="cb1-30"><a href="#cb1-30"></a>viewof amplitude <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb1-31"><a href="#cb1-31"></a>  [<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>  {</span>
+<span id="cb1-33"><a href="#cb1-33"></a>    <span class="dt">value</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a>    <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span></span>
+<span id="cb1-35"><a href="#cb1-35"></a>    <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`A`</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a>  }</span>
+<span id="cb1-37"><a href="#cb1-37"></a>)<span class="op">;</span></span>
+<span id="cb1-38"><a href="#cb1-38"></a></span>
+<span id="cb1-39"><a href="#cb1-39"></a>viewof frequency <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb1-40"><a href="#cb1-40"></a>  [<span class="fl">0.2</span><span class="op">,</span> <span class="dv">10</span>]<span class="op">,</span></span>
+<span id="cb1-41"><a href="#cb1-41"></a>  {</span>
+<span id="cb1-42"><a href="#cb1-42"></a>    <span class="dt">value</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span></span>
+<span id="cb1-43"><a href="#cb1-43"></a>    <span class="dt">step</span><span class="op">:</span> <span class="fl">0.1</span><span class="op">,</span></span>
+<span id="cb1-44"><a href="#cb1-44"></a>    <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`f`</span></span>
+<span id="cb1-45"><a href="#cb1-45"></a>  }</span>
+<span id="cb1-46"><a href="#cb1-46"></a>)<span class="op">;</span></span>
+<span id="cb1-47"><a href="#cb1-47"></a></span>
+<span id="cb1-48"><a href="#cb1-48"></a>viewof phase <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb1-49"><a href="#cb1-49"></a>  [<span class="op">-</span><span class="dv">6</span><span class="op">,</span> <span class="dv">6</span>]<span class="op">,</span></span>
+<span id="cb1-50"><a href="#cb1-50"></a>  {</span>
+<span id="cb1-51"><a href="#cb1-51"></a>    <span class="dt">value</span><span class="op">:</span> <span class="fl">0.00</span><span class="op">,</span></span>
+<span id="cb1-52"><a href="#cb1-52"></a>    <span class="dt">step</span><span class="op">:</span> <span class="fl">0.01</span><span class="op">,</span></span>
+<span id="cb1-53"><a href="#cb1-53"></a>    <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`</span><span class="sc">\p</span><span class="vs">hi`</span></span>
+<span id="cb1-54"><a href="#cb1-54"></a>  }</span>
+<span id="cb1-55"><a href="#cb1-55"></a>)<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="hidden">
+<summary>Kode</summary>
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="59" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 58;"><span id="cb2-59"><a href="#cb2-59"></a>T <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> <span class="dv">1000</span>}<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> i <span class="op">*</span> <span class="fl">0.002</span>)<span class="op">;</span></span>
+<span id="cb2-60"><a href="#cb2-60"></a>sine <span class="op">=</span> (amplitude<span class="op">,</span> phase<span class="op">,</span> frequency) <span class="kw">=&gt;</span> T<span class="op">.</span><span class="fu">map</span>((t) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-61"><a href="#cb2-61"></a>  <span class="cf">return</span> {</span>
+<span id="cb2-62"><a href="#cb2-62"></a>    <span class="dt">x</span><span class="op">:</span> t<span class="op">,</span></span>
+<span id="cb2-63"><a href="#cb2-63"></a>    <span class="dt">y</span><span class="op">:</span> amplitude <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(<span class="dv">2</span> <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span> <span class="op">*</span> frequency <span class="op">*</span> t <span class="op">+</span> phase)</span>
+<span id="cb2-64"><a href="#cb2-64"></a>  }</span>
+<span id="cb2-65"><a href="#cb2-65"></a>})<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="hidden">
+<summary>Kode</summary>
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="70" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 69;"><span id="cb3-70"><a href="#cb3-70"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb3-71"><a href="#cb3-71"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb3-72"><a href="#cb3-72"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb3-73"><a href="#cb3-73"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"t"</span></span>
+<span id="cb3-74"><a href="#cb3-74"></a>  }<span class="op">,</span></span>
+<span id="cb3-75"><a href="#cb3-75"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb3-76"><a href="#cb3-76"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb3-77"><a href="#cb3-77"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span></span>
+<span id="cb3-78"><a href="#cb3-78"></a>  }<span class="op">,</span></span>
+<span id="cb3-79"><a href="#cb3-79"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb3-80"><a href="#cb3-80"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb3-81"><a href="#cb3-81"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb3-82"><a href="#cb3-82"></a>    Plot<span class="op">.</span><span class="fu">line</span>(<span class="fu">sine</span>(amplitude<span class="op">,</span> phase<span class="op">,</span> frequency)<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"blue"</span>})<span class="op">,</span></span>
+<span id="cb3-83"><a href="#cb3-83"></a>    Plot<span class="op">.</span><span class="fu">frame</span>()</span>
+<span id="cb3-84"><a href="#cb3-84"></a>  ]</span>
+<span id="cb3-85"><a href="#cb3-85"></a>})</span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-source" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<div id="ojs-cell-3" data-nodetype="expression">
+
+</div>
+<figcaption class="figure-caption">Gambar&nbsp;1: Sinyal analog sumber.</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="sample-rate-f_s-dan-bit-depth-b" class="level2">
+<h2 class="anchored" data-anchor-id="sample-rate-f_s-dan-bit-depth-b">Sample Rate (<span class="math inline">\(f_s\)</span>) dan Bit Depth (<span class="math inline">\(b\)</span>)</h2>
+<p>Dari simulasi di atas, dapat dilihat bahwa sebuah gelombang menduduki dimensi 2 <span class="math inline">\(\mathbb{R}^2\)</span> atas sumbu waktu <span class="math inline">\(t\)</span> dan ruang <span class="math inline">\(y\)</span>. Sebuah gambar digital dapat dibilang berada pada ruang 3 dimensi (2 dimensi ruang <span class="math inline">\(x\)</span> dan <span class="math inline">\(y\)</span> serta 1 dimensi warna <span class="math inline">\(c\)</span>, meskipun sebenarnya dimensi warna lebih rumit dari pada itu). Seperti yang pembaca pasti ketahui, sebuah gambar memiliki resolusi pada ketiga dimensi tersebut, yaitu <strong>pixel</strong> pada <span class="math inline">\(x\)</span> dan <span class="math inline">\(y\)</span>, <strong>bit</strong> pada <span class="math inline">\(c\)</span>. Demikian pula dengan gelombang (audio), <strong><em>sample rate</em></strong> (<span class="math inline">\(f_s\)</span>) <strong>adalah resolusi waktu</strong> <span class="math inline">\(t\)</span> dan <strong><em>bit depth</em></strong> (<span class="math inline">\(b\)</span>) <strong>adalah resolusi ruang</strong> <span class="math inline">\(y\)</span>.</p>
+<p>Hal tersebut dapat dilihat dari simulasi berikut dimana <em>sample rate</em> mempengaruhi kerapatan <em>sample</em> terhadap sumbu <span class="math inline">\(t\)</span>, sementara <em>bit depth</em> mempengaruhi kerapatan <em>sample</em> terhadap sumbu <span class="math inline">\(y\)</span>.</p>
+<div class="cell panel-input card bg-light p-2">
+<details class="hidden">
+<summary>Kode</summary>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="98" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 97;"><span id="cb4-98"><a href="#cb4-98"></a>viewof samplerate <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb4-99"><a href="#cb4-99"></a>  [<span class="dv">10</span><span class="op">,</span> <span class="dv">100</span>]<span class="op">,</span></span>
+<span id="cb4-100"><a href="#cb4-100"></a>  {</span>
+<span id="cb4-101"><a href="#cb4-101"></a>    <span class="dt">value</span><span class="op">:</span> <span class="dv">40</span><span class="op">,</span></span>
+<span id="cb4-102"><a href="#cb4-102"></a>    <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb4-103"><a href="#cb4-103"></a>    <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`f_s`</span></span>
+<span id="cb4-104"><a href="#cb4-104"></a>  }</span>
+<span id="cb4-105"><a href="#cb4-105"></a>)<span class="op">;</span></span>
+<span id="cb4-106"><a href="#cb4-106"></a></span>
+<span id="cb4-107"><a href="#cb4-107"></a>viewof bitdepth <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>(</span>
+<span id="cb4-108"><a href="#cb4-108"></a>  [<span class="dv">1</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span></span>
+<span id="cb4-109"><a href="#cb4-109"></a>  {</span>
+<span id="cb4-110"><a href="#cb4-110"></a>    <span class="dt">value</span><span class="op">:</span> <span class="dv">3</span><span class="op">,</span></span>
+<span id="cb4-111"><a href="#cb4-111"></a>    <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb4-112"><a href="#cb4-112"></a>    <span class="dt">label</span><span class="op">:</span> <span class="fu">tex</span><span class="vs">`b`</span></span>
+<span id="cb4-113"><a href="#cb4-113"></a>  }</span>
+<span id="cb4-114"><a href="#cb4-114"></a>)<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-4-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="hidden">
+<summary>Kode</summary>
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="118" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 117;"><span id="cb5-118"><a href="#cb5-118"></a>q <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>({<span class="dt">length</span><span class="op">:</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(<span class="dv">2</span><span class="op">,</span> bitdepth)}<span class="op">,</span> (_<span class="op">,</span> i) <span class="kw">=&gt;</span> <span class="op">-</span><span class="dv">1</span> <span class="op">+</span> ( <span class="dv">2</span> <span class="op">/</span> (<span class="bu">Math</span><span class="op">.</span><span class="fu">pow</span>(<span class="dv">2</span><span class="op">,</span> bitdepth) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> i))<span class="op">;</span></span>
+<span id="cb5-119"><a href="#cb5-119"></a>s <span class="op">=</span> <span class="fu">sine</span>(amplitude<span class="op">,</span> phase<span class="op">,</span> frequency)<span class="op">.</span><span class="fu">filter</span>((_<span class="op">,</span> index) <span class="kw">=&gt;</span> index <span class="op">%</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(<span class="dv">1000</span> <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> samplerate)) <span class="op">===</span> <span class="dv">0</span>)</span>
+<span id="cb5-120"><a href="#cb5-120"></a>discrete_sine <span class="op">=</span> s<span class="op">.</span><span class="fu">map</span>((point) <span class="kw">=&gt;</span> {</span>
+<span id="cb5-121"><a href="#cb5-121"></a>  <span class="cf">return</span> {</span>
+<span id="cb5-122"><a href="#cb5-122"></a>    <span class="dt">x</span><span class="op">:</span> point<span class="op">.</span><span class="at">x</span><span class="op">,</span></span>
+<span id="cb5-123"><a href="#cb5-123"></a>    <span class="dt">y</span><span class="op">:</span> q<span class="op">.</span><span class="fu">reduce</span>((prev<span class="op">,</span> curr) <span class="kw">=&gt;</span> {</span>
+<span id="cb5-124"><a href="#cb5-124"></a>        <span class="cf">return</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(curr <span class="op">-</span> point<span class="op">.</span><span class="at">y</span>) <span class="op">&lt;</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(prev <span class="op">-</span> point<span class="op">.</span><span class="at">y</span>) <span class="op">?</span> curr <span class="op">:</span> prev</span>
+<span id="cb5-125"><a href="#cb5-125"></a>       })</span>
+<span id="cb5-126"><a href="#cb5-126"></a>  }<span class="op">;</span> </span>
+<span id="cb5-127"><a href="#cb5-127"></a>})</span>
+<span id="cb5-128"><a href="#cb5-128"></a></span>
+<span id="cb5-129"><a href="#cb5-129"></a>ylin <span class="op">=</span> (val) <span class="kw">=&gt;</span> {</span>
+<span id="cb5-130"><a href="#cb5-130"></a>  <span class="cf">return</span> [</span>
+<span id="cb5-131"><a href="#cb5-131"></a>    {</span>
+<span id="cb5-132"><a href="#cb5-132"></a>      <span class="dt">x</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb5-133"><a href="#cb5-133"></a>      <span class="dt">y</span><span class="op">:</span> val<span class="op">,</span></span>
+<span id="cb5-134"><a href="#cb5-134"></a>    }<span class="op">,</span> {</span>
+<span id="cb5-135"><a href="#cb5-135"></a>      <span class="dt">x</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span></span>
+<span id="cb5-136"><a href="#cb5-136"></a>      <span class="dt">y</span><span class="op">:</span> val<span class="op">,</span></span>
+<span id="cb5-137"><a href="#cb5-137"></a>    }</span>
+<span id="cb5-138"><a href="#cb5-138"></a>  ]</span>
+<span id="cb5-139"><a href="#cb5-139"></a>}<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="hidden">
+<summary>Kode</summary>
+<div class="sourceCode cell-code hidden" id="cb6" data-startfrom="144" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 143;"><span id="cb6-144"><a href="#cb6-144"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb6-145"><a href="#cb6-145"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb6-146"><a href="#cb6-146"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span></span>
+<span id="cb6-147"><a href="#cb6-147"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span></span>
+<span id="cb6-148"><a href="#cb6-148"></a>  }<span class="op">,</span></span>
+<span id="cb6-149"><a href="#cb6-149"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb6-150"><a href="#cb6-150"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb6-151"><a href="#cb6-151"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span></span>
+<span id="cb6-152"><a href="#cb6-152"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span></span>
+<span id="cb6-153"><a href="#cb6-153"></a>  }<span class="op">,</span></span>
+<span id="cb6-154"><a href="#cb6-154"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb6-155"><a href="#cb6-155"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb6-156"><a href="#cb6-156"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb6-157"><a href="#cb6-157"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb6-158"><a href="#cb6-158"></a>    Plot<span class="op">.</span><span class="fu">line</span>(<span class="fu">sine</span>(amplitude<span class="op">,</span> phase<span class="op">,</span> frequency)<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"blue"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.5</span>})<span class="op">,</span></span>
+<span id="cb6-159"><a href="#cb6-159"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb6-160"><a href="#cb6-160"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(discrete_sine<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">r</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"green"</span>})<span class="op">,</span></span>
+<span id="cb6-161"><a href="#cb6-161"></a>    Plot<span class="op">.</span><span class="fu">line</span>(discrete_sine<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"green"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.75</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">curve</span><span class="op">:</span> <span class="st">"step-after"</span>})<span class="op">,</span></span>
+<span id="cb6-162"><a href="#cb6-162"></a>    <span class="op">...</span>discrete_sine<span class="op">.</span><span class="fu">map</span>((point) <span class="kw">=&gt;</span> {</span>
+<span id="cb6-163"><a href="#cb6-163"></a>      <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">ruleX</span>([point<span class="op">.</span><span class="at">x</span>]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"green"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> [<span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.4</span>})<span class="op">;</span></span>
+<span id="cb6-164"><a href="#cb6-164"></a>    })<span class="op">,</span></span>
+<span id="cb6-165"><a href="#cb6-165"></a>    <span class="op">...</span>q<span class="op">.</span><span class="fu">map</span>((level) <span class="kw">=&gt;</span> {</span>
+<span id="cb6-166"><a href="#cb6-166"></a>      <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">ruleY</span>([level]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">strokeDasharray</span><span class="op">:</span> [<span class="dv">5</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.4</span>})<span class="op">;</span></span>
+<span id="cb6-167"><a href="#cb6-167"></a>    })<span class="op">,</span></span>
+<span id="cb6-168"><a href="#cb6-168"></a>    Plot<span class="op">.</span><span class="fu">area</span>(<span class="fu">ylin</span>(<span class="fl">1.0</span>)<span class="op">,</span> {<span class="dt">x1</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y1</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">x2</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> <span class="dt">y2</span><span class="op">:</span> [<span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.2</span>})<span class="op">,</span></span>
+<span id="cb6-169"><a href="#cb6-169"></a>    Plot<span class="op">.</span><span class="fu">area</span>(<span class="fu">ylin</span>(<span class="op">-</span><span class="fl">1.0</span>)<span class="op">,</span> {<span class="dt">x1</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y1</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">x2</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> <span class="dt">y2</span><span class="op">:</span> [<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="op">-</span><span class="dv">2</span>]<span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.2</span>})<span class="op">,</span></span>
+<span id="cb6-170"><a href="#cb6-170"></a>    Plot<span class="op">.</span><span class="fu">frame</span>()</span>
+<span id="cb6-171"><a href="#cb6-171"></a>  ]</span>
+<span id="cb6-172"><a href="#cb6-172"></a>})</span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-adc" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<div id="ojs-cell-6" data-nodetype="expression">
+
+</div>
+<figcaption class="figure-caption">Gambar&nbsp;2: Hasil <em>sampling</em> ke sinyal digital.</figcaption>
+</figure>
+</div>
+</div>
+<p>Pada grafik di atas, <b style="color:green;">titik-titik</b> dan <b style="color:green;">garis hijau</b> menunjukkan representasi digital dari sinyal <b style="color:blue;">input biru</b>, masing-masing adalah titik <em>sample</em> dan sinyal <a href="https://www.keithmcmillen.com/blog/simple-synthesis-part-11-sample-and-hold/"><em>sample-and-hold</em></a>. <b style="color:red;">Garis mendatar merah</b> pada <span class="math inline">\(-1.0\)</span> dan <span class="math inline">\(1.0\)</span> adalah batas <em>clipping</em> (<b style="color:red;">area merah</b>), sementara itu <b style="color:red;">garis putus-putus mendatar merah</b> di antara rentang tersebut yang terlihat samar ialah level-level kuantisasi yang dipengaruhi oleh <em>bit depth</em> dengan hubungan <span class="math inline">\(N=2^n\)</span> dengan <span class="math inline">\(N\)</span> jumlah level kuantisasi dan <span class="math inline">\(b\)</span> <em>bit-depth</em>. <b style="color:green;">Garis-garis hijau putus-putus mendatar</b> adalah posisi <em>sampling</em> yang dipengaruhi oleh <em>sample rate</em>.</p>
+<div class="cell">
+<details class="hidden">
+<summary>Kode</summary>
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="181" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 180;"><span id="cb7-181"><a href="#cb7-181"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb7-182"><a href="#cb7-182"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb7-183"><a href="#cb7-183"></a>  <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb7-184"><a href="#cb7-184"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"t"</span><span class="op">,</span></span>
+<span id="cb7-185"><a href="#cb7-185"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span></span>
+<span id="cb7-186"><a href="#cb7-186"></a>  }<span class="op">,</span></span>
+<span id="cb7-187"><a href="#cb7-187"></a>  <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb7-188"><a href="#cb7-188"></a>    <span class="dt">label</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span></span>
+<span id="cb7-189"><a href="#cb7-189"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span></span>
+<span id="cb7-190"><a href="#cb7-190"></a>    <span class="dt">labelAnchor</span><span class="op">:</span> <span class="st">"center"</span></span>
+<span id="cb7-191"><a href="#cb7-191"></a>  }<span class="op">,</span></span>
+<span id="cb7-192"><a href="#cb7-192"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span>}<span class="op">,</span></span>
+<span id="cb7-193"><a href="#cb7-193"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb7-194"><a href="#cb7-194"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb7-195"><a href="#cb7-195"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])<span class="op">,</span></span>
+<span id="cb7-196"><a href="#cb7-196"></a>    Plot<span class="op">.</span><span class="fu">line</span>(<span class="fu">sine</span>(amplitude<span class="op">,</span> phase<span class="op">,</span> frequency)<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"blue"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.5</span>})<span class="op">,</span></span>
+<span id="cb7-197"><a href="#cb7-197"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> {<span class="dt">stroke</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span>})<span class="op">,</span></span>
+<span id="cb7-198"><a href="#cb7-198"></a>    Plot<span class="op">.</span><span class="fu">dot</span>(discrete_sine<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">r</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"green"</span>})<span class="op">,</span></span>
+<span id="cb7-199"><a href="#cb7-199"></a>    Plot<span class="op">.</span><span class="fu">line</span>(discrete_sine<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">stroke</span><span class="op">:</span> <span class="st">"green"</span><span class="op">,</span> <span class="dt">strokeOpacity</span><span class="op">:</span> <span class="fl">0.75</span><span class="op">,</span> <span class="dt">strokeWidth</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">curve</span><span class="op">:</span> <span class="st">"natural"</span>})<span class="op">,</span></span>
+<span id="cb7-200"><a href="#cb7-200"></a>    Plot<span class="op">.</span><span class="fu">area</span>(<span class="fu">ylin</span>(<span class="fl">1.0</span>)<span class="op">,</span> {<span class="dt">x1</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y1</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">x2</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> <span class="dt">y2</span><span class="op">:</span> [<span class="dv">2</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.2</span>})<span class="op">,</span></span>
+<span id="cb7-201"><a href="#cb7-201"></a>    Plot<span class="op">.</span><span class="fu">area</span>(<span class="fu">ylin</span>(<span class="op">-</span><span class="fl">1.0</span>)<span class="op">,</span> {<span class="dt">x1</span><span class="op">:</span> <span class="st">"x"</span><span class="op">,</span> <span class="dt">y1</span><span class="op">:</span> <span class="st">"y"</span><span class="op">,</span> <span class="dt">x2</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">2</span>]<span class="op">,</span> <span class="dt">y2</span><span class="op">:</span> [<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="op">-</span><span class="dv">2</span>]<span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"red"</span><span class="op">,</span> <span class="dt">fillOpacity</span><span class="op">:</span> <span class="fl">0.2</span>})<span class="op">,</span></span>
+<span id="cb7-202"><a href="#cb7-202"></a>    Plot<span class="op">.</span><span class="fu">frame</span>()</span>
+<span id="cb7-203"><a href="#cb7-203"></a>  ]</span>
+<span id="cb7-204"><a href="#cb7-204"></a>})</span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div id="fig-dac" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<div id="ojs-cell-7" data-nodetype="expression">
+
+</div>
+<figcaption class="figure-caption">Gambar&nbsp;3: Interpolasi kembali ke sinyal analog.</figcaption>
+</figure>
+</div>
+</div>
+<p>Pada grafik berikutnya ini, <b style="color:green;">kurva hijau</b> adalah hasil <a href=""><strong>interpolasi</strong></a> dari sinyal digital yang bersumber dari <b style="color:blue;">sinyal input</b>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Interpolasi">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpolasi
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Interpolasi yang digunakan di grafik di atas menggunakan interpolasi “<em>natural cubic spline</em>”, sementara itu interpolasi pada DAC umumnya berupa interpolasi fungsi sinc <em>a.k.a</em> <em>low-pass filter</em>. Sehingga grafik hanya pendekatan.</p>
+</div>
+</div>
+</div>
+<p>Dari simulasi anda dapat melihat bagaimana kualitas/akurasi output dipengaruhi oleh <em>sample rate</em> dan <em>bit depth</em>. Disamping itu, dari berbagai nilai dan kombinasi kedua parameter tersebut, dapat terjadi beberapa fenomena yang dapat diamati, diantaranya ialah <strong><em>aliasing</em></strong> dan <strong><em>fenomena Gibbs</em></strong> (<em>overshoot</em>).</p>
+<section id="aliasing" class="level3">
+<h3 class="anchored" data-anchor-id="aliasing"><em>Aliasing</em></h3>
+<p>Dalam pemrosesan sinyal digital, dikenal istilah <strong>frequensi Nyquist</strong> yang merupakan frekuensi maksimum yang dapat direkam oleh sebuah sistem digital dengan benar sebelum sistem melakukan “misidentifikasi” terhadap frekuensi tersebut. Nilai dari frekuensi Nyquist adalah setengah dari <em>sampling rate</em> (<span class="math inline">\(f_N = \frac{1}{2}f_s\)</span>). Ini berkaitan dengan aturan Nyquist yang menyatakan bahwa setiap gelombang sinusoidal setidaknya membutuhkan 2 titik <em>sample</em> untuk dapat direplika dengan akurat. Hal ini pasti akan mengingatkan sebagian dari pembaca perihal dunia audio bahwa <em>sampling rate</em> 40 kHz hanya dapat merekam sinyal hingga 20 kHz, <span class="math inline">\(f_s\)</span> 44.1 kHz hingga 22.05 kHz, <span class="math inline">\(f_s\)</span> 96 kHz hingga 48, dan seterusnya. Inilah penyebab batasan tersebut.</p>
+<p>Merekam atau menyimpan sinyal dengan frekuensi yang lebih tinggi dari frekuensi Nyquist akan memperkenalkan <em>spectral noise</em> berupa <strong>lipatan</strong> dari frekuensi diatas frekuensi Nyquist ke rentang frekuensi normal. Misal, jika anda merekam frekuensi 32 kHz pada sistem dengan <em>sample rate</em> 40 kHz, maka frekuensi yang terekam ialah 8 kHz.</p>
+<div id="fig-aliasing" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><a href="https://commons.wikimedia.org/wiki/File:FFT_aliasing_600.gif"><img src="https://upload.wikimedia.org/wikipedia/commons/8/83/FFT_aliasing_600.gif" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Gambar&nbsp;4: Aliasing</figcaption>
+</figure>
+</div>
+<p>Ilustrasi di atas menunjukkan terjadinya aliasing, perhatikan bahwa <b style="color:orange;">sinyal output</b> memiliki frekuensi yang sama dengan <b style="color:blue;">sinyal input</b> hingga sinyal input melewat frekuensi Nyquist (<span class="math inline">\(f_2/2\)</span>). Di atas nilai tersebut, terjadi aliasing di mana frekuensi output adalah “lipatan” atau “cerminan” frekuensi input terhadap frekuensi Nyquist. Perhatikan juga bahwa polarisasi sinyal juga berbalik.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Simulasi *aliasing*">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Simulasi <em>aliasing</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Dalam simulasi di atas, anda dapat mengatur frekuensi sinyal lebih tinggi dari setengah <em>sampling rate</em> (<span class="math inline">\(f \ge 0.5\cdot f_s\)</span>), misal <span class="math inline">\(f = 20\)</span>, <span class="math inline">\(f_s = 16\)</span>, dan menemukan bahwa sinyal output memiliki frekuensi yang berbeda dengan input, hal yang sangat tidak diinginkan dalam pemrosesan sinyal.</p>
+</div>
+</div>
+</div>
+<p>Dalam praktikny, sinyal audio dapat bersifat nondeterministik sehingga terkadang sulit untuk membatasi frekuensi maksimal yang ditangkap suatu sistem, oleh karena itu peralatan <em>sampling</em> umumnya dilengkapi dengan <em>anti-aliasing</em> filter berupa LPF analog sebelum sirkuit <em>sampling</em> yang bekerja disekitar frekuensi Nyquist.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="*2D Aliasing*">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<em>2D Aliasing</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Dalam pemrosesan sinyal 2D, seperti gambar atau video, juga dapat terjadi aliasing dimana pola pada gambar memiliki frekuensi yang lebih tinggi dari resolusi <em>samping</em>, membentuk sebuah pola pada gambar hasil. Hal ini dikenal dengan sebutan <a href="https://photographylife.com/what-is-moire"><strong>efek <em>moiré</em></strong></a>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="overshoot" class="level3">
+<h3 class="anchored" data-anchor-id="overshoot"><em>Overshoot</em></h3>
+<p>Berbeda dengan aliasing, <em>sampling rate</em> atau pun <em>bit depth</em> tidak memiliki pengaruh langsung terhadap fenomena ini. <em>Overshoot</em> oleh <strong>fenomena Gibbs</strong> terjadi ketika sinyal dengan diskontinuitas (tidak <em>smooth</em>) seperti <em>square wave</em> diinterpolasi ke bentuk analog. Pada simulasi diatas, atur sehingga <em>bit depth</em> <span class="math inline">\(b\)</span> berada pada nilai <span class="math inline">\(1\)</span> dan <span class="math inline">\(f_s\)</span> setinggi mungkin untuk membentuk sinyal digital <em>square wave</em> yang dapat dilihat pada <a href="#fig-adc">Gambar&nbsp;2</a>. Perhatikan output interpolasi pada <a href="#fig-dac">Gambar&nbsp;3</a>, alih-alih mendapatkan gelombang input, <em>square wave</em> yang dibentuk dengan parameter di atas pun tidak dihasilkan dengan tepat dan menyebabkan <em>clipping</em> di sana sini.</p>
+<div id="fig-os" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="il1.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Gambar&nbsp;5: <em>Overshoot</em></figcaption>
+</figure>
+</div>
+<p>Demikian terkait <em>sample rate</em>, <em>bit depth</em>, dan implikasinya.</p>
+<p>…</p>
+
+
+</section>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Kembali ke atas</a></main> <!-- /main -->
+<script type="ojs-module-contents">
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"viewof amplitude = Inputs.range(\r\n  [-2, 2],\r\n  {\r\n    value: 1,\r\n    step: 0.1,\r\n    label: tex`A`\r\n  }\r\n);\r\n\r\nviewof frequency = Inputs.range(\r\n  [0.2, 10],\r\n  {\r\n    value: 2,\r\n    step: 0.1,\r\n    label: tex`f`\r\n  }\r\n);\r\n\r\nviewof phase = Inputs.range(\r\n  [-6, 6],\r\n  {\r\n    value: 0.00,\r\n    step: 0.01,\r\n    label: tex`\\phi`\r\n  }\r\n);\r\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"T = Array.from({length: 1000}, (_, i) => i * 0.002);\r\nsine = (amplitude, phase, frequency) => T.map((t) => {\r\n  return {\r\n    x: t,\r\n    y: amplitude * Math.sin(2 * Math.PI * frequency * t + phase)\r\n  }\r\n});\r\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"\r\nPlot.plot({\r\n  grid: true,\r\n  x: {\r\n    label: \"t\"\r\n  },\r\n  y: {\r\n    label: \"y\",\r\n    domain: [-2, 2],\r\n  },\r\n  marks: [\r\n    Plot.ruleY([0]),\r\n    Plot.ruleX([0]),\r\n    Plot.line(sine(amplitude, phase, frequency), {x: \"x\", y: \"y\", stroke: \"blue\"}),\r\n    Plot.frame()\r\n  ]\r\n})\r\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"viewof samplerate = Inputs.range(\r\n  [10, 100],\r\n  {\r\n    value: 40,\r\n    step: 1,\r\n    label: tex`f_s`\r\n  }\r\n);\r\n\r\nviewof bitdepth = Inputs.range(\r\n  [1, 5],\r\n  {\r\n    value: 3,\r\n    step: 1,\r\n    label: tex`b`\r\n  }\r\n);\r\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"q = Array.from({length: Math.pow(2, bitdepth)}, (_, i) => -1 + ( 2 / (Math.pow(2, bitdepth) - 1) * i));\r\ns = sine(amplitude, phase, frequency).filter((_, index) => index % Math.round(1000 / (2 * samplerate)) === 0)\r\ndiscrete_sine = s.map((point) => {\r\n  return {\r\n    x: point.x,\r\n    y: q.reduce((prev, curr) => {\r\n        return Math.abs(curr - point.y) < Math.abs(prev - point.y) ? curr : prev\r\n       })\r\n  }; \r\n})\r\n\r\nylin = (val) => {\r\n  return [\r\n    {\r\n      x: 0,\r\n      y: val,\r\n    }, {\r\n      x: 2,\r\n      y: val,\r\n    }\r\n  ]\r\n};\r\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"\r\nPlot.plot({\r\n  x: {\r\n    label: \"t\",\r\n    labelAnchor: \"center\"\r\n  },\r\n  y: {\r\n    label: \"y\",\r\n    domain: [-2, 2],\r\n    labelAnchor: \"center\"\r\n  },\r\n  color: {legend: true},\r\n  marks: [\r\n    Plot.ruleY([0]),\r\n    Plot.ruleX([0]),\r\n    Plot.line(sine(amplitude, phase, frequency), {x: \"x\", y: \"y\", stroke: \"blue\", strokeOpacity: 0.5}),\r\n    Plot.ruleY([-1, 1], {stroke: \"red\", strokeOpacity: 0.5, strokeWidth: 2}),\r\n    Plot.dot(discrete_sine, {x: \"x\", y: \"y\", r: 4, stroke: \"green\"}),\r\n    Plot.line(discrete_sine, {x: \"x\", y: \"y\", stroke: \"green\", strokeOpacity: 0.75, strokeWidth: 2, curve: \"step-after\"}),\r\n    ...discrete_sine.map((point) => {\r\n      return Plot.ruleX([point.x], {stroke: \"green\", strokeDasharray: [5, 5], strokeOpacity: 0.4});\r\n    }),\r\n    ...q.map((level) => {\r\n      return Plot.ruleY([level], {stroke: \"red\", strokeDasharray: [5, 5], strokeOpacity: 0.4});\r\n    }),\r\n    Plot.area(ylin(1.0), {x1: \"x\", y1: \"y\", x2: [0, 2], y2: [2, 2], fill: \"red\", fillOpacity: 0.2}),\r\n    Plot.area(ylin(-1.0), {x1: \"x\", y1: \"y\", x2: [0, 2], y2: [-2, -2], fill: \"red\", fillOpacity: 0.2}),\r\n    Plot.frame()\r\n  ]\r\n})\r\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"\r\nPlot.plot({\r\n  grid: true,\r\n  x: {\r\n    label: \"t\",\r\n    labelAnchor: \"center\"\r\n  },\r\n  y: {\r\n    label: \"y\",\r\n    domain: [-2, 2],\r\n    labelAnchor: \"center\"\r\n  },\r\n  color: {legend: true},\r\n  marks: [\r\n    Plot.ruleY([0]),\r\n    Plot.ruleX([0]),\r\n    Plot.line(sine(amplitude, phase, frequency), {x: \"x\", y: \"y\", stroke: \"blue\", strokeOpacity: 0.5}),\r\n    Plot.ruleY([-1, 1], {stroke: \"red\", strokeOpacity: 0.5, strokeWidth: 2}),\r\n    Plot.dot(discrete_sine, {x: \"x\", y: \"y\", r: 2, stroke: \"green\"}),\r\n    Plot.line(discrete_sine, {x: \"x\", y: \"y\", stroke: \"green\", strokeOpacity: 0.75, strokeWidth: 2, curve: \"natural\"}),\r\n    Plot.area(ylin(1.0), {x1: \"x\", y1: \"y\", x2: [0, 2], y2: [2, 2], fill: \"red\", fillOpacity: 0.2}),\r\n    Plot.area(ylin(-1.0), {x1: \"x\", y1: \"y\", x2: [0, 2], y2: [-2, -2], fill: \"red\", fillOpacity: 0.2}),\r\n    Plot.frame()\r\n  ]\r\n})\r\n"},{"methodName":"interpretQuiet","source":"shinyInput('amplitude')"},{"methodName":"interpretQuiet","source":"shinyInput('frequency')"},{"methodName":"interpretQuiet","source":"shinyInput('phase')"},{"methodName":"interpretQuiet","source":"shinyInput('samplerate')"},{"methodName":"interpretQuiet","source":"shinyInput('bitdepth')"}]}
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../posts/fs-vs-bd";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Disalin!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Disalin!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><a href="../../disclaimer.html" title="Dilisensikan oleh Muhammad Rafky Alfarrakhan.S"><img src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" class="img-fluid" alt="cc-by-sa"></a></div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/deadManAlive">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/lngtmknmndng_">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">Website ini dibangun dengan <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

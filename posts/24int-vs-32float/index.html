@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.336">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dead Man">
+
+<title>DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part I</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Tidak ada hasil",
+    "search-matching-documents-text": "dokumen cocok",
+    "search-copy-link-title": "Salin tautan untuk mencari",
+    "search-hide-matches-text": "Sembunyikan kecocokan lainnya",
+    "search-more-match-text": "kecocokan lainnya di dokumen ini",
+    "search-more-matches-text": "kecocokan lainnya di dokumen ini",
+    "search-clear-button-title": "Hapus",
+    "search-detached-cancel-button-title": "Batal",
+    "search-submit-button-title": "Kirim"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script type="application/json" class="js-hypothesis-config">
+{
+  "theme": "clean",
+  "openSidebar": false
+}
+</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part I">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://deadManAlive.github.io/posts/24int-vs-32float/image.jpg">
+<meta property="og:site-name" content="DMB">
+<meta name="twitter:title" content="DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part I">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://deadManAlive.github.io/posts/24int-vs-32float/image.jpg">
+<meta name="twitter:creator" content="@lngtmknmndng_">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">DMB</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Beranda</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Tentang</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Arsip</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-three-dots" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-three-dots" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-bi-three-dots">    
+        <li>
+    <a class="dropdown-item" href="../../notes.html" rel="" target="">
+ <span class="dropdown-text">Catatan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools ms-auto tools-wide">
+    <a href="https://github.com/deadManAlive" title="Github" class="quarto-navigation-tool px-1" aria-label="Github"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/lngtmknmndng_" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+    <div class="dropdown">
+      <a href="" title="More..." id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More..."><i class="bi bi-three-dots"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="javascript:location.href = 'mailto:' + ['embryon.id','gmail.com'].join('@')">
+            Email
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="https://www.linkedin.com/in/rafky-alfa">
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part I</li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Mencari" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part I</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Musictech</div>
+                <div class="quarto-category">Analisis</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Penulis</div>
+      <div class="quarto-title-meta-contents">
+               <p>Dead Man </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Diterbitkan</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">31 Maret 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Mencari"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Laman</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beranda</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tentang</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../archive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Arsip</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Catatan</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">Konten</h2>
+   
+  <ul>
+  <li><a href="#integer" id="toc-integer" class="nav-link active" data-scroll-target="#integer">Integer</a>
+  <ul>
+  <li><a href="#bit" id="toc-bit" class="nav-link" data-scroll-target="#bit">Bit</a></li>
+  <li><a href="#sign" id="toc-sign" class="nav-link" data-scroll-target="#sign">Sign</a></li>
+  </ul></li>
+  <li><a href="#floating-point" id="toc-floating-point" class="nav-link" data-scroll-target="#floating-point">Floating-Point</a>
+  <ul>
+  <li><a href="#fixed-sebagai-pendahulu-floating" id="toc-fixed-sebagai-pendahulu-floating" class="nav-link" data-scroll-target="#fixed-sebagai-pendahulu-floating"><em>Fixed</em> Sebagai Pendahulu <em>Floating</em></a></li>
+  <li><a href="#floating-menggantikan-fixed" id="toc-floating-menggantikan-fixed" class="nav-link" data-scroll-target="#floating-menggantikan-fixed"><em>Floating</em> Menggantikan <em>Fixed</em></a></li>
+  <li><a href="#ieee-754-binary32-single-precision-floating-point" id="toc-ieee-754-binary32-single-precision-floating-point" class="nav-link" data-scroll-target="#ieee-754-binary32-single-precision-floating-point">IEEE 754 binary32: <em>Single-Precision Floating-Point</em></a>
+  <ul>
+  <li><a href="#sign-s" id="toc-sign-s" class="nav-link" data-scroll-target="#sign-s"><em>Sign</em> ( <span class="math inline">\(s\)</span> )</a></li>
+  <li><a href="#eksponen-e" id="toc-eksponen-e" class="nav-link" data-scroll-target="#eksponen-e">Eksponen ( <span class="math inline">\(E\)</span> )</a></li>
+  <li><a href="#koefisien-m" id="toc-koefisien-m" class="nav-link" data-scroll-target="#koefisien-m">Koefisien ( <span class="math inline">\(m\)</span> )</a></li>
+  <li><a href="#nilai-khusus" id="toc-nilai-khusus" class="nav-link" data-scroll-target="#nilai-khusus">Nilai Khusus</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="math inline">\(0\)</span></a></li>
+  <li><a href="#infty" id="toc-infty" class="nav-link" data-scroll-target="#infty"><span class="math inline">\(\infty\)</span></a></li>
+  <li><a href="#nan" id="toc-nan" class="nav-link" data-scroll-target="#nan">NaN</a></li>
+  <li><a href="#nilai-subnormaldenormal" id="toc-nilai-subnormaldenormal" class="nav-link" data-scroll-target="#nilai-subnormaldenormal">Nilai Subnormal/Denormal</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>Perdebatan tentang kualitas audio digital sudah dimulai sejak munculnya rekaman digital itu sendiri, sekitar 1970an. <em>Fast forward</em> ke awal-90an, dominasi rekaman analog mulai tergantikan oleh rekaman digital berbentuk CD sejak perkenalannya di pertengahan 80an (dilansir dari <a href="https://www.riaa.com/u-s-sales-database/">RIAA</a>). Rekaman analog kemudian tidak pernah bersinar kembali terhadap rekaman digital yang berubah-ubah bentuk: CD digantikan oleh <em>download</em> sejak akhir 2000an, dan kemudian layanan <em>streaming</em> mulai menguasai pasar (juga <em>overall</em> mendorong industri musik) sejak pertengahan 2010an.</p>
+<p>Menariknya, perdebatan tidak berhenti disitu saja, tetapi dengan fleksibilitas dan kebebasan dunia digital membuat representasi musik menjadi sangat beragam, salah satunya terkait format <em>de facto</em> dalam rekaman, sama-sama mengakui WAV sebagai format terbaik, tetapi sebagian menyatakan bahwa <strong>24-bit integer</strong> sudah mencukupi untuk kebutuhan rekaman dengan kualitas tinggi, sementara sebagian yang lain berkata bahwa <strong>32-bit floating-point</strong> adalah format minimal dalam rekaman profesional.</p>
+<blockquote class="blockquote">
+<p>Benarkah hal tersebut? Seberapa jauh perbedaan kualitas antara <strong>24-bit integer</strong> dengan <strong>32-bit floating-point</strong>?</p>
+</blockquote>
+<p>Penulis akan mencoba membahas tentang hal ini dalam dua artikel. Artikel pertama ini terkait tentang <em>integer</em> dan <em>floating-point</em> itu sendiri, tetapi jika ternyata sudah familiar dengan seluk-beluk kedua hal tersebut, pembaca dapat langsung membaca analisis di <a href="../../posts/24int-vs-32float-ii/index.html">bagian kedua</a>.</p>
+<hr>
+<p><strong><em>Integer</em></strong> dan <strong><em>floating-point</em></strong>. Sebagai musisi atau produser musik modern, kedua istilah itu bisa dibilang berlalu lalang di telinga kita setiap harinya. Dan sebagai artis, kita cenderung <em>take it for granted</em>, “menerima saja”, kedua istilah tersebut. Sebagian yang pernah membaca atau berlatar belakang dunia IT mungkin akan mengatakan bahwa itu adalah “tipe data”. Anda benar, dan tipe data sendiri adalah “format” atau sederhananya bagaimana data disusun dan dipahami oleh komputer.</p>
+<p>Sekilas, <strong>tipe integer hanya mampu menyimpan data berbentuk bilangan bulat</strong> (<span class="math inline">\(...\)</span>, <span class="math inline">\(-3\)</span>, <span class="math inline">\(-2\)</span>, <span class="math inline">\(-1\)</span>, <span class="math inline">\(0\)</span>, <span class="math inline">\(1\)</span>, <span class="math inline">\(2\)</span>, <span class="math inline">\(3\)</span>, <span class="math inline">\(...\)</span>) sementara <strong>floating point dapat menyimpan bilangan desimal</strong> (seperti <span class="math inline">\(3.14...\)</span> atau <span class="math inline">\(0.125\)</span>).</p>
+<section id="integer" class="level2">
+<h2 class="anchored" data-anchor-id="integer">Integer</h2>
+<p>Integer (<code>int</code>) atau bilangan bulat ( simbol matematika <span class="math inline">\(\mathbb{Z}\)</span> ) bekerja persis seperti bilangan yang kita gunakan sehari-hari, misalkan <span class="math inline">\(273\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+    273 &amp;= 2\cdot100 &amp;&amp;+7\cdot10 &amp;&amp;+3\cdot1\\
+        &amp;= 2\cdot10^2 &amp;&amp;+7\cdot10^1 &amp;&amp;+3\cdot10^0\\
+        &amp;= 273
+\end{aligned}
+\]</span></p>
+<p>Komputer, alih-alih menggunakan <strong>sistem desimal</strong> yang menggunakan 10 angka berbeda (<span class="math inline">\(0-9\)</span>), efektif menggunakan hanya 2 angka (<span class="math inline">\(0\)</span> dan <span class="math inline">\(1\)</span>) yang disebut dengan <strong>sistem biner</strong> (<em>binary</em>):</p>
+<p><span class="math display">\[
+\begin{aligned}
+    100010001 &amp;= 1\cdot2^8&amp;&amp;+1\cdot2^4&amp;&amp;+1\cdot2^0\\
+    &amp;= 256 &amp;&amp;+ 16 &amp;&amp;+ 1\\
+    &amp;= 273
+\end{aligned}
+\]</span></p>
+<p>Bilangan dengan sistem-sistem berbeda dapat dinotasikan dengan <span class="math inline">\(N_b\)</span> dengan <span class="math inline">\(b\)</span> sebagai basisnya: <span class="math inline">\(2\)</span> untuk biner, <span class="math inline">\(10\)</span> untuk desimal. Selain itu dalam komputer juga sering digunakan sistem oktal dengan basis <span class="math inline">\(8\)</span> dan heksadesimal dengan basis <span class="math inline">\(16\)</span>.</p>
+<p>Maka <span class="math inline">\(273_{10} = 100010001_2\)</span>.</p>
+<section id="bit" class="level3">
+<h3 class="anchored" data-anchor-id="bit">Bit</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Catatan
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Setiap angka pada bilangan biner disebut dengen <strong><em>bit</em></strong>, sebagai contoh <code>100010001</code> memiliki <span class="math inline">\(9\)</span> bit.</p>
+</div>
+</div>
+<p>Tidak seperti manusia yang dapat menggunakan angka sebebasnya, komputer harus mengalokasikan jumlah bit sebelum dapat melakukan suatu operasi. Misal, pada data 32-bit, data-data hingga dengan lebar hingga 32-bit dapat dioperasikan secara valid, tetapi akan terjadi <strong>error</strong> atau <strong>overflow</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> ketika digunakan untuk mengoperasikan data dengan jumlah bit lebih lebar.</p>
+<p>Hal ini membuat besar data yang disimpan oleh suatu tipe terbatas, misalnya bilangan 32-bit hanya dapat menyimpan <span class="math inline">\(2^{32}\)</span> bilangan berbeda (dari <span class="math inline">\(0\)</span> hingga <span class="math inline">\(4\;294\;967\;295\)</span>).</p>
+</section>
+<section id="sign" class="level3">
+<h3 class="anchored" data-anchor-id="sign">Sign</h3>
+<p>Lalu bagaimana dengan bagian negatif dari integer? Komputer hanya memahami <span class="math inline">\(0\)</span> dan <span class="math inline">\(1\)</span>, tidak ada angka, simbol, objek, atau apa pun selain kedua nilai tersebut, termasuk tanda negatif (<span class="math inline">\(-\)</span>). Lalu bagaimana menyiasatinya? Untuk itu digunakan MSB (<em>Most Significant Bit</em>), sederhananya bit paling kiri pada sebuah bilangan digunakan sebagai penanda: <code>0</code> sebagai <span class="math inline">\(+\)</span> dan <code>1</code> sebagai <span class="math inline">\(-\)</span>. Sebagai contoh, <code>100010001</code> diatas dapat dibaca sebagai <span class="math inline">\(273\)</span> jika dibaca sebagai <strong><em>unsigned</em></strong> (tanpa menggunakan MSB sebagai penanda), tetapi akan terbaca sebagai <code>-00010001</code> (<span class="math inline">\(17_{10}\)</span>) jika menggunakan tipe data <strong><em>signed</em></strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Catatan
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pada praktiknya, hanya menggunakan MSB secara langsung membuat munculnya dua bilangan berbeda untuk merepresentasikan <span class="math inline">\(0\)</span>, yaitu <span class="math inline">\(-0\)</span> (contoh 8-bit: <code>10000000</code>) dan <span class="math inline">\(+0\)</span> (<code>00000000</code>).</p>
+<p>Sehingga cara yang lebih umum untuk perepresentasikan bilangan negatif secara biner adalah metode [2s complement](https://www.cs.cornell.edu/~tomf/notes/cps104/twoscomp.html</p>
+</div>
+</div>
+<hr>
+<p><em>Integer</em> sebagai bentuk data paling sederhana memiliki variasi fungsi bermacam pada komputer. Berdasarkan lebarnya (pada sebuah mesin x86 tipikal), diantaranya ialah:</p>
+<ul>
+<li>8-bit: menyimpan karakter (ASCII) dan simbol (<code>'A'</code>, <code>'z'</code>, <code>'#'</code>), biasa dilambangkan dengan <code>char</code> atau <code>u8</code>.</li>
+<li>16-bit: biasa dilambangkan sebagai <code>short</code>, tidak memiliki kegunaan khusus.</li>
+<li>32-bit: <code>int</code> bentuk <em>integer</em> paling umum digunakan. Dapat juga digunakan untuk karakter Unicode.</li>
+<li>64-bit: <code>long</code> (dan <code>long long</code>)</li>
+</ul>
+</section>
+</section>
+<section id="floating-point" class="level2">
+<h2 class="anchored" data-anchor-id="floating-point">Floating-Point</h2>
+<p>Kelemahan terbesar dari representasi <code>int</code> ialah bahwa tipe tersebut hanya mampu menyimpan bilangan bulat. Bagaimana jika dibutuhkan presisi yang lebih tinggi? Bagaimana jika hasil operasi bukanlah bilangan bulat?</p>
+<p>Ketika solusi pembulatan tidak dapat diterima, maka dibutuhkan bentuk representasi biner lainnya untuk bilangan yang lebih luas dari bilangan bulat, yaitu bilangan riil (simbol matematika <span class="math inline">\(\mathbb{R}\)</span>), yang mencakup bilangan rasional dan irrasional. Selain membatasi <em>range</em> representasi seperti halnya tipe <code>int</code>, batasan jumlah bit nantinya juga akan membatasi akurasi/presisi representasi ini. Hal ini akan lebih jelas kemudian.</p>
+<p>Para ahli komputer terdahulu memberikan dua bentuk representasi bilangan riil dalam bentuk biner: <strong>fixed-point</strong> dan <strong>floating-point</strong>.</p>
+<section id="fixed-sebagai-pendahulu-floating" class="level3">
+<h3 class="anchored" data-anchor-id="fixed-sebagai-pendahulu-floating"><em>Fixed</em> Sebagai Pendahulu <em>Floating</em></h3>
+<div id="fig-int-vs-fxp" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="int-vs-fxp.jpeg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Gambar&nbsp;1: Integer vs.&nbsp;fixed point</figcaption>
+</figure>
+</div>
+<p>Coretan di atas mengilustrasikan bahwa <strong>fixed-point</strong>, yang muncul lebih dahulu dari pada <strong>floating-point</strong>, sederhananya bisa disebut sebagai <strong>modifikasi</strong> dari bentuk <em>integer</em>: sebagian digit dijadikan representasi <em>integer</em>/bilangan bulat, sisanya menjadi pecahan. Pada dasarnya, <em>fixed-point</em> bekerja dengan cara yang serupa dengan bilangan desimal:</p>
+<p><span class="math display">\[
+\begin{aligned}
+1998 &amp;= 1\cdot1000&amp;&amp;+9\cdot100&amp;&amp;+9\cdot10&amp;&amp;+8\cdot1\\
+&amp;= 1\cdot10^3&amp;&amp;+9\cdot10^2&amp;&amp;+9\cdot10^1&amp;&amp;+8\cdot1^0\\
+19.98 &amp;= 1\cdot10&amp;&amp;+9\cdot1&amp;&amp;+9\cdot\frac{1}{10}&amp;&amp;+8\cdot\frac{1}{100}\\
+&amp;= 1\cdot10^1&amp;&amp;+9\cdot10^0&amp;&amp;+9\cdot10^{-1}&amp;&amp;+8\cdot1^{-2}\\
+&amp;= 10&amp;&amp;+9&amp;&amp;+0.9&amp;&amp;+0.08\\
+\end{aligned}
+\]</span></p>
+<p>Sebagai contoh, pada coretan di atas, <code>100010001</code> dapat dibaca sebagai <span class="math inline">\(273\)</span> dengan tipe <em>unsigned integer</em>. Tetapi ketika data tersebut dibaca sebagai data <em>fixed-point</em> dengan 5 digit terbesar sebagai <em>unsigned integer</em> dan 4 digit terkecil sebagai pecahan (<code>10001.0001</code>), bilangan tersebut dibaca <span class="math inline">\(17\frac{1}{16}\)</span> atau <span class="math inline">\(17.0625\)</span>. Posisi integer-pecahan yang tetap ini yang memberikan “<em>fixed</em>” pada <em>fixed-point</em>.</p>
+</section>
+<section id="floating-menggantikan-fixed" class="level3">
+<h3 class="anchored" data-anchor-id="floating-menggantikan-fixed"><em>Floating</em> Menggantikan <em>Fixed</em></h3>
+<p><em>Floating-point</em> muncul sebagai alternatif untuk <em>fixed-point</em>, dengan kelebihan:</p>
+<ul>
+<li>Informasi tipe yang lebih sederhana karena tidak perlu menunjukkan posisi koma.</li>
+<li>Posisi koma (<em>point</em>) yang dapat berpindah-pindah (<em>floating</em>) sehingga sistem ini dapat mencakup range yang jauh lebih luas dan presisi yang variatif<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</li>
+<li>Terstandardisasi, yang berarti tipe ini portabel: setiap komputer memahami tipe data ini dengan cara yang sama. Hal ini adalah aspek penting dalam pemrograman.</li>
+</ul>
+<p>Meskipun <em>floating-point</em> pada dasarnya lebih kompleks dan <em>demanding</em> dari <em>fixed-point</em>, kelebihan-kelebihan di atas membuat <em>floating-point</em> berkembang dan mendominasi representasi bilangan riil pada komputer, CPU modern pun umumnya sudah dilengkapi dengan FPU (<em>floating-point unit</em>) untuk melakukan operasi <em>floating-point</em> secara efisien.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Catatan
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><em>Fixed-point</em> hingga saat ini sebenarnya masih digunakan untuk beberapa bidang <em>niche</em>, seperti komputasi daya/performa rendah, perbankan, dan DSP (tidak heran jika beberapa DAW menyediakan output <em>fixed-point</em>, faktanya format audio <code>WavPack</code> menggunakan <em>fixed-point</em> alih-alih <em>floating-point</em> seperti pada umumnya). Hal ini disebabkan oleh karakteristik <em>fixed-point</em> yang relatif lebih sederhana dan lebih stabil dari <em>floating-point</em>.</p>
+</div>
+</div>
+</div>
+<p><em>Floating-point</em> bekerja dengan cara yang secara radikal sangat berbeda dari pada <em>integer</em> dan <em>fixed-point</em>, yaitu memanfaatkan <strong>notasi ilmiah</strong> yang didefinisikan sebagai:</p>
+<p><span class="math display">\[
+N = m \times b^E
+\]</span></p>
+<p>dengan <span class="math inline">\(m\)</span> <em>mantissa</em> atau koefisien, <span class="math inline">\(b\)</span> basis, dan <span class="math inline">\(e\)</span> eksponen. Notasi ilmiah membantu dalam menuliskan bilangan yang sangat besar ataupun sangat kecil:</p>
+<ul>
+<li>Bilangan Avogadro: <span class="math inline">\(602214076000000000000000\;\mathrm{mol}^{-1}\)</span> dapat ditulis sebagai <span class="math inline">\(6.02214076\times10^{23}\)</span>.</li>
+<li>Konstanta Planck: <span class="math inline">\(0.000000000000000000000000000000000662607015\;\mathrm{m}^2\mathrm{kg}\mathrm{s}^{-1}\)</span> dapat ditulis sebagai <span class="math inline">\(6.62607015\times10^{-34}\;\mathrm{m}^2\mathrm{kg}\mathrm{s}^{-1}\)</span>.</li>
+</ul>
+<p>Dari sinilah “<em>float</em>” dari <em>floating-point</em>: posisi koma yang sama pada koefisien <span class="math inline">\(m\)</span> (<span class="math inline">\(6.02214076\)</span> dan <span class="math inline">\(6.62607015\)</span>) dapat berarti bilangan yang berbeda tergantung dengan basis-eksponen.</p>
+<p>Pada basis <span class="math inline">\(2\)</span>, berikut contoh penggunaan notasi ilmiah:</p>
+<ul>
+<li><span class="math inline">\(56_{10} = 111000_2\)</span> menjadi <span class="math inline">\(1.75\times2^5\)</span> dalam desimal dan <span class="math inline">\(1.11\times10^{101}\)</span> dalam biner.</li>
+<li><span class="math inline">\(0.05_{10} = 0.0000110011_2\)</span> menjadi <span class="math inline">\(1.59375\times2^{-5}\)</span> atau <span class="math inline">\(1.10011\times10^{-101}\)</span> dalam biner.</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled" title="Noise Floor">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Noise Floor
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Perhatikan bahwa pada konversi ke-2, <span class="math inline">\(1.59375\times2^{-5}\)</span> memberikan hasil <span class="math inline">\(0.0498046875\)</span> alih-alih nilai akurat <span class="math inline">\(0.05\)</span>. Fenomena ini adalah salah satu hal yang harus diperhatikan dalam konversi basis (dalam hal ini desimal <span class="math inline">\(\longleftrightarrow\)</span> biner): dalam sinyal digital, hal ini biasa disebut sebagai <strong><em>rounding error</em></strong> akibat nilai pecahan tidak dapat direpresentasikan dengan akurat. <em>Rounding error</em> merupakan salah satu cikal-bakal dari adanya <strong><em>noise floor</em></strong>.</p>
+</div>
+</div>
+<p>Standardisasi IEEE 754 diantaranya memberikan dua tipe float yang umum digunakan, yaitu <em>single-precision floating-point</em> (“presisi tunggal”, 32-bit, biasa disebut <code>float</code>, <code>float32</code>, atau <code>f32</code>) dan <em>double-precision floating-point</em> (“presisi ganda”, 64-bit, sering dilambangkan dengan <code>double</code>, <code>float64</code>, atau <code>f64</code>).</p>
+</section>
+<section id="ieee-754-binary32-single-precision-floating-point" class="level3">
+<h3 class="anchored" data-anchor-id="ieee-754-binary32-single-precision-floating-point">IEEE 754 binary32: <em>Single-Precision Floating-Point</em></h3>
+<p>IEEE 754 <em>binary32, single-precision floating-point</em> merupakan standar yang mengatur struktur dan kerja dari <em>floating-point</em> 32-bit / <code>float32</code>. Dalam standar ini, sebuah <code>float32</code> tersusun atas (secara berurutan):</p>
+<ol type="1">
+<li><strong>1 bit</strong> <em>sign</em>.</li>
+<li><strong>8 bit</strong> eksponen.</li>
+<li><strong>24 bit</strong> (23 eksplisit) koefisien.</li>
+</ol>
+<div id="fig-float32" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><a href="https://commons.wikimedia.org/wiki/File:Float_example.svg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Float_example.svg/512px-Float_example.svg.png" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Gambar&nbsp;2: Struktur <code>float32</code></figcaption>
+</figure>
+</div>
+<p>Dari poin ini selanjutnya, <code>float</code> akan merujuk kepada <em>floating-point</em> 32-bit (IEEE 754 <em>binary32, single-precision floating-point</em>) ini.</p>
+<section id="sign-s" class="level4">
+<h4 class="anchored" data-anchor-id="sign-s"><em>Sign</em> ( <span class="math inline">\(s\)</span> )</h4>
+<p>Persis seperti <em>signed</em> <code>int</code>, data 1 bit ini menandakan nilai negatif ketika bernilai <code>1</code> dan positif ketika bernilai <code>0</code>.</p>
+</section>
+<section id="eksponen-e" class="level4">
+<h4 class="anchored" data-anchor-id="eksponen-e">Eksponen ( <span class="math inline">\(E\)</span> )</h4>
+<p>Data 8-bit ini berupa data <strong><em>biased</em></strong> <em>unsigned</em> integer, yang berarti nilai sebenarnya dari eksponen ini adalah nilai bacaan integer dikurang dengan nilai tengah dari data, dalam hal ini data 8-bit memiliki nilai tengah <span class="math inline">\(127\)</span> (<code>0111111</code> dalam biner), sehingga:</p>
+<p><span class="math display">\[
+E = N - 127
+\]</span></p>
+<p>Sebagai contoh, jika data eksponen adalah <code>11110000_2</code>, maka nilai eksponen adalah:</p>
+<p><span class="math display">\[
+\begin{aligned}
+    E &amp;= N - 127\\
+    &amp;= \texttt{11110000}_2 - 127\\
+    &amp;= 240 - 127\\
+    &amp;= 113
+\end{aligned}
+\]</span></p>
+</section>
+<section id="koefisien-m" class="level4">
+<h4 class="anchored" data-anchor-id="koefisien-m">Koefisien ( <span class="math inline">\(m\)</span> )</h4>
+<p>Atau juga sering disebut sebagai <strong>mantissa</strong> ataupun <strong>fraksi</strong> dari sebuah notasi ilmiah, data ini memiliki lebar 23 bit. Menariknya, data koefisien tidak disusun dalam bentuk integer tetapi sebagai data <strong>desimal dengan angka implisit</strong> ke-24 bernilai <code>1</code>.</p>
+<p><span class="math display">\[
+m = 1 + .\texttt{K}
+\]</span></p>
+<p>dengan <span class="math inline">\(\texttt{K}\)</span> adalah bacaan biner dari data koefisien.</p>
+<p>Sebagai contoh, jika data koefisien adalah <code>100 1100 1001 0011 1100 0101</code>, make nilai eksponen <span class="math inline">\(m\)</span> (dalam biner) ialah <code>1.100 1100 1001 0011 1100 0101</code>.</p>
+</section>
+<section id="nilai-khusus" class="level4">
+<h4 class="anchored" data-anchor-id="nilai-khusus">Nilai Khusus</h4>
+<p>Standar IEEE 754 menentukan beberapa nilai khusus dari sebuah data <code>float</code> dengan melihat kombinasi <span class="math inline">\(E\)</span> dan <span class="math inline">\(m\)</span>. Tujuan dari nilai-nilai khusus ini (sepertinya) adalah untuk meningkatkan efektifitas dan fleksibilitas bilangan float. NIlai-nilai khusus pada <code>float</code> adalah <span class="math inline">\(0\)</span>, <span class="math inline">\(\infty\)</span>, <code>NaN</code>, dan <strong>subnormal</strong>.</p>
+<section id="section" class="level5">
+<h5 class="anchored" data-anchor-id="section"><span class="math inline">\(0\)</span></h5>
+<p>Nilai <span class="math inline">\(0\)</span> pada sebuah data <code>float</code> adalah sebuah nilai khusus yang berarti hanya direpresentasikan oleh kombinasi khusus <span class="math inline">\(E\)</span> dan <span class="math inline">\(m\)</span>: * <span class="math inline">\(E = -127\)</span> atau memiliki data <code>00000000</code>. * <span class="math inline">\(m = 0\)</span> atau <code>000 0000 0000 0000 0000 0000</code>.</p>
+</section>
+<section id="infty" class="level5">
+<h5 class="anchored" data-anchor-id="infty"><span class="math inline">\(\infty\)</span></h5>
+<p>Nilai tak hingga, <span class="math inline">\(\infty\)</span>, atau <code>inf</code> dilambangkan dengan:</p>
+<ul>
+<li><span class="math inline">\(E = 128\)</span> atau memiliki data <code>11111111</code>.</li>
+<li><span class="math inline">\(m = 0\)</span>.</li>
+</ul>
+<p>Nilai tak hingga umumnya dihasilkan oleh pembagian dengan <span class="math inline">\(0\)</span> dan operasi bilangan bukan nol dengan tak hingga itu sendiri.</p>
+</section>
+<section id="nan" class="level5">
+<h5 class="anchored" data-anchor-id="nan">NaN</h5>
+<p>Nilai <code>NaN</code> atau <em>Not a Number</em> menunjukkan hasil dari operasi aritmatika yang tidak terdefinisi, sebagai contoh:</p>
+<ul>
+<li>pembagian <span class="math inline">\(\frac{0}{0}\)</span> dan <span class="math inline">\(\frac{\infty}{\infty}\)</span>.</li>
+<li>perkalian <span class="math inline">\(0 \times \infty\)</span>.</li>
+<li>beberapa operasi penjumlahan antar <code>inf</code>.</li>
+<li><a href="https://en.wikipedia.org/wiki/NaN#Operations_generating_NaN">dsb</a>{:target=“_blank”}.</li>
+</ul>
+</section>
+<section id="nilai-subnormaldenormal" class="level5">
+<h5 class="anchored" data-anchor-id="nilai-subnormaldenormal">Nilai Subnormal/Denormal</h5>
+<p>Di atas disebutkan bahwa koefisien <span class="math inline">\(m\)</span> dibuat sedemikian rupa sehingga terdapat bilangan <code>1.</code> didepan data <span class="math inline">\(m\)</span> membuat 23-bit data <span class="math inline">\(m\)</span> menjadi 24-bit implisit. Nilai subnormal/denormal adalah pengecualian aturan tersebut, dimana satu kombinasi <span class="math inline">\(E\)</span> dan <span class="math inline">\(m\)</span> membuat digit implisit menjadi <span class="math inline">\(0.\)</span>:</p>
+<ul>
+<li><span class="math inline">\(E = -127\)</span> atau memiliki data <code>00000000</code>.</li>
+<li><span class="math inline">\(m \ne 0\)</span> atau data koefisien bukan <code>000 0000 0000 0000 0000 0000</code>.</li>
+</ul>
+<p>Rentang nilai ini digunakan untuk merepresentasikan nilai yang sangat kecil, yaitu dibawah <span class="math inline">\(2^{-126}\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Denormal &amp; DSP">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Denormal &amp; DSP
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Denormal biasanya dinonaktifkan dalam pemrosesan sinyal, seperti dalam algoritma utama FX ataupun <em>synthesizer</em>, hal ini karena dibutuhkan tambahan pemrosesan untuk data yang tidak begitu signifikan, sehingga data pada rentang denormal dianggap <span class="math inline">\(0\)</span>.</p>
+<p>Hal ini bisa disebut sebagai keuntungan adanya rentang denormal pada bilangan <em>float</em>. Jika tidak, maka pemrosesan sinyal tidak akan pernah selesai di nilai <span class="math inline">\(0\)</span>.</p>
+<p>Dalam kalimat yang lebih familiar dalam audio, tidak adanya rentang denormal dan kemampuan untuk menonaktifkannya dapat membuat hasil render sebuah file audio memiliki <em>tail</em> yang sangat panjang bahkan tak hingga.</p>
+</div>
+</div>
+</div>
+<div id="tbl-comb" class="anchored">
+<table class="table">
+<caption>Tabel&nbsp;1: Kombinasi Nilai <code>float</code></caption>
+<thead>
+<tr class="header">
+<th>Data Eksponen</th>
+<th>Nilai Eksponen ( <span class="math inline">\(E\)</span> )</th>
+<th><span class="math inline">\(m = 0\)</span></th>
+<th><span class="math inline">\(m \ne 0\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>00000000</code></td>
+<td><span class="math inline">\(-127\)</span></td>
+<td><span class="math inline">\(0\)</span></td>
+<td>Subnormal</td>
+</tr>
+<tr class="even">
+<td><code>11111111</code></td>
+<td><span class="math inline">\(128\)</span></td>
+<td><span class="math inline">\(\infty\)</span></td>
+<td><code>NaN</code></td>
+</tr>
+<tr class="odd">
+<td>Selain diatas</td>
+<td>Berapapun</td>
+<td>Normal</td>
+<td>Normal</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="tbl-normal" class="anchored">
+<table class="table">
+<caption>Tabel&nbsp;2: Normal vs.&nbsp;Subnormal</caption>
+<colgroup>
+<col style="width: 43%">
+<col style="width: 56%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operasi</th>
+<th>Perhitungan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal</td>
+<td><span class="math inline">\((-1)^s\times2^{E}\times{m}\)</span>, dengan <span class="math inline">\(m = 1 + .\texttt{K}\)</span> dan <span class="math inline">\(\texttt{K}\)</span> sebagai data <span class="math inline">\(m\)</span></td>
+</tr>
+<tr class="even">
+<td>Subnormal</td>
+<td><span class="math inline">\((-1)^s\times2^{-126}\times{m}\)</span>, dengan <span class="math inline">\(m = 0 + .\texttt{K}\)</span> dan <span class="math inline">\(\texttt{K}\)</span> sebagai data <span class="math inline">\(m\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Sampai di sini, pembaca seharusnya sudah memiliki pemahaman dasar terkait perbedaan kerja data <code>int</code> dan <code>float</code>. <a href="../../posts/24int-vs-32float-ii/index.html">Artikel selanjutnya</a> akan menyediakan analisis perbedaan <strong>integer 24-bit</strong> vs.&nbsp;<strong>floating-point 32-bit</strong> dan beberapa miskonsepsi terkait.</p>
+<p>…</p>
+
+
+</section>
+</section>
+</section>
+</section>
+
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Kembali ke atas</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Catatan Kaki</h2>
+
+<ol>
+<li id="fn1"><p><strong>Overflow</strong> terjadi ketika data yang diterima oleh suatu tipe melebihi nilai maksimum yang dapat disimpannya, misal data 8-bit <code>11111111</code> (<span class="math inline">\(255\)</span>). Ketika bilangan tersebut ditambah dengan 1: <code>11111111</code> + <code>00000001</code>, hasil yang seharusnya ialah <code>100000000</code> (<span class="math inline">\(256\)</span>). Tetapi karena lebar data dibatasi 8-bit, hanya 8-bit pertama (dihitung dari kanan) yang tersimpan sehingga hasil penjumlahan menjadi <code>0000000</code> (<span class="math inline">\(\boldsymbol{0}\)</span>), jauh dari nilai yang diharapkan. <strong>Overflow</strong> merupakan salah satu sumber <em>bug</em>. <strong>Underflow</strong> adalah kebalikan dari overflow (hasil operasi lebih kecil dari nilai minimum yang dapat disimpan).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Sistem bilangan inggris menggunakan koma (<em>comma</em>) dan titik (<em>point</em>) secara terbalik dengan Indonesia (dan sejumlah negara eropa): <span class="math inline">\(,\)</span> adalah pemisah digit, seperti <span class="math inline">\(1,000\)</span> sebagai “seribu”, sedangkan <span class="math inline">\(1.000\)</span> adalah “satu koma nol nol nol” di Indonesia.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Disalin!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Disalin!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><a href="../../disclaimer.html" title="Dilisensikan oleh Muhammad Rafky Alfarrakhan.S"><img src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" class="img-fluid" alt="cc-by-sa"></a></div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/deadManAlive">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/lngtmknmndng_">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">Website ini dibangun dengan <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

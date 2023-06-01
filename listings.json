@@ -1,0 +1,22 @@
+[
+  {
+    "listing": "/archive.html",
+    "items": [
+      "/posts/prime-template/index.html",
+      "/posts/24int-vs-32float/index.html",
+      "/posts/24int-vs-32float-ii/index.html",
+      "/posts/extra-konverter/index.html",
+      "/posts/fs-vs-bd/index.html"
+    ]
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/extra-konverter/index.html",
+      "/posts/24int-vs-32float-ii/index.html",
+      "/posts/fs-vs-bd/index.html",
+      "/posts/prime-template/index.html",
+      "/posts/24int-vs-32float/index.html"
+    ]
+  }
+]

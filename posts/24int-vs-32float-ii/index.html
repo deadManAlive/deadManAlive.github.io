@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.336">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dead Man">
+
+<title>DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Tidak ada hasil",
+    "search-matching-documents-text": "dokumen cocok",
+    "search-copy-link-title": "Salin tautan untuk mencari",
+    "search-hide-matches-text": "Sembunyikan kecocokan lainnya",
+    "search-more-match-text": "kecocokan lainnya di dokumen ini",
+    "search-more-matches-text": "kecocokan lainnya di dokumen ini",
+    "search-clear-button-title": "Hapus",
+    "search-detached-cancel-button-title": "Batal",
+    "search-submit-button-title": "Kirim"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script type="application/json" class="js-hypothesis-config">
+{
+  "theme": "clean",
+  "openSidebar": false
+}
+</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://deadManAlive.github.io/posts/24int-vs-32float-ii/image.jpg">
+<meta property="og:site-name" content="DMB">
+<meta name="twitter:title" content="DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://deadManAlive.github.io/posts/24int-vs-32float-ii/image.jpg">
+<meta name="twitter:creator" content="@lngtmknmndng_">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">DMB</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Beranda</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Tentang</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Arsip</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-three-dots" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-three-dots" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-bi-three-dots">    
+        <li>
+    <a class="dropdown-item" href="../../notes.html" rel="" target="">
+ <span class="dropdown-text">Catatan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools ms-auto tools-wide">
+    <a href="https://github.com/deadManAlive" title="Github" class="quarto-navigation-tool px-1" aria-label="Github"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/lngtmknmndng_" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+    <div class="dropdown">
+      <a href="" title="More..." id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More..."><i class="bi bi-three-dots"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="javascript:location.href = 'mailto:' + ['embryon.id','gmail.com'].join('@')">
+            Email
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="https://www.linkedin.com/in/rafky-alfa">
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II</li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Mencari" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Musictech</div>
+                <div class="quarto-category">Analisis</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Penulis</div>
+      <div class="quarto-title-meta-contents">
+               <p>Dead Man </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Diterbitkan</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">12 Mei 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Mencari"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Laman</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beranda</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tentang</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../archive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Arsip</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Catatan</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">Konten</h2>
+   
+  <ul>
+  <li><a href="#headroom" id="toc-headroom" class="nav-link active" data-scroll-target="#headroom"><em>Headroom</em></a>
+  <ul>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">“<span class="math inline">\([-1,1]\)</span>”</a></li>
+  <li><a href="#mubazir" id="toc-mubazir" class="nav-link" data-scroll-target="#mubazir">Mubazir?</a></li>
+  </ul></li>
+  <li><a href="#bit-signed-integer-vs-32-bit-floating-point" id="toc-bit-signed-integer-vs-32-bit-floating-point" class="nav-link" data-scroll-target="#bit-signed-integer-vs-32-bit-floating-point">24-Bit Signed Integer vs 32-Bit Floating-Point</a>
+  <ul>
+  <li><a href="#menghitung-level-kuantisasi-float32" id="toc-menghitung-level-kuantisasi-float32" class="nav-link" data-scroll-target="#menghitung-level-kuantisasi-float32">Menghitung level kuantisasi <code>float32</code></a></li>
+  </ul></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up"><em>Wrapping Up</em></a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>Setelah membahas sedikit tentang dasar sistem <em>floating-point</em> pada <a href="../../posts/24int-vs-32float/index.html">bagian pertama</a>, mari kita lanjutkan pembahasan secara lebih spesifik mengenai perbandingan <strong>24-bit integer</strong> vs.&nbsp;<strong>32-bit <em>floating-point</em></strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="&quot;24-bit vs 32-bit&quot;">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+“24-bit vs 32-bit”
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Sebagai pengingat, dalam dunia musik sering kali <em>bit depth</em> hanya disebutkan nilainya, tanpa embel-embel <em>integer</em>, <em>floating-point</em>, dsb. Hal ini lumrah dilakukan karena dalam dunia audio professional, hanya 3 mode yang sering digunakan: 16 dan 24-bit <strong>integer</strong> dan 32-bit <strong>floating-point</strong> meskipun faktanya di luar itu juga terdapat 16-bit <em>floating-point</em>, 32-bit <em>integer</em>, dsb. Perhatikan <a href="https://www.youtube.com/watch?v=lwyx5mpO35Q">video berikut</a> yang tidak menyinggung <em>integer</em> ataupun <em>floating-point</em>, tetapi secara implisit membandingkan kedua tipe tersebut.</p>
+</div>
+</div>
+</div>
+<section id="headroom" class="level2">
+<h2 class="anchored" data-anchor-id="headroom"><em>Headroom</em></h2>
+<p>Sekilas kelebihan dari 32-bit <em>floating-point</em> yang dapat diperhatikan adalah terkait <em>headroom</em>-nya, dimana <em>floating-point</em> dapat menyimpan data dengan gain yang sangat besar bahkan hingga beberapa ratus dB di atas 0 dBFS tanpa memperkenalkan distorsi akibat <em>clipping</em> seperti yang terjadi pada tipe <em>integer</em> yang instan muncul ketika sinyal melewati 0 dB. <strong>Kenapa hal ini dapat terjadi?</strong></p>
+<div class="callout callout-style-default callout-important callout-titled" title="IEEE 754">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+IEEE 754
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Artikel ini dan artikel <a href="../../posts/24int-vs-32float/index.html">bagian pertama</a> membatasi bahasan pada <em>floating-point</em> 32-bit yang terstandardisasi dalam IEEE 754 (IEEE <em>Standard for Floating-Point Arithmetic</em>) <code>binary32</code> (<em>single-precision floating-point format</em>), yang dalam artikel ini akan dirujuk secara bergantian sebagai “<em>floating-point</em>”, <code>float</code>, ataupun <code>float32</code>. <em>Floating-point</em> dengan lebar data lainnya, seperi <em>double-precision</em> (64-bit), memiliki struktur yang berbeda dan mungkin akan dibahas di lain kesempatan.</p>
+</div>
+</div>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section">“<span class="math inline">\([-1,1]\)</span>”</h3>
+<p>Jawaban dari pertanyaan di atas ialah meskipun format <code>float32</code> mampu menyimpan data yang sangat besar, hingga <span class="math inline">\(3.40 \times 10 ^{38}\)</span>, penggunaan <code>float32</code> pada dunia audio menggunakan nilai ternormalisasi. Dengan kata lain, dalam dunia digital audio, <strong>nilai yang digunakan hanya pada rentang <span class="math inline">\(-1\)</span> hingga <span class="math inline">\(1\)</span></strong>, dan umumnya juga dibatasi menggunakan nilai <a href="../24int-vs-32float/index.qmd/#nilai-subnormaldenormal">normal</a>.</p>
+<p>Apa konsekuensi dari hal ini? Dengan begitu maka 0 dBFS berada pada nilai <span class="math inline">\(-1\)</span> atau <span class="math inline">\(1\)</span>, dan dapat menyimpan nilai yang lebih besar <span class="math inline">\(3.40 \times 10 ^{38}\)</span> (<span class="math inline">\(+770\;\mathrm{dB}\)</span>) kali ataupun <span class="math inline">\(8.51 \times 10 ^{38}\)</span> kali lebih kecil (<span class="math inline">\(-759\;\mathrm{dB}\)</span>) relatif dari 0 dBFS. Sangat besar (dan kecil) dan sangat lebih dari cukup untuk mendukung rekaman audio seekstrim apa pun.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="$+770;\mathrm{dB}$??">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="math inline">\(+770;\mathrm{dB}\)</span>??
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Ingin tahu dari mana angka itu muncul? Mari kita gunakan bantuan pemrograman yaitu dengan <code>Python</code> dan modul <code>numpy</code>.</p>
+<p>Dimulai dengan mengimpor <code>numpy</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Kemudian anda dapat melihat nilai-nilai penting, seperti nilai terbesar, terkecil, <em>epsilon</em>, dsb. (<a href="https://numpy.org/doc/stable/reference/generated/numpy.finfo.html">detail</a>) dari <code>float32</code> dengan fungsi <code>np.finfo</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="bu">print</span>(np.finfo(np.float32))</span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nilai terbesar dan terkecil (relatif terhadap 0) dari informasi di atas ialah <code>max</code> dan <code>tiny</code>.</p>
+<p>Selanjutnya, definisikan fungsi untuk mengkonversi nilai <em>gain</em> (<em>magnitude</em>) ke nilai desibel yang memiliki rumus <span class="math inline">\(d=20\log_{10}(M)\)</span>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>mag2db <span class="op">=</span> <span class="kw">lambda</span> x: <span class="dv">20</span> <span class="op">*</span> np.log10(x)</span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Gunakan <code>mag2db</code> untuk menentukan <em>range</em> desibel dari <code>float32</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="bu">print</span>(mag2db(np.finfo(np.float32).<span class="bu">max</span>) <span class="co"># "770.638...", desibel maksimum</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="bu">print</span>(mag2db(np.finfo(np.float32).tiny) <span class="co"># "-758.595...", desibel minimum</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mubazir" class="level3">
+<h3 class="anchored" data-anchor-id="mubazir">Mubazir?</h3>
+<p>Sebagian dari kita kemudian bertanya-tanya “kenapa hanya digunakan rentang <span class="math inline">\(-1\)</span> ke <span class="math inline">\(1\)</span> saja?”, “kenapa tidak dimaksimalkan seperti pada <em>integer</em>?”, atau “lalu apakah data yang berada diluar rentang <span class="math inline">\(-1\)</span>-<span class="math inline">\(1\)</span> akan tersia-siakan saja?”, dan sebagainya.</p>
+<p>Jawabannya berada pada kata <strong><em>floating-point</em></strong> itu sendiri.</p>
+<p>Bagian 1 dari <a href="../24int-vs-32float/index.qmd/#floating-menggantikan-fixed">artikel ini</a> telah membahas cara kerja <code>float</code> yang menunjukkan bahwa posisi desimal (koma) pada bilangan float bersifat tidak tetap (<em>floating</em>), berbeda dengan tipe data <em>fixed-point</em>. Pada representasi <code>float</code> selalu hanya ada satu digit di depan koma (pada mode <strong>normal</strong> selalu bernilai <code>1</code> dan implisit), dan nilai yang berbeda direpresentasikan dengan nilai eksponen dan koefisien/<em>mantissa</em> yang berbeda.</p>
+<p>Sebagai contoh, karena hanya 1 digit di depan koma, maka <code>float</code> tidak dapat menyimpan <code>1011.001</code> secara langsung, tetapi bentuk tersebut dapat diubah ke <code>1.011001 * 10</code><sup><code>101</code></sup> (atau <span class="math inline">\(2^3\)</span> dalam desimal) yang dapat disimpan oleh <code>float</code>. Mekanisme seperti ini lah yang membuat <code>float</code> dapat menyimpan angka yang sangat besar dan sangat kecil. Tetapi disamping itu, terdapat satu hal yang menjadi konsekuensi hal di atas: <strong>semakin kecil angka yang direpresentasikan <code>float</code>, semakin tinggi resolusinya</strong>. Sehingga digunakanlah nilai ternormalisasi pada rentang <span class="math inline">\([-1,1]\)</span> untuk memaksimalkan resolusi sinyal.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Tinggi dan Berat">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tinggi dan Berat
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Untuk mempermudah, mari kita analogikan dengan bilangan desimal. Misalkan anda sedang mengisi isian biodata untuk sebuah pendaftaran, dan kemudian anda sampai pada isian tinggi badan. Pada formulir ini, diberikan 6 kotak untuk mengisi angka tinggi badan, dengan catatan semua kotak harus terisi tetapi anda bebas untuk meletakkan dimana posisi koma, apakah di antara kotak 1 dan 2, 2 dan 3, dan seterusnya.</p>
+<p>Misalkan tinggi badan anda adalah tepat <span class="math inline">\(174\)</span> cm, maka anda akan mengisi <span class="math inline">\(174.000\)</span> pada isian tersebut dan meletakkan koma antara kotak 3 dan 4. Pertanyaannya adalah, jika angka paling kanan diubah 1 digit, berapakah perubahan yang terjadi pada angka? Pada isian anda, misalkan angka terkakhir diubah 1 sehingga menjadi <span class="math inline">\(174.001\)</span>, maka perubahan angka yang terjadi ialah <span class="math inline">\(0.001\)</span>. Nilai tersebut merupakan perubahan terkecil yang masih dapat direkam oleh isian 6 kotak tersebut, dalam matematika sering disebut sebagai <strong>epsilon</strong> (<span class="math inline">\(\varepsilon\)</span>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p><span class="math display">\[
+\boxed{1}\boxed{7}\boxed{4},\boxed{0}\boxed{0}\boxed{0}
+\]</span></p>
+<p>Bagaimana jika selanjutnya dengan aturan yang sama, anda diperintahkan mengisi isian berat badan? Misalkan kali ini anda dengan lebih detail mengetahui berat anda <span class="math inline">\(89.5\)</span> kg, maka isian kotak anda ialah <span class="math inline">\(89.5000\)</span>. Perhatikan bahwa kali ini, <span class="math inline">\(\varepsilon\)</span> menjadi <span class="math inline">\(10\)</span> kali lebih kecil (<span class="math inline">\(0.0001\)</span>) dengan posisi desimal yang berubah satu tempat. <strong><span class="math inline">\(\varepsilon\)</span> yang semakin kecil menunjukkan nilai yang semakin presisi</strong>.</p>
+<p><span class="math display">\[
+\boxed{8}\boxed{9},\boxed{5}\boxed{0}\boxed{0}\boxed{0}
+\]</span></p>
+</div>
+</div>
+</div>
+<p>Lalu kenapa tidak digunakan <a href="../24int-vs-32float/index.qmd/#nilai-subnormaldenormal">nilai subnormal</a> untuk merepresentasikan nilai tersebut? Angka yang direpresentasikan diantara <span class="math inline">\(-1\)</span> dan <span class="math inline">\(1\)</span> sehingga wajar menggunakan subnormal yang diawali dengan <span class="math inline">\(0.\)</span> bukan? Jawababnya adalah karena nilai pada rentang <strong><em>subnormal</em> memiliki performa pemrosesan yang lebih lambat</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Bahkan, sering kali dalam beberapa kondisi yang membutuhkan performa lebih, rentang subnormal dapat saja dinonaktifkan (sebagai contoh dalam algoritma pemrosesan VST<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>)</p>
+</section>
+</section>
+<section id="bit-signed-integer-vs-32-bit-floating-point" class="level2">
+<h2 class="anchored" data-anchor-id="bit-signed-integer-vs-32-bit-floating-point">24-Bit Signed Integer vs 32-Bit Floating-Point</h2>
+<p>Kembali ke pertanyaan pemicu dari seri artikel ini, “Seberapa jauh perbedaan kualitas 24-bit int dengan 32-bit FP?”. Sekilas, cukup dari lebar data kita bisa saja menyebut bahwa <code>float32</code> memiliki resolusi sebesar <span class="math inline">\(2^{31-23} = 256\)</span> kali resolusi <code>int24</code>. Tetapi, mengingat aturan representasi pada <code>float</code> tidak sesederhana pada <code>int</code>, maka kita akan mencoba menghitung level kuantisasi pada masing-masing tipe, dimana kualitas dari tipe data pembawa sinyal dapat dilihat dari jumlah level kuantisasi ini (divisualisasikan di <a href="../fs-vs-bd/index.qmd/">laman ini</a>, yang pada jenis data <strong>integer</strong> memiliki hubungan <span class="math inline">\(N=2^b\)</span> dengan <span class="math inline">\(N\)</span> jumlah level kuantisasi dan <span class="math inline">\(b\)</span> bit-depth.</p>
+<p>Dari sini, dapat kita ketahui untuk tipe 24-bit integer, yang dalam dunia audio menggunakan data type <code>unsigned int</code>, memiliki nilai <span class="math inline">\(0\)</span> atau <span class="math inline">\(-\infty\;\mathrm{dB}\)</span> sebagai nilai minimum dan <span class="math inline">\(2^{23}-1=8388607\)</span> sebagai nilai maksimum (<span class="math inline">\(0\;\mathrm{dB}\)</span>). <span class="math inline">\(8 388 607\)</span> adalah jumlah level kuantisasi pada satu sisi gelombang pada <code>int24</code>, di sini dapat disebut sebagai resolusinya.</p>
+<p>Bagaimana dengan <code>float</code>? Karena aturannya yang lebih rumit dan rentang yang dibatasi <span class="math inline">\(\pm 1\)</span>, maka kita akan mengunakan bantuan pemrograman, kali ini dengan <code>C++</code> karena manipulasi <code>bit</code> sebuah data paling mudah dilakukan di <code>C++</code>.</p>
+<section id="menghitung-level-kuantisasi-float32" class="level3">
+<h3 class="anchored" data-anchor-id="menghitung-level-kuantisasi-float32">Menghitung level kuantisasi <code>float32</code></h3>
+<p>Seperti pada <code>int24</code> di atas, kita akan menghitung resolusi satu sisi (<span class="math inline">\(0\)</span> ke titik maksimal, dalam <code>float</code> berarti <span class="math inline">\(1\)</span>).</p>
+<p>Pertama, kita impor beberapa <em>header</em> yang diperlukan:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Kemudian masuk ke fungsi <code>main</code>, kita cek apakah tipe data <code>float</code> memiliki lebar data yang sama dengan <code>unsigned float</code> pada perangkat, sebagai syarat dari algoritma berikutnya.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>    <span class="kw">static_assert</span><span class="op">(</span><span class="kw">sizeof</span><span class="op">(</span><span class="dt">unsigned</span> <span class="dt">int</span><span class="op">)</span> <span class="op">==</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">float</span><span class="op">));</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="co">// ...</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Kemudian untuk memasukkan nilai heksadesimal ke <code>float</code>, yang dibutuhkan untuk mendapatkan data yang tepat, gunakan cara berikut:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> uint_repr <span class="op">=</span> <span class="bn">0x00800000</span><span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>    <span class="dt">float</span> start <span class="op">=</span> <span class="op">*(</span><span class="dt">float</span><span class="op">*)&amp;</span>uint_repr<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a>    uint_repr <span class="op">=</span> <span class="bn">0x3f80000</span><span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="dt">float</span> end <span class="op">=</span> <span class="op">*(</span><span class="dt">float</span><span class="op">*)&amp;</span>uint_repr<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Pada potongan kode diatas, nilai heksadesimal <code>0x00800000</code> dan <code>0x03f80000</code> masing-masing merupakan nilai normal terkecil setelah <span class="math inline">\(0\)</span>, dan <span class="math inline">\(1\)</span>. Kemudian dilakukan perhitungan jumlah angka <code>float</code> yang tersedia di antara kedua nilai tersebut dengan cara:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a>    <span class="dt">size_t</span> nstep <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="cf">while</span><span class="op">(</span>start <span class="op">&lt;</span> end<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>        start <span class="op">=</span> <span class="bu">std::</span>nextafter<span class="op">(</span>start<span class="op">,</span> end<span class="op">);</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>        nstep<span class="op">++;</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="op">}</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Jumlah level "</span> <span class="op">&lt;&lt;</span> nstep <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Fungsi <code>std::nextafter(start, end)</code> mengembalikan nilai <code>float</code> selanjutnya yang dari <code>start</code> menuju <code>end</code>. Jumlah perulangan hingga nilai <code>start</code> mencapai nilai <code>end</code> disimpan pada variabel <code>nstep</code>, yang menjadi nilai yang kita cari.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="`0x00800000`?">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<code>0x00800000</code>?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Kenapa kita mulai dari nilai normal terkecil <code>0x00800000</code> bukan dari <span class="math inline">\(0\)</span> itu sendiri? Karena pada dunia audio digital, pemrosesan sinyal float umumnya dilakukan dengan men<em>disable</em> subnormal sehingga nilai tersebut dianggap 0, dengan tujuan meningkatkan performa<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+</div>
+</div>
+</div>
+<p>Ketika program di atas dikompilasi dan dijalankan, nilai yang dikeluarkan ialah sebesar <span class="math inline">\(1 056 964 608\)</span>. Jumlah level itu, adalah <strong>persis <span class="math inline">\(126\)</span> kali level dari 24-bit <em>integer</em></strong>. Tentu nilai ini meleset dari perkiraan intuitif <span class="math inline">\(256\)</span> kali, sedikit kurang dari setengahnya.</p>
+<p>Meskipun begitu, angka tersebut masih lebih dari cukup untuk memberikan peningkatan resolusi yang signifikan. Sebagai pembanding, perbandingan jumlah pixel antara resolusi 4K (<span class="math inline">\(3840\times2160\)</span>) terhadap 360p (<span class="math inline">\(640\times360\)</span>) hanyalah sebesar <span class="math inline">\(36\)</span> kali lipat, dan anda tentu tahu seberapa jauh peningkatan kualitas video yang dapat anda rasakan dari perbedaan kedua resolusi tersebut.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="dari $0$">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+dari <span class="math inline">\(0\)</span>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Jika anda memasukkan nilai subnormal dalam kalkulasi program di atas dengan mengatur nilai start dengan <code>0</code> alih alih <code>0x00800000</code> seperti pada kode diatas:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">// ...</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> uint_repr <span class="op">=</span> <span class="bn">0x0</span><span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="dt">float</span> start <span class="op">=</span> <span class="op">*(</span><span class="dt">float</span><span class="op">*)&amp;</span>uint_repr<span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">// ...</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>maka program akan memberikan keluaran <span class="math inline">\(1065353216\)</span>, dan kini resolusinya menjadi <span class="math inline">\(127\)</span> kali lipat <code>int24</code>. <em>Worth it?</em></p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="wrapping-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrapping-up"><em>Wrapping Up</em></h2>
+<p>Dari percobaan dan analisis kecil-kecilan di atas, kita dapat mengambil kesimpulan bahwa tipe data 32-bit <em>floating-point</em> memang lebih memiliki resolusi yang lebih tinggi, <span class="math inline">\(126\)</span> kali, dari 24-bit <em>signed integer</em>. Hal ini menunjukkan bahwa <code>float32</code> memang lebih baik dari <code>int24</code> dalam menyimpan data audio, <strong>secara kuantitatif</strong>.</p>
+<blockquote class="blockquote">
+<p>“<em>Enter Psychoacoustics</em>”</p>
+</blockquote>
+
+
+</section>
+
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Kembali ke atas</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Catatan Kaki</h2>
+
+<ol>
+<li id="fn1"><p>Istilah yang lebih tepat disini sebenarnya ialah <a href="https://en.wikipedia.org/wiki/Unit_in_the_last_place"><strong>ulp</strong></a> atau <em>unit of least precision</em>, tetapi untuk tidak memperkeruh istilah, mari gunakan saja <span class="math inline">\(\varepsilon\)</span> yang pada beberapa kondisi berkorespondensi terhadap <strong>ulp</strong> sebagai hal yang sama.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues" class="uri">https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><a href="https://docs.juce.com/master/classScopedNoDenormals.html" class="uri">https://docs.juce.com/master/classScopedNoDenormals.html</a>, sebuah fitur <em>high-level</em> untuk menonaktifkan subnormal pada CPU untuk sementara pada JUCE, framework yang dapat digunakan untuk memprogram VST. Mekanisme dasarnya sendiri dapat dilihat di <a href="https://en.wikipedia.org/wiki/Subnormal_number#Disabling_subnormal_floats_at_the_code_level">sini</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><a href="https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues" class="uri">https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Disalin!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Disalin!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><a href="../../disclaimer.html" title="Dilisensikan oleh Muhammad Rafky Alfarrakhan.S"><img src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" class="img-fluid" alt="cc-by-sa"></a></div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/deadManAlive">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/lngtmknmndng_">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">Website ini dibangun dengan <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

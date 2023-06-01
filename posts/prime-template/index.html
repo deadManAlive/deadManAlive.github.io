@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id" xml:lang="id"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.336">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Dead Man">
+<meta name="dcterms.date" content="2023-04-14">
+
+<title>DMB - CXX: Template Metaprogramming Praktis Pada C++11</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Tidak ada hasil",
+    "search-matching-documents-text": "dokumen cocok",
+    "search-copy-link-title": "Salin tautan untuk mencari",
+    "search-hide-matches-text": "Sembunyikan kecocokan lainnya",
+    "search-more-match-text": "kecocokan lainnya di dokumen ini",
+    "search-more-matches-text": "kecocokan lainnya di dokumen ini",
+    "search-clear-button-title": "Hapus",
+    "search-detached-cancel-button-title": "Batal",
+    "search-submit-button-title": "Kirim"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script type="application/json" class="js-hypothesis-config">
+{
+  "theme": "clean",
+  "openSidebar": false
+}
+</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="DMB - CXX: Template Metaprogramming Praktis Pada C++11">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://deadManAlive.github.io/posts/prime-template/image.jpg">
+<meta property="og:site-name" content="DMB">
+<meta name="twitter:title" content="DMB - CXX: Template Metaprogramming Praktis Pada C++11">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://deadManAlive.github.io/posts/prime-template/image.jpg">
+<meta name="twitter:creator" content="@lngtmknmndng_">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">DMB</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Beranda</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Tentang</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Arsip</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-three-dots" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-three-dots" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-bi-three-dots">    
+        <li>
+    <a class="dropdown-item" href="../../notes.html" rel="" target="">
+ <span class="dropdown-text">Catatan</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools ms-auto tools-wide">
+    <a href="https://github.com/deadManAlive" title="Github" class="quarto-navigation-tool px-1" aria-label="Github"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/lngtmknmndng_" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+    <div class="dropdown">
+      <a href="" title="More..." id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More..."><i class="bi bi-three-dots"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="javascript:location.href = 'mailto:' + ['embryon.id','gmail.com'].join('@')">
+            Email
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools ms-auto-item" href="https://www.linkedin.com/in/rafky-alfa">
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">CXX: Template Metaprogramming Praktis Pada C++11</li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Mencari" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">CXX: Template Metaprogramming Praktis Pada C++11</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">C++</div>
+                <div class="quarto-category">Pemrograman</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Penulis</div>
+      <div class="quarto-title-meta-contents">
+               <p>Dead Man </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Diterbitkan</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">14 April 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Mencari"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Laman</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alihkan bagian">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Beranda</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tentang</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../archive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Arsip</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Catatan</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">Konten</h2>
+   
+  <ul>
+  <li><a href="#template-metaprogramming-secara-singkat" id="toc-template-metaprogramming-secara-singkat" class="nav-link active" data-scroll-target="#template-metaprogramming-secara-singkat">Template Metaprogramming Secara Singkat</a>
+  <ul>
+  <li><a href="#definisi-eksplisit-parameter" id="toc-definisi-eksplisit-parameter" class="nav-link" data-scroll-target="#definisi-eksplisit-parameter">Definisi Eksplisit Parameter</a></li>
+  <li><a href="#default-argument" id="toc-default-argument" class="nav-link" data-scroll-target="#default-argument">Default Argument</a></li>
+  <li><a href="#non-type-argument" id="toc-non-type-argument" class="nav-link" data-scroll-target="#non-type-argument">Non-Type Argument</a></li>
+  <li><a href="#template-specialization" id="toc-template-specialization" class="nav-link" data-scroll-target="#template-specialization">Template Specialization</a></li>
+  <li><a href="#constexpr" id="toc-constexpr" class="nav-link" data-scroll-target="#constexpr"><code>constexpr</code></a></li>
+  </ul></li>
+  <li><a href="#compile-time-primality-test" id="toc-compile-time-primality-test" class="nav-link" data-scroll-target="#compile-time-primality-test">Compile-Time Primality Test</a>
+  <ul>
+  <li><a href="#isprime" id="toc-isprime" class="nav-link" data-scroll-target="#isprime"><code>IsPrime</code></a></li>
+  <li><a href="#isprimeloop" id="toc-isprimeloop" class="nav-link" data-scroll-target="#isprimeloop"><code>IsPrimeLoop</code></a></li>
+  </ul></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up"><em>Wrapping Up…</em></a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p><strong><em>Template metaprogramming</em></strong> merupakan salah satu fitur paling <em>powerful</em> dari C++. <em>Template metaprogramming</em>, alih-alih menulis program untuk di<em>compile</em> seperti pada umumnya, dapat disebut sebagai pemrograman pada <em>compiler</em> itu sendiri (“<em>metaprogramming</em>”): sebuah template memerintahkan <em>compiler</em> untuk “menulis” source code <em>intermediate</em> tergantung pada parameter-parameter dan aturan-aturan <em>template</em>nya.</p>
+<p><em>Template metaprogramming</em> merupakan salah satu bentuk polimorfisme, tepatnya <em>compile-time polymorpism</em> karena implementasi <em>generic</em> dari tiap tipe ditentukan pada <em>compile-time</em>, dibanding pada <em>runtime</em> (<em>runtime polymorphism</em>) secara dinamis. Kelebihan <em>compile-time polymorphisme</em> tentu adalah tidak adanya <em>overhead</em> untuk <em>dynamic dispatch</em> seperti pada <em>runtime polymorphism</em> dan <strong>error</strong> pada interface dapat diketahui dari awal di tahap kompilasi, meskipun penggunaan <em>compile-time polymorpism</em> mengorbankan fleksibilitas dari penggunaan <strong>RTPm</strong>.</p>
+<p>Pada artikel ini, <em>template metaprogramming</em> akan didalami dengan membuat <em>compile-time function</em> untuk mengecek apakah suatu bilangan adalah bilangan prima (<em>primality test</em>). Beberapa hal yang diharapkan untuk didapatkan setelah mengikuti artikel ini ialah:</p>
+<ul>
+<li>Dasar Template Metaprogramming pada C++</li>
+<li><code>constexpr</code></li>
+<li><em>Template specialization</em></li>
+<li><em>Partial template specialization</em></li>
+</ul>
+<p>Pembaca diharapkan sudah memiliki pengetahuan dasar tentang C++, pengetahuan dasar <em>metaprogamming</em> tentu akan sangat membantu.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Catatan
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Versi C++ yang digunakan pada artikel ini ialah C++11, mengingat versi tersebut yang masih cukup umum digunakan secara <em>cross-platform</em> termasuk <em>embedded</em>.</p>
+</div>
+</div>
+<section id="template-metaprogramming-secara-singkat" class="level2">
+<h2 class="anchored" data-anchor-id="template-metaprogramming-secara-singkat">Template Metaprogramming Secara Singkat</h2>
+<p><strong>TMp</strong> memungkinkan penulisan sebuah kode generik untuk data dan/atau struktur serta fungsi. Sebagai contoh kita membuat fungsi yang menghitung perbedaan absolut antara dua nilai:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="dt">int</span> delta<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="cf">return</span> <span class="bu">std::</span>abs<span class="op">(</span>a <span class="op">-</span> b<span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Kemudian ternyata kita juga ingin menulis fungsi tersebut untuk <code>float</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="dt">float</span> delta<span class="op">(</span><span class="dt">float</span> a<span class="op">,</span> <span class="dt">float</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="cf">return</span> <span class="bu">std::</span>abs<span class="op">(</span>a <span class="op">-</span> b<span class="op">);</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Meskipun konsep <code>overloading</code> memungkinkan definisi beberapa fungsi berbeda dengan nama yang sama untuk parameter berbeda, penulisan fungsi <code>delta</code> akan lebih sederhana menggunakan <strong>TMp</strong>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>T delta <span class="op">(</span>T a<span class="op">,</span> T b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="cf">return</span> <span class="bu">std::</span>abs<span class="op">(</span>a <span class="op">-</span> b<span class="op">);</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Tanpa harus menulis dua fungsi berbeda, fungsi <code>delta</code> sekarang dapat bekerja untuk <code>int</code> dan <code>float</code>, tetapi juga <code>double</code> dan bahkan <code>std::complex</code>, dan juga tipe-tipe data lainnya asalkan tipe tersebut valid dalam operasi pengurangan <code>-</code> dan <code>std::abs</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">auto</span> e <span class="op">=</span> delta<span class="op">(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">8</span><span class="op">);</span> <span class="co">// int, d = int(2)</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">auto</span> d <span class="op">=</span> delta<span class="op">(</span><span class="fl">5.</span><span class="bu">f</span><span class="op">,</span> <span class="fl">9.</span><span class="bu">f</span><span class="op">);</span> <span class="co">// float, e = float(4.)</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="kw">using</span> <span class="kw">namespace</span> <span class="bu">std::</span>complex_literals<span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="kw">auto</span> c <span class="op">=</span> delta<span class="op">((</span><span class="fl">1.</span> <span class="op">+</span> <span class="dv">2</span><span class="bu">i</span><span class="op">),</span> <span class="op">(</span><span class="fl">2.</span> <span class="op">-</span> <span class="dv">2</span><span class="bu">i</span><span class="op">));</span> <span class="co">// std::complex&lt;double&gt;, c = std::complex&lt;double&gt;(4.123, 0) atau (4.123 + 0i);</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Catatan
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>notasi <code>(1. + 2i)</code> menggunakan <code>std::complex_literals</code> yang baru tersedia pada <strong>C++14</strong>. Pada <strong>C++11</strong> masih digunakan konstruktor non-literal <code>std::complex&lt;T&gt;(val)</code>. Literal digunkan untuk memudahkan penulisan dan pembaca.</p>
+</div>
+</div>
+<section id="definisi-eksplisit-parameter" class="level3">
+<h3 class="anchored" data-anchor-id="definisi-eksplisit-parameter">Definisi Eksplisit Parameter</h3>
+<p>Perhatikan bahwa pada fungsi-fungsi diatas, tidak diperlukan argumen <em>template</em> secara eksplisit (<code>T</code>), karena <em>compiler</em> “mendeduksikannya” dari tipe <code>a</code> dan <code>b</code>. Lain halnya jika fungsi didefinisikan sebagai:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span> U<span class="op">&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>U delta<span class="op">(</span>T a<span class="op">,</span> T b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>    <span class="cf">return</span> <span class="bu">std::</span>abs<span class="op">(</span>a <span class="op">-</span> b<span class="op">);</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dimana dua parameter template <code>T</code> dan <code>U</code> menunjukkan bahwa tipe output <code>U</code> pada fungsi dapat berbeda dengan tipe input <code>T</code>. Pada kasus ini, parameter <code>T</code> dapat dideduksi dari tipe <code>a</code> dan <code>b</code> tetapi tipe output <code>U</code> harus ditentukan secara eksplisit:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">auto</span> v <span class="op">=</span> delta<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;(</span><span class="fl">5.</span><span class="op">,</span> <span class="fl">8.</span><span class="op">);</span> <span class="co">// input double, keluaran int.</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Seperti halnya parameter pada fungsi normal, parameter pada template juga dapat memiliki nilai/kondisi default, sebagai contoh, pada fungsi delta versi terkahir diatas:</p>
+</section>
+<section id="default-argument" class="level3">
+<h3 class="anchored" data-anchor-id="default-argument">Default Argument</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span> U <span class="op">=</span> T<span class="op">&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>U delta<span class="op">(</span>T a<span class="op">,</span> T b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="cf">return</span> <span class="bu">std::</span>abs<span class="op">(</span>a <span class="op">-</span> b<span class="op">);</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Fungsi delta kini dapat kembali digunakan tanpa harus eksplisit menentukan tipe <code>U</code>, dimana <code>U</code> akan default ke tipe yang sama dengan <code>T</code> jika tidak diberikan. Atau default ke tipe tertentu secara spesifik:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="kw">typename</span> T<span class="op">,</span> <span class="kw">typename</span> U <span class="op">=</span> <span class="dt">int</span><span class="op">&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>U delta<span class="op">&lt;</span>T a<span class="op">,</span> T b<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="cf">return</span> <span class="bu">std::</span>abs<span class="op">(</span>a <span class="op">-</span> b<span class="op">);</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="non-type-argument" class="level3">
+<h3 class="anchored" data-anchor-id="non-type-argument">Non-Type Argument</h3>
+<p>Pada kasus diatas, <code>T</code> dan <code>U</code> merupakan generik dari tipe, alias <code>T</code> dan <code>U</code> dapat berupa <code>int</code>, <code>double</code>, <code>std::complex</code>, dan semacamnya. Tetapi, parameter template tidak hanya sebatas tipe, tetapi juga non-tipe atau variabel biasa, sebagai contoh yaitu pada deklarasi <code>std::array</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1"></a><span class="bu">std::</span>array<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span> <span class="dv">3</span><span class="op">&gt;</span> arr <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dimana <code>std::array</code> didefinisikan sebagai:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">/*</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co">* Umumnya, `class` dan `typename` dapat digunakan secara</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">* bergantian untuk parameter tipe pada template.</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">*/</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">class</span> T<span class="op">,</span> <span class="bu">std::</span>size_t<span class="op"> </span>N<span class="op">&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="kw">struct</span> array <span class="op">{</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>    <span class="co">// implementasi...</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>std::size_t</code> adalah tipe <code>unsigned integer</code> yang biasa digunakan dalam <em>indexing</em>.</p>
+</section>
+<section id="template-specialization" class="level3">
+<h3 class="anchored" data-anchor-id="template-specialization">Template Specialization</h3>
+<p>Sedikit berbeda dengan <em>default argument</em>, <em>template specialization</em>, sesuai dengan namanya, dapat memberikan implementasi berbeda untuk parameter berbeda. Sebagai contoh, sebuah <em>templated</em> <code>struct</code> didefinisikan sebagai:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">template</span> <span class="op">&lt;</span>Source T<span class="op">,</span> <span class="dt">int</span> G<span class="op">&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="kw">struct</span> Car <span class="op">{</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>    <span class="dt">void</span> throttle<span class="op">();</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="dt">void</span> brake<span class="op">();</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Kemudian kita ingin membuat spesialisasi pada <code>Car</code> yang memiliki <code>T</code> sebuah tipe <code>enum</code> sumber daya <code>Gasoline</code> dengan 4 akselerasi <code>G</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">template</span> <span class="op">&lt;&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="kw">struct</span> Car<span class="op">&lt;</span>Source<span class="op">::</span>Gasoline<span class="op">,</span> <span class="dv">4</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="dt">void</span> throttle<span class="op">();</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="dt">void</span> brake<span class="op">();</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>    <span class="dt">void</span> rev<span class="op">();</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Maka sebuah object <code>Car</code> yang diinisiasi dengan <code>Car&lt;Source::Gasoline, 4&gt;</code> akan memiliki <em>method</em> <code>rev()</code> tetapi tidak dengan lainnya. Pada kasus ini, spesialisasi dilakukan ketika semua (kedua) parameter template tertentu, sehingga disebut sebagai <em>full-specialization</em>. <em>Partial specialization</em> dilakukan ketika hanya sebagian parameter ditentukan dalam spesialisasinya, sebagai contoh:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="dt">int</span> G<span class="op">&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="kw">struct</span> Car<span class="op">&lt;</span>Source<span class="op">::</span>Electric<span class="op">,</span> G<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>    <span class="dt">void</span> throttle<span class="op">();</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>    <span class="dt">void</span> brake<span class="op">();</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>    <span class="dt">void</span> charge<span class="op">();</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Pada spesialisasi berikut ini, terjadi <em>partial specialization</em> dimana hanya parameter <code>T</code> yang ditentukan, sementara parameter <code>G</code> bebas. Dengan kata lain, asalkan <code>T</code> bernilai <code>Source::Electrical</code>, berapapun nilai <code>G</code>, objek <em>template</em> <code>Car</code> yang diinisiasi akan memiliki <em>method</em> <code>charge()</code>. Perhatikan bahwa hanya parameter bebas yang ditulis pada parameter template (<code>template &lt;int G&gt;</code>). Jika anda belum memperhatikan, pada contoh <em>full specialization</em>, karena kedua parameter ditentukan, maka digunakan <code>template&lt;&gt;</code>.</p>
+</section>
+<section id="constexpr" class="level3">
+<h3 class="anchored" data-anchor-id="constexpr"><code>constexpr</code></h3>
+<p>Yang perlu diperhatikan selanjutnya adalah bahwa parameter non-tipe pada template <strong>harus berupa <em>compile-time constant</em> atau nilai yang diketahui saat kompilasi</strong>, istilahnya <em>constant expression</em>.</p>
+<p>Misal, sebuah struct data didefinisikan sebagai:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> V<span class="op">&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="kw">struct</span> Data <span class="op">{</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>    <span class="dt">void</span> value<span class="op">()</span> <span class="at">const</span> <span class="op">{</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>        <span class="bu">std::</span>cout<span class="op"> &lt;&lt;</span> V <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>    <span class="op">}</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Kompilasi akan error jika digunakan dengan fungsi <code>mean</code> sebagai berikut:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1"></a><span class="dt">int</span> mean<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>    <span class="cf">return</span> <span class="op">(</span>a <span class="op">+</span> b<span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="op">}</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>    <span class="dt">int</span> n <span class="op">=</span> mean<span class="op">(</span><span class="dv">4</span><span class="op">,</span> <span class="dv">9</span><span class="op">);</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>    Data<span class="op">&lt;</span>n<span class="op">&gt;{}.</span>value<span class="op">();</span> <span class="co">// error, "`n` is not usable in constant expression", dsb.</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Hal ini terjadi karena fungsi <code>mean</code> dieksekusi ketika <code>runtime</code> sementara insiasi template <code>Data</code> memerlukan keluaran <code>mean</code> pada saat <code>compile-time</code>. Pada kasus sederhana ini, fungsi sederhana <code>mean</code> dapat dialihkan segera menjadi <code>compile-time function</code> menggunakan <em>keyword</em> <code>constexpr</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">constexpr</span> <span class="dt">int</span> mean<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>    <span class="cf">return</span> <span class="op">(</span>a <span class="op">+</span> b<span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Selain itu, <code>n</code> juga harus konstan:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a href="#cb17-1"></a><span class="at">const</span> <span class="dt">int</span> n  <span class="op">=</span> mean<span class="op">(</span><span class="dv">4</span><span class="op">,</span> <span class="dv">9</span><span class="op">);</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Setelah dua modifikasi tersebut, inisiasi <code>Data&lt;n&gt;</code> dan pemanggulan <em>method</em> <code>value</code> akan terkompilasi dan berjalan normal.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Catatan
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tipe sederhana dan primitif <code>int</code> dengan <em>modifier</em> <code>const</code> secara implisit adalah <em>constant expression</em> sehingga tidak perlu eksplisit menyatakan <code>n</code> dengan:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">constexpr</span> <span class="dt">int</span> n</span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="compile-time-primality-test" class="level2">
+<h2 class="anchored" data-anchor-id="compile-time-primality-test">Compile-Time Primality Test</h2>
+<p>Salah satu kekuatan dari <em>template metaprogramming</em> adalah evaluasi pada kompilasi (<em>compile-time evaluation</em>) terhadap nilai-nilai konstan sehingga pemrosesan pada <em>runtime</em> dapat diminimalisir. <em>Template metaprogramming</em> jauh lebih <em>powerful</em> dari pada <em>macro</em>, bahkan bisa dibilang merupakan bahasa pemrograman tersendiri karena sifatnya yang <a href="https://rtraba.files.wordpress.com/2015/05/cppturing.pdf"><em>turing complete</em></a>. Untuk itu, mari kita coba untuk mengadaptasi fungsi yang digunakan untuk mengecek apakah suatu bilangan adalah bilangan prima atau tidak ke <em>compile-time function</em> menggunakan template. Fungsi <code>isPrime</code> berikut merupakan fungsi <em>runtime</em> yang akan kita adaptasi menjadi <em>compile-time</em> function (dicomot dari <a href="https://en.wikipedia.org/wiki/Compile-time_function_execution#C++">wikipedia</a>).</p>
+<div class="sourceCode" id="annotated-cell-18"><pre class="sourceCode numberSource cpp code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode cpp"><span id="annotated-cell-18-1"><a href="#annotated-cell-18-1"></a><span class="dt">bool</span> isPrime<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-18-2" class="code-annotation-target"><a href="#annotated-cell-18-2"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">==</span> <span class="dv">2</span> <span class="op">||</span> n <span class="op">==</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-18-3"><a href="#annotated-cell-18-3"></a>        <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="annotated-cell-18-4"><a href="#annotated-cell-18-4"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-18-5"><a href="#annotated-cell-18-5"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-18-6" class="code-annotation-target"><a href="#annotated-cell-18-6"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">1</span> <span class="op">||</span> n <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> n <span class="op">%</span> <span class="dv">3</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-18-7"><a href="#annotated-cell-18-7"></a>        <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="annotated-cell-18-8"><a href="#annotated-cell-18-8"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-18-9"><a href="#annotated-cell-18-9"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-18-10" class="code-annotation-target"><a href="#annotated-cell-18-10"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">5</span><span class="op">;</span> i <span class="op">*</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i <span class="op">+=</span> <span class="dv">6</span><span class="op">)</span> <span class="op">{</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-18" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-18-11" class="code-annotation-target"><a href="#annotated-cell-18-11"></a>        <span class="cf">if</span> <span class="op">(</span>n <span class="op">%</span> i <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> n <span class="op">%</span> <span class="op">(</span>i <span class="op">+</span> <span class="dv">2</span><span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="annotated-cell-18-12"><a href="#annotated-cell-18-12"></a>            <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="annotated-cell-18-13"><a href="#annotated-cell-18-13"></a>        <span class="op">}</span></span>
+<span id="annotated-cell-18-14"><a href="#annotated-cell-18-14"></a>    <span class="op">}</span></span>
+<span id="annotated-cell-18-15"><a href="#annotated-cell-18-15"></a></span>
+<span id="annotated-cell-18-16"><a href="#annotated-cell-18-16"></a>    <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="annotated-cell-18-17"><a href="#annotated-cell-18-17"></a><span class="op">}</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-18" data-code-lines="2" data-code-annotation="1"><strong>Pengecekan I</strong></span>
+</dd>
+<dt data-target-cell="annotated-cell-18" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-18" data-code-lines="6" data-code-annotation="2"><strong>Pengecekan II</strong></span>
+</dd>
+<dt data-target-cell="annotated-cell-18" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-18" data-code-lines="10" data-code-annotation="3"><strong>Perulangan</strong></span>
+</dd>
+<dt data-target-cell="annotated-cell-18" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-18" data-code-lines="11" data-code-annotation="4"><strong>Pengecekan III</strong></span>
+</dd>
+</dl>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sebagai catatan, kita tidak perlu paham cara kerja matematis fungsi diatas, tetapi cukup alur kerjanya saja.</p>
+</div>
+</div>
+<section id="isprime" class="level3">
+<h3 class="anchored" data-anchor-id="isprime"><code>IsPrime</code></h3>
+<p>Hal yang pertama kali diperhatikan ialah bahwa pada <strong>Pengecekan I</strong> dan <strong>II</strong>, fungsi melakukan pengecekan secara sederhana dan mengembalikan <code>bool</code>. Sementara itu, <strong>Pengecekan III</strong> terjadi pada beberapa nilai melalui <strong>Perulangan</strong>. Untuk itu, kita dapat membagi program manjadi dua alur dengan kerja berbeda secara berurutan: <strong>Pengecekan I</strong> dan <strong>II</strong> secara langsung, serta pengecekan dalam <strong>Perulangan</strong>. Karena terdapat perulangan, sementara fungsi <code>constexpr</code> pada C++ tidak mendukungnya, maka kita akan menggunakan <em>template</em> <code>struct</code>, dengan <em>member</em> <code>value</code> sebagai <code>bool</code> yang menunjukkan keprimaan inputnya:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">struct</span> IsPrime <span class="op">{</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value<span class="op">;</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dengan <code>N</code> sebagai input.</p>
+<p><em>Member</em> yang digunakan dalam <em>compile-time evaluation</em> haruslah menggunakan <em>modifier</em> <code>constexpr</code>, juga disarankan menjadikan variable tersebut <code>static</code>.</p>
+<p><code>struct</code> <code>IsPrime</code> disini akan kita gunakan sebagai pengvaluasi alur pertama, yaitu yang terdiri dari pengecekan langsung <strong>I</strong> dan <strong>II</strong>. Anggap <code>X</code> dan <code>Y</code> sebagai kondisi <strong>I</strong> dan <strong>II</strong>, jadikan keduanya sebagai input <em>template</em> <em>non-type</em>:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource c++ number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">bool</span> X<span class="op">,</span> <span class="dt">bool</span> Y<span class="op">&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="kw">struct</span> IsPrime <span class="op">{</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value<span class="op">;</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Menggunakan <em>template default argument</em>, nilai <code>bool</code> <code>X</code> dan <code>Y</code> kemudian diatur sesuai kondisi <strong>I</strong> dan <strong>II</strong>:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">bool</span> X <span class="op">=</span> <span class="op">(</span>N <span class="op">==</span> <span class="dv">2</span> <span class="op">||</span> N <span class="op">==</span> <span class="dv">3</span><span class="op">),</span> <span class="dt">bool</span> Y <span class="op">=</span> <span class="op">(</span>N <span class="op">&lt;=</span> <span class="dv">1</span> <span class="op">||</span> N <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> N <span class="op">%</span> <span class="dv">3</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="kw">struct</span> IsPrime <span class="op">{</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value<span class="op">;</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Hal ini membuat inisiasi <code>X</code> dan <code>Y</code> dapat terjadi cukup hanya dengan menyediakan input <code>N</code>. Sebagai contoh:</p>
+<ul>
+<li><code>IsPrime&lt;2&gt;</code> akan menginisiasi template <code>IsPrime&lt;2, true, true&gt;</code>.</li>
+<li><code>IsPrime&lt;10&gt;</code> akan menginisiasi template <code>IsPrime&lt;10, false, true&gt;</code>.</li>
+<li><code>IsPrime&lt;17&gt;</code> akan menginisiasi template <code>IsPrime&lt;17, false, false&gt;</code>.</li>
+</ul>
+<p>Selanjutnya, <strong>Pengecekan I</strong> menunjukkan jika kondisi <code>X</code> terpenuhi, maka <code>N</code> adalah bilangan prima (<code>value = true</code>) dan sebaliknya jika <code>Y</code> terpenuhi maka bilangan adalah non-prima (<code>value = false</code>). Maka, kita akan menggunakan <em>partial specialization</em> untuk masing-masing kondisi <code>X</code> dan <code>Y</code>.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">bool</span> Y<span class="op">&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="kw">struct</span> IsPrime<span class="op">&lt;</span>N<span class="op">,</span> <span class="kw">true</span><span class="op">,</span> Y<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Berikut adalah spesialiasi pertama <code>IsPrime</code> dengan <code>X = true</code>. Perhatikan bahwa <code>bool X</code> tidak ada pada parameter <em>template</em> (<code>template &lt;int N, bool Y&gt;</code>) dan <code>true</code> menjadi nilai argument <code>X</code> pada spesialisasi (<code>IsPrime&lt;N, true, Y&gt;</code>). Serupa dengan kondisi <code>X</code> di atas, kondisi <code>Y</code> menggunakan <em>partial specialization</em> yang persis, tetapi nilai <code>value</code> menjadi <code>false</code> (menurut <strong>Pengecekan II</strong>).</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">bool</span> X<span class="op">&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="kw">struct</span> IsPrime<span class="op">&lt;</span>N<span class="op">,</span> X<span class="op">,</span> <span class="kw">true</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="isprimeloop" class="level3">
+<h3 class="anchored" data-anchor-id="isprimeloop"><code>IsPrimeLoop</code></h3>
+<p>Alur awal untuk pengecekan <strong>I</strong> dan <strong>II</strong> sudah dapat didapatkan dengan <code>struct</code> <code>IsPrime</code> dan 2 spesialisasinya di atas. Untuk alur selanjutnya, yang terdiri dari perulangan, maka kita gunakan <code>struct</code> pembantu, sebut saja <code>IsPrimeLoop</code>. Karena perulangan <code>for</code> dan <code>while</code> tidak tersedia dalam operasi <em>template</em> maka kita akan menggunakan <strong>rekursi</strong>.</p>
+<p>Berdasarkan fungsi asal, perulangan terjadi dengan:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb24-1"><a href="#cb24-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">5</span><span class="op">;</span> i <span class="op">*</span> i <span class="op">&lt;=</span> n<span class="op">;</span> i <span class="op">+=</span> <span class="dv">6</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>    <span class="co">//...</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Sehingga kita akan menggunakan sebuah index <code>I</code> yang dimulai dari <span class="math inline">\(5\)</span>, dengan <em>increment</em> sebesar <span class="math inline">\(6\)</span>, dan kondisional <span class="math inline">\(I^2 \leq N\)</span>. Agar nilai <code>I</code> dapat <em>persist</em> dalam tiap perulangan rekursi, maka <code>I</code> haruslah menjadi salah satu input dari evaluasi <code>IsPrimeLoop</code>, dan <em>partial specialization</em> seperti pada <code>IsPrime</code> dapat digunakan untuk pengecekan kondisional perulangannya, disini mari kita lambangkan dengan <code>C</code>:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">int</span> I<span class="op">,</span> <span class="dt">bool</span> C <span class="op">=</span> <span class="op">(</span>I <span class="op">*</span> I <span class="op">&lt;=</span> N<span class="op">)&gt;</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="kw">struct</span> IsPrimeLoop <span class="op">{};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong><em>Pengecekan III</em></strong> yang terjadi dalam perulangan adalah kondisional lainnya, sehingga juga dapat dijadikan parameter untuk <code>IsPrimeLoop</code>, dan mari kita lambangkan dengan <code>Z</code> (berurut dengan pengecekan <strong>I</strong>, <strong>II</strong>, dan <strong>III</strong>):</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">int</span> I<span class="op">,</span> <span class="dt">bool</span> C <span class="op">=</span> <span class="op">(</span>I <span class="op">*</span> I <span class="op">&lt;=</span> N<span class="op">),</span> <span class="dt">bool</span> Z <span class="op">=</span> <span class="op">(</span>N <span class="op">%</span> I <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> N <span class="op">%</span> <span class="op">(</span>I <span class="op">+</span> <span class="dv">2</span><span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="kw">struct</span> IsPrimeLoop <span class="op">{};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Berdasarkan nilai <code>C</code> dan <code>Z</code>, maka <code>IsPrimeLoop</code> akan berada pada 3 kondisi, yang dapat dispesialisasi dengan <em>partial specialization</em>:</p>
+<ol class="example" type="1">
+<li><code>&lt;..., true, false&gt;</code></li>
+</ol>
+<p>Loop belum berakhir, pengecekan <strong>III</strong> memberikan <code>false</code>, maka <code>value</code> diset ke rekursi <code>isPrimeLoop&lt;N, I + 6&gt;::value</code> karena menurut fungsi asal, <em>increment</em>-nya ialah <code>i += 6</code>. Hal ini memberikan spesialisasi berupa:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">int</span> I<span class="op">&gt;</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="kw">struct</span> IsPrimeLoop<span class="op">&lt;</span>N<span class="op">,</span> I<span class="op">,</span> <span class="kw">true</span><span class="op">,</span> <span class="kw">false</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> IsPrimeLoop<span class="op">&lt;</span>N<span class="op">,</span> I <span class="op">+</span> <span class="dv">6</span><span class="op">&gt;::</span>value<span class="op">;</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="2" class="example" type="1">
+<li><code>&lt;..., false, E&gt;</code></li>
+</ol>
+<p>Kondisi <code>C</code> menjadi <code>false</code>, artinya loop sudah berakhir tanpa ada <code>I</code> dan <code>I + 2</code> yang dapat membagi habis <code>N</code> (menutur fungsi asal <code>isPrime</code>), sehingga <code>N</code> adalah prima (<code>value = true</code>).</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">int</span> I<span class="op">,</span> <span class="dt">bool</span> E<span class="op">&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="kw">struct</span> IsPrimeLoop<span class="op">&lt;</span>N<span class="op">,</span> I<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> E<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="3" class="example" type="1">
+<li><code>&lt;..., true, true&gt;</code></li>
+</ol>
+<p>Pada <em>state</em> ini, loop belum berakhir dan nilai <code>N</code> memenuhi kondisi pengecekan <strong>III</strong>, yang berarti bilangan adalah non-prima (<code>value = false</code>).</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="kw">auto</span> N<span class="op">,</span> <span class="dt">int</span> I<span class="op">&gt;</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a><span class="kw">struct</span> IsPrimeLoop<span class="op">&lt;</span>N<span class="op">,</span> I<span class="op">,</span> <span class="kw">true</span><span class="op">,</span> <span class="kw">true</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb29-3"><a href="#cb29-3"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb29-4"><a href="#cb29-4"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>IsPrimeLoop</code> dan 3 spesialisasinya diatas telah mengadaptasi bagian kedua dari fungsi <code>isPrime</code>, tetapi bagaimana hubungan <code>struct</code> <code>IsPrime</code> dan <code>IsPrimeLoop</code>? Alur perulangan terjadi ketika kondisi <strong>I</strong> dan <strong>II</strong> tidak terpenuhi, yang mana akan mengakibatkan <em>early return</em> jika terpenuhi. Hal ini menunjukkan bahwa alur kedua (<strong>Perulangan</strong> dan pengecekan <strong>III</strong>) terjadi hanya jika kondisi <strong>I</strong> dan kemudian <strong>II</strong> bernilai tidak terpenuhi. Dengan kata lain, <code>IsPrimeLoop</code> terjadi ketika <code>X</code> dan <code>Y</code> bernilai <code>false</code>. Tanpa menambahkan spesialisasi untuk kondisi tersebut, <code>IsPrimeLoop</code> dapat dievaluasi ketika spesialisasi tidak terjadi (pada definisi <code>IsPrime</code>):</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">bool</span> X <span class="op">=</span> <span class="op">(</span>N <span class="op">==</span> <span class="dv">2</span> <span class="op">||</span> N <span class="op">==</span> <span class="dv">3</span><span class="op">),</span> <span class="dt">bool</span> Y <span class="op">=</span> <span class="op">(</span>N <span class="op">&lt;=</span> <span class="dv">1</span> <span class="op">||</span> N <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> N <span class="op">%</span> <span class="dv">3</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="kw">struct</span> IsPrime <span class="op">{</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> IsPrimeLoop<span class="op">&lt;</span>N<span class="op">,</span> <span class="dv">5</span><span class="op">&gt;::</span>value<span class="op">;</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dengan <code>I = 5</code> sebagai indeks awal.</p>
+</section>
+</section>
+<section id="wrapping-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrapping-up"><em>Wrapping Up…</em></h2>
+<p>Sampai di sini, kita telah berhasil mengadaptasi fungsi <em>runtime</em> <code>isPrime</code> ke evaluasi <em>compile-time</em> <code>IsPrime</code>. Berikut kode <em>full</em>-nya (dalam bentuk <em>header</em>):</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb31-1"><a href="#cb31-1"></a><span class="co">// isprime.h</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a><span class="pp">#pragma once</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a></span>
+<span id="cb31-4"><a href="#cb31-4"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">int</span> I<span class="op">,</span> <span class="dt">bool</span> C <span class="op">=</span> <span class="op">(</span>I <span class="op">*</span> I <span class="op">&lt;=</span> N<span class="op">),</span> <span class="dt">bool</span> Z <span class="op">=</span> <span class="op">(</span>N <span class="op">%</span> I <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> N <span class="op">%</span> <span class="op">(</span>I <span class="op">+</span> <span class="dv">2</span><span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)&gt;</span></span>
+<span id="cb31-5"><a href="#cb31-5"></a><span class="kw">struct</span> IsPrimeLoop <span class="op">{};</span></span>
+<span id="cb31-6"><a href="#cb31-6"></a></span>
+<span id="cb31-7"><a href="#cb31-7"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">int</span> I<span class="op">&gt;</span></span>
+<span id="cb31-8"><a href="#cb31-8"></a><span class="kw">struct</span> IsPrimeLoop<span class="op">&lt;</span>N<span class="op">,</span> I<span class="op">,</span> <span class="kw">true</span><span class="op">,</span> <span class="kw">false</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb31-9"><a href="#cb31-9"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> IsPrimeLoop<span class="op">&lt;</span>N<span class="op">,</span> I <span class="op">+</span> <span class="dv">6</span><span class="op">&gt;::</span>value<span class="op">;</span></span>
+<span id="cb31-10"><a href="#cb31-10"></a><span class="op">};</span></span>
+<span id="cb31-11"><a href="#cb31-11"></a></span>
+<span id="cb31-12"><a href="#cb31-12"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">int</span> I<span class="op">,</span> <span class="dt">bool</span> E<span class="op">&gt;</span></span>
+<span id="cb31-13"><a href="#cb31-13"></a><span class="kw">struct</span> IsPrimeLoop<span class="op">&lt;</span>N<span class="op">,</span> I<span class="op">,</span> <span class="kw">false</span><span class="op">,</span> E<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb31-14"><a href="#cb31-14"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb31-15"><a href="#cb31-15"></a><span class="op">};</span></span>
+<span id="cb31-16"><a href="#cb31-16"></a></span>
+<span id="cb31-17"><a href="#cb31-17"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">int</span> I<span class="op">&gt;</span></span>
+<span id="cb31-18"><a href="#cb31-18"></a><span class="kw">struct</span> IsPrimeLoop<span class="op">&lt;</span>N<span class="op">,</span> I<span class="op">,</span> <span class="kw">true</span><span class="op">,</span> <span class="kw">true</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb31-19"><a href="#cb31-19"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb31-20"><a href="#cb31-20"></a><span class="op">};</span></span>
+<span id="cb31-21"><a href="#cb31-21"></a></span>
+<span id="cb31-22"><a href="#cb31-22"></a><span class="kw">template</span><span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">bool</span> X <span class="op">=</span> <span class="op">(</span>N <span class="op">==</span> <span class="dv">2</span> <span class="op">||</span> N <span class="op">==</span> <span class="dv">3</span><span class="op">),</span> <span class="dt">bool</span> Y <span class="op">=</span> <span class="op">(</span>N <span class="op">&lt;=</span> <span class="dv">1</span> <span class="op">||</span> N <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> N <span class="op">%</span> <span class="dv">3</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)&gt;</span></span>
+<span id="cb31-23"><a href="#cb31-23"></a><span class="kw">struct</span> IsPrime <span class="op">{</span></span>
+<span id="cb31-24"><a href="#cb31-24"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> IsPrimeLoop<span class="op">&lt;</span>N<span class="op">,</span> <span class="dv">5</span><span class="op">&gt;::</span>value<span class="op">;</span></span>
+<span id="cb31-25"><a href="#cb31-25"></a><span class="op">};</span></span>
+<span id="cb31-26"><a href="#cb31-26"></a></span>
+<span id="cb31-27"><a href="#cb31-27"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">bool</span> Y<span class="op">&gt;</span></span>
+<span id="cb31-28"><a href="#cb31-28"></a><span class="kw">struct</span> IsPrime<span class="op">&lt;</span>N<span class="op">,</span> <span class="kw">true</span><span class="op">,</span> Y<span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb31-29"><a href="#cb31-29"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb31-30"><a href="#cb31-30"></a><span class="op">};</span></span>
+<span id="cb31-31"><a href="#cb31-31"></a></span>
+<span id="cb31-32"><a href="#cb31-32"></a><span class="kw">template</span> <span class="op">&lt;</span><span class="dt">int</span> N<span class="op">,</span> <span class="dt">bool</span> X<span class="op">&gt;</span></span>
+<span id="cb31-33"><a href="#cb31-33"></a><span class="kw">struct</span> IsPrime<span class="op">&lt;</span>N<span class="op">,</span> X<span class="op">,</span> <span class="kw">true</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb31-34"><a href="#cb31-34"></a>    <span class="at">static</span> <span class="kw">constexpr</span> <span class="dt">bool</span> value <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb31-35"><a href="#cb31-35"></a><span class="op">};</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Fungsi ini dapat digunakan dengan mengakses <em>member</em> <code>value</code> pada <code>struct</code> <code>IsPrime&lt;N&gt;</code>:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb32-1"><a href="#cb32-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>    <span class="dt">bool</span> is_6127_prime <span class="op">=</span> IsPrime<span class="op">&lt;</span><span class="dv">6127</span><span class="op">&gt;::</span>value<span class="op">;</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a>    <span class="bu">std::</span>cout<span class="op"> &lt;&lt;</span> <span class="st">"6127 "</span> <span class="op">&lt;&lt;</span> <span class="op">(</span>is_6127_prime <span class="op">?</span> <span class="st">"is "</span> <span class="op">:</span> <span class="st">"is not "</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"prime."</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb32-4"><a href="#cb32-4"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p>Eksekusi kode pada <a href="https://godbolt.org/z/9eczazh66">Compiler Explorer</a>.</p>
+</blockquote>
+<p>Anda telah berhasil membuat <em>compile-time function</em> menggunakan template pada C++11!</p>
+<div class="callout callout-style-default callout-important callout-titled" title="`template instantiation depth exceed...`">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<code>template instantiation depth exceed...</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Jika anda menggunakan input yang sangat besar, kompiler bisa saja komplain karena terdapat template dengan rekursi yang cukup dalam. Dalam kasus ini, dapat digunakan <em>flag</em> <code>-ftemplate-depth=K</code> dengan <code>K</code> <em>depth</em> yang baru. Sebagai contoh dengan input <span class="math inline">\(1746987019\)</span>, maka kompilasi yang bekerja ialah:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">gcc</span> main.cpp <span class="at">-ftemplate-depth</span><span class="op">=</span>20000</span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Anda dapat bereksperimen untuk berbagai nilai <em>depth</em> dan input, tetapi cukup diperhatikan bahwa fungsi-fungsi <em>compile-time</em> akan menambah waktu kompilasi, apa lagi fungsi yang berat dan kompleks.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="`consteval`">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<code>consteval</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>C++20</strong> memperkenalkan <em>keyword</em> baru <code>consteval</code> yang digunakan pada sebuah fungsi untuk menjadikannya <em>immediate function</em> yang akan dievaluasi pada <em>compile=time</em>, jadi tidak usah repot-repot menggunakan cara di atas jika menggunakan keyword ini. Maka jerih payah kita di atas dapat secara praktis ditukar dengan:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw">consteval</span> <span class="dt">bool</span> isPrime<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a>    <span class="co">// ...persis fungsi di atas...</span></span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<hr>
+<p>Artikel ini ditulis bersamaan dengan penulisan <em>header-only C++ 11 library</em> <a href="https://github.com/deadManAlive/comptime"><strong><em>comptime</em></strong></a> oleh penulis yang berisi kumpulan fungsi-fungsi <em>compile-time</em>. Hingga saat ini, <em>library</em> masih dalam status WIP. Jika pembaca ingin berkontribusi, penulis persilahkan dengan senang hati ❤.</p>
+<p>…</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Kembali ke atas</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Disalin!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Disalin!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><a href="../../disclaimer.html" title="Dilisensikan oleh Muhammad Rafky Alfarrakhan.S"><img src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" class="img-fluid" alt="cc-by-sa"></a></div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/deadManAlive">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/lngtmknmndng_">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">Website ini dibangun dengan <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
