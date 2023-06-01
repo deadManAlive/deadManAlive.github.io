@@ -7,98 +7,78 @@ image: "image.jpg"
 format:
   html:
     echo: false
-description: Beberapa tools konversi data 
+    include-in-header:
+      - text: |
+          <script src="./assets/func.js"></script>
+description: Beberapa tools konversi data (WIP)
 ---
 
-```{ojs}
-wasmResp = await fetch("assets/lib.wasm");
-wasmBuff = await wasmResp.arrayBuffer();
-wasmMod = await WebAssembly.instantiate(wasmBuff);
-bfloat_to_binary= wasmMod.instance.exports.float_to_binary;
+## Konverter
 
-f2b = (val) => {
-  const bRepPtr = bfloat_to_binary(val);
-  const bRepPtrArr = new Uint8Array(wasmMod.instance.exports.memory.buffer, bRepPtr, 32);
-  return new TextDecoder('utf-8').decode(bRepPtrArr);
-}
+<iframe id="bconv" src="https://deadmanalive.github.io/bconv/" style="border: none; margin: 0; padding: 0; width: 100%; height: auto; margin: 0; padding: 0;"></iframe>
 
-bi24_to_binary = wasmMod.instance.exports.i24_to_binary;
-
-i2b = (val) => {
-  const bRepPtr = bi24_to_binary(val);
-  const bRepPtrArr = new Uint8Array(wasmMod.instance.exports.memory.buffer, bRepPtr, 24);
-  return new TextDecoder('utf-8').decode(bRepPtrArr);
-}
-```
+## Algoritma
 
 ### `float32` ke biner
 
-:::{.callout-note collapse="true" title="Algoritma Konversi `float32` ke biner"}
-```rust
-float_to_binary(num: f32) -> *const u8 {
-    let binary_rep = format!("{:032b}", num.to_bits());
-    binary_rep.as_ptr()
+```javascript
+function float_to_binary(val) {
+    const f32repr = new Float32Array([val]);
+    const u32repr = new Uint32Array(f32repr.buffer);
+  
+    let qtn = u32repr[0];
+    let res = "";
+    while(true) {
+        let rem = qtn % 2;
+        res += rem;
+
+        qtn = Math.floor(qtn / 2);
+  
+        if (qtn < 1) {
+            break;
+        }
+    }
+
+    while (res.length < 32) {
+        res += "0";
+    }
+
+    return res.split("").reverse().join("");
 }
-```
-:::
-
-```{ojs}
-//| panel: input
-viewof val = Inputs.number([-Infinity, Infinity], {
-  label: "Bilangan desimal:",
-  value: 0,
-  placeholder: "0.0"
-});
-```
-
-```{ojs}
-//| panel: fill
-res = f2b(val);
-Inputs.text({label: tex`\verb|float32|`, value: res, disabled: true, width: 400});
-Inputs.text({label: "Sign bit", value: res.slice(0, 1), disabled: true, width: 300});
-Inputs.text({label: "Exponent bits", value: res.slice(1, 9), disabled: true, width: 300});
-Inputs.text({label: "Mantissa bits", value: res.slice(9), disabled: true, width: 300});
 ```
 
 ### `int24` ke biner
 
 Karena 24-bit bukanlah ukuran data *native* pada komputer, maka konversi `int24` dilakukan dengan mengekstrak 1-bit *sign* dan 23-bit *least significat bits* dari sebuah `int32` bit.
 
-:::{.callout-note collapse="true" title="Algoritma Konversi `int24` ke biner"}
-Di sini digunakan `rust` karena manipulasi bit lebih mudah dilakukan (bagi penulis) dan juga kedua konverter pada halaman ini sebenarnya ditulis dengan `rust` dan `wasm`.
 
-```rust
-fn i24_to_binary(num: i32) -> *const u8 {
-    let sign = if num < 0 { 1 } else { 0 };
-    let abs_num = num.abs();
+```javascript
+function i24_to_binary(val) {
+    val = Math.trunc(val);
 
-    let mut b_repr = String::new();
-
-    b_repr.push_str(&sign.to_string());
-
-    for i in (0..23).rev() {
-        b_repr.push_str(&(((abs_num >> i) & 1).to_string()));
+    if (val < -8388608 || val > 8388607) {
+        throw new Error("Input is out of 24-bit signed range!");
     }
 
-    b_repr.as_ptr()
+    const sign = val < 0 ? "1" : "0";
+    let qtn = Math.abs(val);
+    let res = "";
+
+    while(true) {
+        let rem = qtn % 2;
+        res += rem;
+
+        qtn = Math.floor(qtn / 2);
+
+        if (qtn < 1) {
+            break;
+        }
+    }
+
+    while (res.length < 23) {
+        res += "0";
+    }
+
+    return [sign, ...res.split("").reverse()].join("");
 }
-```
-:::
-
-```{ojs}
-//| panel: input
-viewof val2 = Inputs.number([-8388608, 8388607], {
-  label: "Bilangan bulat:",
-  value: 0,
-  placeholder: 0,
-  step: 1
-});
-```
-
-```{ojs}
-//| panel: fill
-res2 = i2b(val2);
-Inputs.text({label: tex`\verb|int24|`, value: res2, disabled: true, width: 400});
-Inputs.text({label: "Sign bit", value: res2.slice(0, 1), disabled: true, width: 300});
-Inputs.text({label: "Number bit", value: res2.slice(1), disabled: true, width: 300});
 ```

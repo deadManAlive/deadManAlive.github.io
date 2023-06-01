@@ -314,18 +314,14 @@ Sehingga kita akan menggunakan sebuah index `I` yang dimulai dari $5$, dengan *i
 
 ```c++
 template<int N, int I, bool C = (I * I <= N)>
-struct IsPrimeLoop {
-    static constexpr bool value;
-};
+struct IsPrimeLoop {};
 ```
 
 ***Pengecekan III*** yang terjadi dalam perulangan adalah kondisional lainnya, sehingga juga dapat dijadikan parameter untuk `IsPrimeLoop`, dan mari kita lambangkan dengan `Z` (berurut dengan pengecekan **I**, **II**, dan **III**):
 
 ```c++
 template<int N, int I, bool C = (I * I <= N), bool Z = (N % I == 0 || N % (I + 2) == 0)>
-struct IsPrimeLoop {
-    static constexpr bool value;
-};
+struct IsPrimeLoop {};
 ```
 
 Berdasarkan nilai `C` dan `Z`, maka `IsPrimeLoop` akan berada pada 3 kondisi, yang dapat dispesialisasi dengan *partial specialization*:
@@ -383,9 +379,7 @@ Sampai di sini, kita telah berhasil mengadaptasi fungsi *runtime* `isPrime` ke e
 #pragma once
 
 template<int N, int I, bool C = (I * I <= N), bool Z = (N % I == 0 || N % (I + 2) == 0)>
-struct IsPrimeLoop {
-    static constexpr bool value;
-};
+struct IsPrimeLoop {};
 
 template<int N, int I>
 struct IsPrimeLoop<N, I, true, false> {
@@ -397,7 +391,7 @@ struct IsPrimeLoop<N, I, false, E> {
     static constexpr bool value = true;
 };
 
-template<auto N, int I>
+template<int N, int I>
 struct IsPrimeLoop<N, I, true, true> {
     static constexpr bool value = false;
 };
@@ -421,13 +415,14 @@ struct IsPrime<N, X, true> {
 Fungsi ini dapat digunakan dengan mengakses *member* `value` pada `struct` `IsPrime<N>`:
 
 ```c++
-
 int main() {
     bool is_6127_prime = IsPrime<6127>::value;
-    std::cout << "6127 " << is_6127_prime ? "is " : "is not " << "prime." << std::endl;
+    std::cout << "6127 " << (is_6127_prime ? "is " : "is not ") << "prime." << std::endl;
 }
 
 ```
+
+> Eksekusi kode pada [Compiler Explorer](https://godbolt.org/z/9eczazh66).
 
 Anda telah berhasil membuat *compile-time function* menggunakan template pada C++11!
 

@@ -9,16 +9,16 @@ format:
     echo: false
 ---
 
-> Go back to [main page](#go-back).
+<hr>
 
-:::{#go-back}
-[<img src="https://picsum.photos/600/400" style="width: 100%;">](index.qmd "Maybe click here?")
+:::{.column-screen}
+[<img src="https://picsum.photos/1280/760?grayscale" style="width: 100%;">](index.qmd "Maybe click here?")
 :::
 
-This blog is licensed as [**CC-BY-SA**](https://creativecommons.org/licenses/by-sa/4.0/) so you are **free to share and modify** this blog BUT you **must attribute me** and **redistribute with the exact license as this original project**, located on this [repo](https://github.com/deadManAlive/deadManAlive.github.io), except otherwise stated.
+<hr>
+
+This blog is licensed as [**CC-BY-SA**](https://creativecommons.org/licenses/by-sa/4.0/) so you should be **free to share and modify** entire of parts of this website BUT you **have to attribute the original writer** (me) and **redistribute with the exact license as this original project**, located on this [repo](https://github.com/deadManAlive/deadManAlive.github.io), except otherwise stated.
 
 For mistakes and error, you can email me at <a href = "mailto: embryon.id@gmail.com">`embryon.id@gmail.com`</a>.
 
-All that is it written in this blog is **intentional** by and **only** by writer (Dead Man). If some statements in this blog offend you, **I don't care**. Maybe I **intentionally** tried to offend people like you, who knows?
-
-> Click here to go back to the [main page](#go-back).
+All that is it written in this blog is fully **intentional** and **voluntary** by and **only** by writer (Dead Man), albeit any might be considered offensive or insensitive, it is provided as is for educational purpose and by accessing this website, readers comply to the statement that the writer (Dead Man) does not and will not bear any responsibility whatsoever on reader's use of provided informations.

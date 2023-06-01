@@ -45,14 +45,14 @@
         <div class="arc-card">
           <div class="arc-card-image" style="background-image: url('<%- item.image %>');">
           </div>
-          <div style="padding: 1em;">
+          <div style="padding: 1em; width: 100%;">
             <% const ptitle = item.title.replace(/`([^`]+)`/g, '<code>$1</code>'); %>
             <b class="arc-card-title"><%= ptitle %></b>
-            <hr>
+            <hr style="margin-bottom: 5px;">
             <div class="arc-date">
-              <%- item.date %>
+              <%- item.date.split(" ").slice(0, 2).join(" ") %>
             </div>
-            <div>
+            <div class="arc-desc">
               <% const desc = item.description; %>
               <% const dalt = `<!-- desc(5A0113B34292)[max=50]:${item.outputHref} -->`; %>
               <% const descf = /^<!--.*-->$/g.test(desc) ? `${dalt}` : desc; %>
@@ -72,14 +72,13 @@
   }
   .arc-card {
     border: 1px solid gainsboro;
-    border-radius: 10px;
+    border-radius: 5px;
     display: flex;
     flex-direction: row;
     min-height: 160px;
     margin-bottom: 20px;
     box-shadow: 0 3px 7px -3px rgba(#000, .4);
     width: 75%;
-    max-width: 90%;
     overflow: hidden;
     &:hover {
       .arc-card-image {
@@ -88,19 +87,33 @@
     }
   }
   .arc-card-image {
-    border-radius: 10px 0 0 10px;
+    border-radius: 5px 0 0 5px;
     min-width: 30%;
     background-size: cover;
     transition: all .2s;
     background-position: center;
-    box-shadow: 8px 0 2px 1px rgba(#000, .4);
+    box-shadow: 0px 3px 7px -3px rgba(#000, .4);
   }
   .arc-card-title {
     color: cornflowerblue;
   }
   .arc-date {
     font-size: small;
+    padding: 0 4px 0 4px;
+    margin-bottom: 8px;
     color: blanchedalmond;
+    background-color: mediumseagreen;
+    border: 1px solid blanchedalmond;
+    border-radius: 5px;
+    width: fit-content;
+  }
+  .arc-desc {
+    color: mediumseagreen;
+  }
+  @media only screen and (max-width: 768px) {
+    .arc-card {
+      width: 100%;
+    }
   }
 </style>
 

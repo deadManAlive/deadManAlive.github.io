@@ -11,7 +11,8 @@ sidebar: false
 * **[Visual Studio Code](https://code.visualstudio.com/)**: Text editor paling populer untuk pemrograman. Dengan bantuan banyak ekstensi-ekstensi yang tersedia di [marketplace](https://marketplace.visualstudio.com/vscode), fungsionalitasnya dapat disesuikan dengan bahasa, framework, hingga kebutuhan dan preferensi *user*. *<u>Highly recommended</u>*.
 * **[Scoop](https://scoop.sh/)**: Alternatif `apt`, `pacman`, dsb. untuk Windows (meskipun lebih sebagai "*command line insaller*" dari pada "*package manager*"). *<u>Recommended</u>*. Alternatif lain: [chocolatey](https://chocolatey.org/), [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/).
 * **[Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-id&gl=id&rtc=1)**: Terminal emulator terbaik untuk Windows, *built-in* sejak Windows 11. *<u>Recommended</u>*.
-* **[Visual Studio](https://visualstudio.microsoft.com/) dan/atau *Build Tools*-nya**: IDE + *bundle compiler*, *SDK*, *Library* untuk pemrograman di Windows menggunakan `C++`, `C#`, dll. Cukup *<u>wajib</u>* jika ingin mengkompilasi aplikasi dengan *compiler* utama Windows (**Visual C++**).
+* **[Visual Studio](https://visualstudio.microsoft.com/) dan/atau *Build Tools*-nya**: IDE + *bundle compiler*, *SDK*, *Library* untuk pemrograman di Windows menggunakan `C++`, `C#`, dll. Cukup *<u>wajib</u>* jika ingin mengkompilasi aplikasi dengan *compiler* utama Windows (**Visual C++**). *<u>Mandatory(?)</u>*
+* **Compiler Explorer** ([https://godbolt.org/](https://godbolt.org/)): Website yang menyediakan tools untuk mengkompilasi, *disaassembly*, dan mengeksekusi berbagai macam bahasa pemrograman dan *compiler*. Dapat digunakan untuk dengan cepat menguji algoritma, membandingkan *compiler* dan bahasa pemrograman, serta mengecek efisiensi program yang ditulis. 
 
 ## Daftar putar
 

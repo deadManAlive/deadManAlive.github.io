@@ -1,6 +1,7 @@
 project:
   type: website
-  preview: 
+  preview:
+    host: "0.0.0.0" 
     port: 8765
     browser: false
 website:
@@ -26,8 +27,6 @@ website:
         menu:
           - text: "Catatan"
             file: notes.qmd
-          - text: Lisensi
-            file: disclaimer.qmd
     tools:
       - icon: github
         text: Github
@@ -57,7 +56,7 @@ website:
     style: floating
     alignment: center
   page-footer:
-    left: "[![cc-by-sa](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)](http://creativecommons.org/licenses/by-sa/4.0/ \"Dilisensikan oleh Muhammad Rafky Alfarrakhan.S\")"
+    left: "[![cc-by-sa](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)](/disclaimer.qmd \"Dilisensikan oleh Muhammad Rafky Alfarrakhan.S\")"
     right: "Website ini dibangun dengan [Quarto](https://quarto.org/)."
     center:
       - icon: github
@@ -82,6 +81,7 @@ format:
     toc-location: right
     toc-title: Konten
     toc-depth: 5
+    toc-expand: 2
     code-fold: true
     tbl-cap-location: bottom
     code-line-numbers: true
@@ -91,3 +91,5 @@ format:
 lang: id
 resources:
   - "posts/**/assets/*"
+execute: 
+  freeze: auto
