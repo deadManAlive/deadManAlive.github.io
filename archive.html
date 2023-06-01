@@ -39,12 +39,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -101,6 +99,13 @@ ul.task-list li input[type="checkbox"] {
 }
 </script>
 <script async="" src="https://hypothes.is/embed.js"></script>
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background-image: url(index.png);
+background-size: cover;
+      }
+</style>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -144,19 +149,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./archive.html" rel="" target="">
  <span class="menu-text">Arsip</span></a>
   </li>  
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-three-dots" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
-      <i class="bi bi-three-dots" role="img">
-</i> 
- <span class="menu-text"></span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-bi-three-dots">    
-        <li>
-    <a class="dropdown-item" href="./notes.html" rel="" target="">
- <span class="dropdown-text">Catatan</span></a>
+  <li class="nav-item">
+    <a class="nav-link" href="./notes.html" rel="" target="">
+ <span class="menu-text">Catatan</span></a>
   </li>  
-    </ul>
-  </li>
 </ul>
             <div class="quarto-navbar-tools ms-auto tools-wide">
     <a href="https://github.com/deadManAlive" title="Github" class="quarto-navigation-tool px-1" aria-label="Github"><i class="bi bi-github"></i></a>
@@ -176,7 +172,6 @@ ul.task-list li input[type="checkbox"] {
           </li>
       </ul>
     </div>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
@@ -284,12 +279,12 @@ ul.task-list li input[type="checkbox"] {
           <div class="arc-card-image" style="background-image: url('/posts/extra-konverter/image.jpg');">
           </div>
           <div style="padding: 1em; width: 100%;">
-            <b class="arc-card-title">Musitech: EXTRA - Konverter <code>float32</code> dan <code>int24</code></b>
+            <h5 class="no-anchor card-title listing-title">Musitech: EXTRA - Konverter <code>float32</code> dan <code>int24</code></h5>
             <hr style="margin-bottom: 5px;">
-            <div class="arc-date">
+            <div class="listing-category arc-date">
               14 Mei
             </div>
-            <div class="arc-desc">
+            <div class="card-text listing-description arc-desc">
               Beberapa tools konversi data (WIP)
             </div>
           </div>
@@ -302,12 +297,12 @@ ul.task-list li input[type="checkbox"] {
           <div class="arc-card-image" style="background-image: url('/posts/24int-vs-32float-ii/image.jpg');">
           </div>
           <div style="padding: 1em; width: 100%;">
-            <b class="arc-card-title">Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part II</b>
+            <h5 class="no-anchor card-title listing-title">Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part II</h5>
             <hr style="margin-bottom: 5px;">
-            <div class="arc-date">
+            <div class="listing-category arc-date">
               12 Mei
             </div>
-            <div class="arc-desc">
+            <div class="card-text listing-description arc-desc">
               Setelah membahas sedikit tentang dasar sistem <em>floating-…</em><strong></strong><strong><em></em></strong>
             </div>
           </div>
@@ -323,12 +318,12 @@ ul.task-list li input[type="checkbox"] {
           <div class="arc-card-image" style="background-image: url('/posts/fs-vs-bd/image.jpg');">
           </div>
           <div style="padding: 1em; width: 100%;">
-            <b class="arc-card-title">Musitech: Sample Rate &amp; Bit Depth</b>
+            <h5 class="no-anchor card-title listing-title">Musitech: Sample Rate &amp; Bit Depth</h5>
             <hr style="margin-bottom: 5px;">
-            <div class="arc-date">
+            <div class="listing-category arc-date">
               28 Apr
             </div>
-            <div class="arc-desc">
+            <div class="card-text listing-description arc-desc">
               Untuk mengetahui perihal <em>sample rate</em> dan <em>bit depth</em>, maka parameter-parameter penting dari sebuah…
             </div>
           </div>
@@ -341,12 +336,12 @@ ul.task-list li input[type="checkbox"] {
           <div class="arc-card-image" style="background-image: url('/posts/prime-template/image.jpg');">
           </div>
           <div style="padding: 1em; width: 100%;">
-            <b class="arc-card-title">CXX: Template Metaprogramming Praktis Pada C++11</b>
+            <h5 class="no-anchor card-title listing-title">CXX: Template Metaprogramming Praktis Pada C++11</h5>
             <hr style="margin-bottom: 5px;">
-            <div class="arc-date">
+            <div class="listing-category arc-date">
               14 Apr
             </div>
-            <div class="arc-desc">
+            <div class="card-text listing-description arc-desc">
               <strong><em>Template metaprogramming</em></strong> merupak…<em></em><em></em><em></em><em></em><em></em><em></em><em></em><em></em>
             </div>
           </div>
@@ -362,12 +357,12 @@ ul.task-list li input[type="checkbox"] {
           <div class="arc-card-image" style="background-image: url('/posts/24int-vs-32float/image.jpg');">
           </div>
           <div style="padding: 1em; width: 100%;">
-            <b class="arc-card-title">Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part I</b>
+            <h5 class="no-anchor card-title listing-title">Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part I</h5>
             <hr style="margin-bottom: 5px;">
-            <div class="arc-date">
+            <div class="listing-category arc-date">
               31 Mar
             </div>
-            <div class="arc-desc">
+            <div class="card-text listing-description arc-desc">
               Perdebatan tentang kualitas audio digital sudah…<em></em><em></em><em></em><em></em>
             </div>
           </div>
@@ -410,14 +405,12 @@ ul.task-list li input[type="checkbox"] {
     font-size: small;
     padding: 0 4px 0 4px;
     margin-bottom: 8px;
-    color: blanchedalmond;
-    background-color: mediumseagreen;
-    border: 1px solid blanchedalmond;
+    border: 1px solid #1a1a1a80;
     border-radius: 5px;
     width: fit-content;
   }
   .arc-desc {
-    color: mediumseagreen;
+    font-size: .9em;
   }
   @media only screen and (max-width: 768px) {
     .arc-card {
@@ -449,121 +442,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
-  const disableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'prefetch';
-    }
-  }
-  const enableStylesheet = (stylesheets) => {
-    for (let i=0; i < stylesheets.length; i++) {
-      const stylesheet = stylesheets[i];
-      stylesheet.rel = 'stylesheet';
-    }
-  }
-  const manageTransitions = (selector, allowTransitions) => {
-    const els = window.document.querySelectorAll(selector);
-    for (let i=0; i < els.length; i++) {
-      const el = els[i];
-      if (allowTransitions) {
-        el.classList.remove('notransition');
-      } else {
-        el.classList.add('notransition');
-      }
-    }
-  }
-  const toggleColorMode = (alternate) => {
-    // Switch the stylesheets
-    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-    manageTransitions('#quarto-margin-sidebar .nav-link', false);
-    if (alternate) {
-      enableStylesheet(alternateStylesheets);
-      for (const sheetNode of alternateStylesheets) {
-        if (sheetNode.id === "quarto-bootstrap") {
-          toggleBodyColorMode(sheetNode);
-        }
-      }
-    } else {
-      disableStylesheet(alternateStylesheets);
-      toggleBodyColorPrimary();
-    }
-    manageTransitions('#quarto-margin-sidebar .nav-link', true);
-    // Switch the toggles
-    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-    for (let i=0; i < toggles.length; i++) {
-      const toggle = toggles[i];
-      if (toggle) {
-        if (alternate) {
-          toggle.classList.add("alternate");     
-        } else {
-          toggle.classList.remove("alternate");
-        }
-      }
-    }
-    // Hack to workaround the fact that safari doesn't
-    // properly recolor the scrollbar when toggling (#1455)
-    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-      manageTransitions("body", false);
-      window.scrollTo(0, 1);
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        manageTransitions("body", true);
-      }, 40);  
-    }
-  }
-  const isFileUrl = () => { 
-    return window.location.protocol === 'file:';
-  }
-  const hasAlternateSentinel = () => {  
-    let styleSentinel = getColorSchemeSentinel();
-    if (styleSentinel !== null) {
-      return styleSentinel === "alternate";
-    } else {
-      return false;
-    }
-  }
-  const setStyleSentinel = (alternate) => {
-    const value = alternate ? "alternate" : "default";
-    if (!isFileUrl()) {
-      window.localStorage.setItem("quarto-color-scheme", value);
-    } else {
-      localAlternateSentinel = value;
-    }
-  }
-  const getColorSchemeSentinel = () => {
-    if (!isFileUrl()) {
-      const storageValue = window.localStorage.getItem("quarto-color-scheme");
-      return storageValue != null ? storageValue : localAlternateSentinel;
-    } else {
-      return localAlternateSentinel;
-    }
-  }
-  let localAlternateSentinel = 'default';
-  // Dark / light mode switch
-  window.quartoToggleColorScheme = () => {
-    // Read the current dark / light value 
-    let toAlternate = !hasAlternateSentinel();
-    toggleColorMode(toAlternate);
-    setStyleSentinel(toAlternate);
-  };
-  // Ensure there is a toggle, if there isn't float one in the top right
-  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-    const a = window.document.createElement('a');
-    a.classList.add('top-right');
-    a.classList.add('quarto-color-scheme-toggle');
-    a.href = "";
-    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-    const i = window.document.createElement("i");
-    i.classList.add('bi');
-    a.appendChild(i);
-    window.document.body.appendChild(a);
-  }
-  // Switch to dark mode if need be
-  if (hasAlternateSentinel()) {
-    toggleColorMode(true);
-  } else {
-    toggleColorMode(false);
-  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
