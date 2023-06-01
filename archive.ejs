@@ -47,12 +47,12 @@
           </div>
           <div style="padding: 1em; width: 100%;">
             <% const ptitle = item.title.replace(/`([^`]+)`/g, '<code>$1</code>'); %>
-            <b class="arc-card-title"><%= ptitle %></b>
+            <h5 class="no-anchor card-title listing-title"><%= ptitle %></h5>
             <hr style="margin-bottom: 5px;">
-            <div class="arc-date">
+            <div class="listing-category arc-date">
               <%- item.date.split(" ").slice(0, 2).join(" ") %>
             </div>
-            <div class="arc-desc">
+            <div class="card-text listing-description arc-desc">
               <% const desc = item.description; %>
               <% const dalt = `<!-- desc(5A0113B34292)[max=50]:${item.outputHref} -->`; %>
               <% const descf = /^<!--.*-->$/g.test(desc) ? `${dalt}` : desc; %>
@@ -101,14 +101,12 @@
     font-size: small;
     padding: 0 4px 0 4px;
     margin-bottom: 8px;
-    color: blanchedalmond;
-    background-color: mediumseagreen;
-    border: 1px solid blanchedalmond;
+    border: 1px solid #1a1a1a80;
     border-radius: 5px;
     width: fit-content;
   }
   .arc-desc {
-    color: mediumseagreen;
+    font-size: .9em;
   }
   @media only screen and (max-width: 768px) {
     .arc-card {

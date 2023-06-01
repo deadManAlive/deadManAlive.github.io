@@ -4,6 +4,7 @@ author: "Dead Man"
 date: "2023-04-14"
 categories: [C++, Pemrograman]
 image: "image.jpg"
+title-block-banner: "image.jpg"
 ---
 
 ***Template metaprogramming*** merupakan salah satu fitur paling *powerful* dari C++. *Template metaprogramming*, alih-alih menulis program untuk di*compile* seperti pada umumnya, dapat disebut sebagai pemrograman pada *compiler* itu sendiri ("*metaprogramming*"): sebuah template memerintahkan *compiler* untuk "menulis" source code *intermediate* tergantung pada parameter-parameter dan aturan-aturan *template*nya.

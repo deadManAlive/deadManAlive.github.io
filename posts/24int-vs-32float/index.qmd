@@ -4,6 +4,7 @@ author: "Dead Man"
 date: "2023-03-31"
 categories: [Musictech, Analisis]
 image: "image.jpg"
+title-block-banner: "image.jpg"
 ---
 
 Perdebatan tentang kualitas audio digital sudah dimulai sejak munculnya rekaman digital itu sendiri, sekitar 1970an. *Fast forward* ke awal-90an, dominasi rekaman analog mulai tergantikan oleh rekaman digital berbentuk CD sejak perkenalannya di pertengahan 80an (dilansir dari [RIAA](https://www.riaa.com/u-s-sales-database/)). Rekaman analog kemudian tidak pernah bersinar kembali terhadap rekaman digital yang berubah-ubah bentuk: CD digantikan oleh *download* sejak akhir 2000an, dan kemudian layanan *streaming* mulai menguasai pasar (juga *overall* mendorong industri musik) sejak pertengahan 2010an.

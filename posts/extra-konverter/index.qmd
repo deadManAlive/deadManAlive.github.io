@@ -4,6 +4,7 @@ author: "Dead Man"
 date: "2023-05-14"
 categories: [Musictech, Extra]
 image: "image.jpg"
+title-block-banner: "image.jpg"
 format:
   html:
     echo: false

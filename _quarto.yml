@@ -23,10 +23,8 @@ website:
         file: about.qmd
       - text: Arsip
         file: archive.qmd
-      - icon: three-dots
-        menu:
-          - text: "Catatan"
-            file: notes.qmd
+      - text: Catatan
+        file: notes.qmd
     tools:
       - icon: github
         text: Github
@@ -72,14 +70,12 @@ website:
       openSidebar: false
 format:
   html:
-    theme:
-      light: flatly
-      dark: darkly
+    theme: lux
     css: styles.css
     smooth-scroll: true
     toc: true
     toc-location: right
-    toc-title: Konten
+    toc-title: Daftar Isi
     toc-depth: 5
     toc-expand: 2
     code-fold: true
