@@ -2,6 +2,24 @@
 strong {
     font-weight: 900;
 }
+
 h1.title {
-    background-color: #dddddd25
+    background-color: #1a1a1a80;
+    color: #eeeeee;
+    width: fit-content;
+    padding: 2px 6px 2px 6px;
+    border-radius: 5px;
+    backdrop-filter: contrast(150%) blur(20px) grayscale(50%);
+}
+
+h1 code {
+    border-radius: 10px;
+    background-color: #f8f8f880;
+    color: darkred;
+}
+
+div.quarto-category {
+    background-color: #1a1a1a80;
+    backdrop-filter: contrast(150%) blur(20px) grayscale(50%);
+    color: #eeeeee;
 }
