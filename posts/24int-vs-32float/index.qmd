@@ -2,7 +2,7 @@
 title: "Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part I"
 author: "Dead Man"
 date: "2023-03-31"
-categories: [Musictech, Analisis]
+categories: [Musitech, Analisis]
 image: "image.jpg"
 title-block-banner: "image.jpg"
 ---

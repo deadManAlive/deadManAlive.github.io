@@ -1,5 +1,58 @@
 ```{=html}
 
+<script>
+  const __run = () => {
+    const __fragment = window.location.hash;
+    const __kv = __fragment.slice(1).split('=');
+
+    
+    if (__kv.length != 2 || __kv[0] != 'category') {
+      const __arc_cat = document.querySelector(".arc-cat-title");
+      __arc_cat.style.display = "none";
+      return;
+    }
+    const __cat = decodeURIComponent(__kv[1]);
+
+    /*
+      <%
+      const info = [];
+
+      for (var i = 0; i < items.length; i++) {
+        info.push({
+          outputHref: items[i].outputHref,
+          categories: items[i].categories
+        });
+      }
+
+      console.log(info);
+      %>
+    */
+    
+    const __arc_cat = document.getElementById("cat-title");
+    __arc_cat.textContent = __cat;
+
+    const __cards = document.querySelectorAll(".cat-card");
+    for (__card of __cards) {
+      const __cats = __card.getAttribute("data-categories").split("&");
+      if (!__cats.includes(__cat)) {
+        __card.style.display = "none";
+      }
+    }
+
+    const __months = document.querySelectorAll(".month-cat");
+    for (__month of __months) {
+      const __cats = __month.getAttribute("data-categories").split("&");
+      if (!__cats.includes(__cat)) {
+        __month.style.display = "none";
+      }
+    }
+  };
+
+  window.addEventListener("load", (event) => {
+    __run();
+  });
+</script>
+
 <%
   var groupedItems = {};
 
@@ -36,33 +89,47 @@
   );
 %>
 
+<div class="arc-cat-title">
+  <h3 style="text-transform: none;">Artikel-artikel terkait "<span id="cat-title"></span>".</h3>
+  <hr>
+</div>
+
 <% Object.keys(orderedGroupedItems).forEach(function(key) { %>
-  <h2><%= orderedGroupedItems[key][0].date.split(" ").slice(1).join(" ") %></h2>
-  <div>
-  <% orderedGroupedItems[key].forEach(function(item) { %>
+  <%
+    const __m = orderedGroupedItems[key];
+    const __c = __m.reduce(
+      (acc, curr) => [acc, curr.categories.join("&")].join("&"),
+      ""
+    );
+  %>
+  <div class="month-cat" data-categories='<%- __c.slice(1) %>'>
+    <h2><%= __m[0].date.split(" ").slice(1).join(" ") %></h2>
     <div>
-      <a href="<%- item.path %>" style="text-decoration: none;">
-        <div class="arc-card">
-          <div class="arc-card-image" style="background-image: url('<%- item.image %>');">
-          </div>
-          <div style="padding: 1em; width: 100%;">
-            <% const ptitle = item.title.replace(/`([^`]+)`/g, '<code>$1</code>'); %>
-            <h5 class="no-anchor card-title listing-title"><%= ptitle %></h5>
-            <hr style="margin-bottom: 5px;">
-            <div class="listing-category arc-date">
-              <%- item.date.split(" ").slice(0, 2).join(" ") %>
+    <% orderedGroupedItems[key].forEach(function(item) { %>
+      <div class="cat-card" data-categories='<%- item.categories.join("&") %>'>
+        <a href="<%- item.path %>" style="text-decoration: none;">
+          <div class="arc-card">
+            <div class="arc-card-image" style="background-image: url('<%- item.image %>');">
             </div>
-            <div class="card-text listing-description arc-desc">
-              <% const desc = item.description; %>
-              <% const dalt = `<!-- desc(5A0113B34292)[max=50]:${item.outputHref} -->`; %>
-              <% const descf = /^<!--.*-->$/g.test(desc) ? `${dalt}` : desc; %>
-              <%= descf %>
+            <div style="padding: 1em; width: 100%;">
+              <% const ptitle = item.title.replace(/`([^`]+)`/g, '<code>$1</code>'); %>
+              <h5 class="no-anchor card-title listing-title"><%= ptitle %></h5>
+              <hr style="margin-bottom: 5px;">
+              <div class="listing-category arc-date">
+                <%- item.date.split(" ").slice(0, 2).join(" ") %>
+              </div>
+              <div class="card-text listing-description arc-desc">
+                <% const desc = item.description; %>
+                <% const dalt = `<!-- desc(5A0113B34292)[max=50]:${item.outputHref} -->`; %>
+                <% const descf = /^<!--.*-->$/g.test(desc) ? `${dalt}` : desc; %>
+                <%= descf %>
+              </div>
             </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
+    <% }); %>
     </div>
-  <% }); %>
   </div>
 <% }); %>
 
@@ -112,6 +179,11 @@
     .arc-card {
       width: 100%;
     }
+  }
+  #cat-title {
+    font-variant: small-caps;
+    text-decoration: underline;
+    font-style: italic;
   }
 </style>
 

@@ -2,7 +2,7 @@
 title: "Musitech: EXTRA - Konverter `float32` dan `int24`"
 author: "Dead Man"
 date: "2023-05-14"
-categories: [Musictech, Extra]
+categories: [Musitech, Extra]
 image: "image.jpg"
 title-block-banner: "image.jpg"
 format:

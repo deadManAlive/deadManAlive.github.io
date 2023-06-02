@@ -3,6 +3,7 @@
 /.venv/
 /_site/
 /_extensions/
+/test/
 
 # files
 .python-version
