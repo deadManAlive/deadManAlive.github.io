@@ -10,7 +10,7 @@ format:
     echo: false
 ---
 
-## Amplitudo ($A$), Frekuensi ($f$), dan Fasa ($\phi$)
+## Amplitudo, Frekuensi, dan Fasa
 
 Untuk mengetahui perihal *sample rate* dan *bit depth*, maka parameter-parameter penting dari sebuah gelombang wajib untuk dipahami, yaitu:
 
@@ -88,7 +88,7 @@ Plot.plot({
 })
 ```
 
-## Sample Rate ($f_s$) dan Bit Depth ($b$)
+## Sample Rate dan Bit Depth
 
 Dari simulasi di atas, dapat dilihat bahwa sebuah gelombang menduduki dimensi 2 $\mathbb{R}^2$ atas sumbu waktu $t$ dan ruang $y$. Sebuah gambar digital dapat dibilang berada pada ruang 3 dimensi (2 dimensi ruang $x$ dan $y$ serta 1 dimensi warna $c$, meskipun sebenarnya dimensi warna lebih rumit dari pada itu). Seperti yang pembaca pasti ketahui, sebuah gambar memiliki resolusi pada ketiga dimensi tersebut, yaitu **pixel** pada $x$ dan $y$, **bit** pada $c$. Demikian pula dengan gelombang (audio), ***sample rate*** ($f_s$) **adalah resolusi waktu** $t$ dan ***bit depth*** ($b$) **adalah resolusi ruang** $y$.
 

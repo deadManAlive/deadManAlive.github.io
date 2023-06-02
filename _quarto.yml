@@ -69,9 +69,7 @@ website:
       openSidebar: false
 format:
   html:
-    theme:
-      - lux
-      - custom.scss
+    theme: lux
     css: styles.css
     smooth-scroll: true
     toc: true

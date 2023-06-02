@@ -23,3 +23,18 @@ div.quarto-category {
     backdrop-filter: contrast(150%) blur(20px) grayscale(50%);
     color: #eeeeee;
 }
+
+.content p {
+    text-align: justify;
+}
+
+/* .content p:first-of-type::first-letter {
+    initial-letter: 3;
+    margin-right: 5px;
+} */
+
+p.first-paragraph::first-letter {
+    initial-letter: 3;
+    margin-right: 2px;
+    font-family: 'Times New Roman', Times, serif;
+}
