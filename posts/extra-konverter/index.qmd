@@ -18,6 +18,8 @@ description: Beberapa tools konversi data (WIP)
 
 <iframe id="bconv" src="https://deadmanalive.github.io/bconv/" style="border: none; margin: 0; padding: 0; width: 100%; height: auto; margin: 0; padding: 0;"></iframe>
 
+<!-- 24 bit should be here -->
+
 ## Algoritma
 
 ### `float32` ke biner
