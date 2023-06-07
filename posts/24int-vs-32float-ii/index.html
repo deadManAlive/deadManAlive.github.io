@@ -108,6 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 background-size: cover;
       }
 </style>
+<script src="../../runtime.js"></script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -124,7 +125,7 @@ background-size: cover;
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -202,7 +203,7 @@ background-size: cover;
     <div class="quarto-title column-body">
       <h1 class="title">Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">Musictech</div>
+                <div class="quarto-category">Musitech</div>
                 <div class="quarto-category">Analisis</div>
               </div>
                   </div>
@@ -231,7 +232,7 @@ background-size: cover;
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Mencari"></div>
@@ -291,9 +292,9 @@ background-size: cover;
   </ul></li>
   <li><a href="#bit-signed-integer-vs-32-bit-floating-point" id="toc-bit-signed-integer-vs-32-bit-floating-point" class="nav-link" data-scroll-target="#bit-signed-integer-vs-32-bit-floating-point">24-Bit Signed Integer vs 32-Bit Floating-Point</a>
   <ul>
-  <li><a href="#menghitung-level-kuantisasi-float32" id="toc-menghitung-level-kuantisasi-float32" class="nav-link" data-scroll-target="#menghitung-level-kuantisasi-float32">Menghitung level kuantisasi <code>float32</code></a></li>
+  <li><a href="#menghitung-level-kuantisasi-float32" id="toc-menghitung-level-kuantisasi-float32" class="nav-link" data-scroll-target="#menghitung-level-kuantisasi-float32">1. Menghitung level kuantisasi <code>float32</code></a></li>
+  <li><a href="#level-kuantisasi-yang-digunakan-pada-sebuah-file-wav" id="toc-level-kuantisasi-yang-digunakan-pada-sebuah-file-wav" class="nav-link" data-scroll-target="#level-kuantisasi-yang-digunakan-pada-sebuah-file-wav">2. Level kuantisasi yang digunakan pada sebuah <em>file</em> WAV</a></li>
   </ul></li>
-  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up"><em>Wrapping Up</em></a></li>
   </ul>
 </nav>
     </div>
@@ -333,12 +334,12 @@ IEEE 754
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Artikel ini dan artikel <a href="../../posts/24int-vs-32float/index.html">bagian pertama</a> membatasi bahasan pada <em>floating-point</em> 32-bit yang terstandardisasi dalam IEEE 754 (IEEE <em>Standard for Floating-Point Arithmetic</em>) <code>binary32</code> (<em>single-precision floating-point format</em>), yang dalam artikel ini akan dirujuk secara bergantian sebagai “<em>floating-point</em>”, <code>float</code>, ataupun <code>float32</code>. <em>Floating-point</em> dengan lebar data lainnya, seperi <em>double-precision</em> (64-bit), memiliki struktur yang berbeda dan mungkin akan dibahas di lain kesempatan.</p>
+<p>Artikel ini dan artikel <a href="../24int-vs-32float">bagian pertama</a> membatasi bahasan pada <em>floating-point</em> 32-bit yang terstandardisasi dalam IEEE 754 (IEEE <em>Standard for Floating-Point Arithmetic</em>) <code>binary32</code> (<em>single-precision floating-point format</em>), yang dalam artikel ini akan dirujuk secara bergantian sebagai “<em>floating-point</em>”, <code>float</code>, ataupun <code>float32</code>. <em>Floating-point</em> dengan lebar data lainnya, seperi <em>double-precision</em> (64-bit), memiliki struktur yang berbeda dan mungkin akan dibahas di lain kesempatan.</p>
 </div>
 </div>
 <section id="section" class="level3">
 <h3 class="anchored" data-anchor-id="section">“<span class="math inline">\([-1,1]\)</span>”</h3>
-<p>Jawaban dari pertanyaan di atas ialah meskipun format <code>float32</code> mampu menyimpan data yang sangat besar, hingga <span class="math inline">\(3.40 \times 10 ^{38}\)</span>, penggunaan <code>float32</code> pada dunia audio menggunakan nilai ternormalisasi. Dengan kata lain, dalam dunia digital audio, <strong>nilai yang digunakan hanya pada rentang <span class="math inline">\(-1\)</span> hingga <span class="math inline">\(1\)</span></strong>, dan umumnya juga dibatasi menggunakan nilai <a href="../24int-vs-32float/index.qmd/#nilai-subnormaldenormal">normal</a>.</p>
+<p>Jawaban dari pertanyaan di atas ialah meskipun format <code>float32</code> mampu menyimpan data yang sangat besar, hingga <span class="math inline">\(3.40 \times 10 ^{38}\)</span>, penggunaan <code>float32</code> pada dunia audio menggunakan nilai ternormalisasi. Dengan kata lain, dalam dunia digital audio, <strong>nilai yang digunakan hanya pada rentang</strong> <span class="math inline">\(-1\)</span> hingga <span class="math inline">\(1\)</span>, dan umumnya juga dibatasi menggunakan nilai <a href="../24int-vs-32float/#nilai-subnormaldenormal">normal</a>.</p>
 <p>Apa konsekuensi dari hal ini? Dengan begitu maka 0 dBFS berada pada nilai <span class="math inline">\(-1\)</span> atau <span class="math inline">\(1\)</span>, dan dapat menyimpan nilai yang lebih besar <span class="math inline">\(3.40 \times 10 ^{38}\)</span> (<span class="math inline">\(+770\;\mathrm{dB}\)</span>) kali ataupun <span class="math inline">\(8.51 \times 10 ^{38}\)</span> kali lebih kecil (<span class="math inline">\(-759\;\mathrm{dB}\)</span>) relatif dari 0 dBFS. Sangat besar (dan kecil) dan sangat lebih dari cukup untuk mendukung rekaman audio seekstrim apa pun.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="$+770;\mathrm{dB}$??">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
@@ -371,8 +372,8 @@ IEEE 754
 <h3 class="anchored" data-anchor-id="mubazir">Mubazir?</h3>
 <p>Sebagian dari kita kemudian bertanya-tanya “kenapa hanya digunakan rentang <span class="math inline">\(-1\)</span> ke <span class="math inline">\(1\)</span> saja?”, “kenapa tidak dimaksimalkan seperti pada <em>integer</em>?”, atau “lalu apakah data yang berada diluar rentang <span class="math inline">\(-1\)</span>-<span class="math inline">\(1\)</span> akan tersia-siakan saja?”, dan sebagainya.</p>
 <p>Jawabannya berada pada kata <strong><em>floating-point</em></strong> itu sendiri.</p>
-<p>Bagian 1 dari <a href="../24int-vs-32float/index.qmd/#floating-menggantikan-fixed">artikel ini</a> telah membahas cara kerja <code>float</code> yang menunjukkan bahwa posisi desimal (koma) pada bilangan float bersifat tidak tetap (<em>floating</em>), berbeda dengan tipe data <em>fixed-point</em>. Pada representasi <code>float</code> selalu hanya ada satu digit di depan koma (pada mode <strong>normal</strong> selalu bernilai <code>1</code> dan implisit), dan nilai yang berbeda direpresentasikan dengan nilai eksponen dan koefisien/<em>mantissa</em> yang berbeda.</p>
-<p>Sebagai contoh, karena hanya 1 digit di depan koma, maka <code>float</code> tidak dapat menyimpan <code>1011.001</code> secara langsung, tetapi bentuk tersebut dapat diubah ke <code>1.011001 * 10</code><sup><code>101</code></sup> (atau <span class="math inline">\(2^3\)</span> dalam desimal) yang dapat disimpan oleh <code>float</code>. Mekanisme seperti ini lah yang membuat <code>float</code> dapat menyimpan angka yang sangat besar dan sangat kecil. Tetapi disamping itu, terdapat satu hal yang menjadi konsekuensi hal di atas: <strong>semakin kecil angka yang direpresentasikan <code>float</code>, semakin tinggi resolusinya</strong>. Sehingga digunakanlah nilai ternormalisasi pada rentang <span class="math inline">\([-1,1]\)</span> untuk memaksimalkan resolusi sinyal.</p>
+<p>Bagian 1 dari <a href="../24int-vs-32float/#floating-menggantikan-fixed">artikel ini</a> telah membahas cara kerja <code>float</code> yang menunjukkan bahwa posisi desimal (koma) pada bilangan float bersifat tidak tetap (<em>floating</em>), berbeda dengan tipe data <em>fixed-point</em>. Pada representasi <code>float</code> selalu hanya ada satu digit di depan koma (pada mode <strong>normal</strong> selalu bernilai <code>1</code> dan implisit), dan nilai yang berbeda direpresentasikan dengan nilai eksponen dan koefisien/<em>mantissa</em> yang berbeda.</p>
+<p>Sebagai contoh, karena hanya 1 digit di depan koma, maka <code>float</code> tidak dapat menyimpan <code>1011.001</code> secara langsung, tetapi bentuk tersebut dapat diubah ke <code>1.011001 * 10101</code> (atau <span class="math inline">\(2^3\)</span> dalam desimal) yang dapat disimpan oleh <code>float</code>. Mekanisme seperti ini lah yang membuat <code>float</code> dapat menyimpan angka yang sangat besar dan sangat kecil. Tetapi disamping itu, terdapat satu hal yang menjadi konsekuensi hal di atas: <strong>semakin kecil angka yang direpresentasikan <code>float</code>, semakin tinggi resolusinya</strong>. Sehingga digunakanlah nilai ternormalisasi pada rentang <span class="math inline">\([-1,1]\)</span> untuk memaksimalkan resolusi sinyal.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Tinggi dan Berat">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -390,97 +391,198 @@ Tinggi dan Berat
 <p><span class="math display">\[
 \boxed{1}\boxed{7}\boxed{4},\boxed{0}\boxed{0}\boxed{0}
 \]</span></p>
-<p>Bagaimana jika selanjutnya dengan aturan yang sama, anda diperintahkan mengisi isian berat badan? Misalkan kali ini anda dengan lebih detail mengetahui berat anda <span class="math inline">\(89.5\)</span> kg, maka isian kotak anda ialah <span class="math inline">\(89.5000\)</span>. Perhatikan bahwa kali ini, <span class="math inline">\(\varepsilon\)</span> menjadi <span class="math inline">\(10\)</span> kali lebih kecil (<span class="math inline">\(0.0001\)</span>) dengan posisi desimal yang berubah satu tempat. <strong><span class="math inline">\(\varepsilon\)</span> yang semakin kecil menunjukkan nilai yang semakin presisi</strong>.</p>
+<p>Bagaimana jika selanjutnya dengan aturan yang sama, anda diperintahkan mengisi isian berat badan? Misalkan kali ini anda dengan lebih detail mengetahui berat anda <span class="math inline">\(89.5\)</span> kg, maka isian kotak anda ialah <span class="math inline">\(89.5000\)</span>. Perhatikan bahwa kali ini, <span class="math inline">\(\varepsilon\)</span> menjadi <span class="math inline">\(10\)</span> kali lebih kecil (<span class="math inline">\(0.0001\)</span>) dengan posisi desimal yang berubah satu tempat. <span class="math inline">\(\varepsilon\)</span> yang semakin kecil menunjukkan nilai yang semakin presisi.</p>
 <p><span class="math display">\[
 \boxed{8}\boxed{9},\boxed{5}\boxed{0}\boxed{0}\boxed{0}
 \]</span></p>
 </div>
 </div>
 </div>
-<p>Lalu kenapa tidak digunakan <a href="../24int-vs-32float/index.qmd/#nilai-subnormaldenormal">nilai subnormal</a> untuk merepresentasikan nilai tersebut? Angka yang direpresentasikan diantara <span class="math inline">\(-1\)</span> dan <span class="math inline">\(1\)</span> sehingga wajar menggunakan subnormal yang diawali dengan <span class="math inline">\(0.\)</span> bukan? Jawababnya adalah karena nilai pada rentang <strong><em>subnormal</em> memiliki performa pemrosesan yang lebih lambat</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Bahkan, sering kali dalam beberapa kondisi yang membutuhkan performa lebih, rentang subnormal dapat saja dinonaktifkan (sebagai contoh dalam algoritma pemrosesan VST<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>)</p>
+<p>Lalu kenapa tidak digunakan <a href="../24int-vs-32float/#nilai-subnormaldenormal">nilai subnormal</a> untuk merepresentasikan nilai tersebut? Angka yang direpresentasikan diantara <span class="math inline">\(-1\)</span> dan <span class="math inline">\(1\)</span> sehingga wajar menggunakan subnormal yang diawali dengan <span class="math inline">\(0.\)</span> bukan? Jawababnya adalah karena nilai pada rentang <strong><em>subnormal</em></strong> <strong>memiliki performa pemrosesan yang lebih lambat</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Bahkan, sering kali dalam beberapa kondisi yang membutuhkan performa lebih, rentang subnormal dapat saja dinonaktifkan (sebagai contoh dalam algoritma pemrosesan VST<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>)</p>
 </section>
 </section>
 <section id="bit-signed-integer-vs-32-bit-floating-point" class="level2">
 <h2 class="anchored" data-anchor-id="bit-signed-integer-vs-32-bit-floating-point">24-Bit Signed Integer vs 32-Bit Floating-Point</h2>
-<p>Kembali ke pertanyaan pemicu dari seri artikel ini, “Seberapa jauh perbedaan kualitas 24-bit int dengan 32-bit FP?”. Sekilas, cukup dari lebar data kita bisa saja menyebut bahwa <code>float32</code> memiliki resolusi sebesar <span class="math inline">\(2^{31-23} = 256\)</span> kali resolusi <code>int24</code>. Tetapi, mengingat aturan representasi pada <code>float</code> tidak sesederhana pada <code>int</code>, maka kita akan mencoba menghitung level kuantisasi pada masing-masing tipe, dimana kualitas dari tipe data pembawa sinyal dapat dilihat dari jumlah level kuantisasi ini (divisualisasikan di <a href="../fs-vs-bd/index.qmd/">laman ini</a>, yang pada jenis data <strong>integer</strong> memiliki hubungan <span class="math inline">\(N=2^b\)</span> dengan <span class="math inline">\(N\)</span> jumlah level kuantisasi dan <span class="math inline">\(b\)</span> bit-depth.</p>
+<p>Kembali ke pertanyaan pemicu dari seri artikel ini, “Seberapa jauh perbedaan kualitas 24-bit int dengan 32-bit FP?”. Sekilas, cukup dari lebar data kita bisa saja menyebut bahwa <code>float32</code> memiliki resolusi sebesar <span class="math inline">\(2^{31-23} = 256\)</span> kali resolusi <code>int24</code>. Tetapi, mengingat aturan representasi pada <code>float</code> tidak sesederhana pada <code>int</code>, maka kita akan mencoba menghitung level kuantisasi pada masing-masing tipe, dimana kualitas dari tipe data pembawa sinyal dapat dilihat dari jumlah level kuantisasi ini (divisualisasikan di <a href="../fs-vs-bd/#fig-adc">laman ini</a>, yang pada jenis data <strong>integer</strong> memiliki hubungan <span class="math inline">\(N=2^b\)</span> dengan <span class="math inline">\(N\)</span> jumlah level kuantisasi dan <span class="math inline">\(b\)</span> bit-depth.</p>
 <p>Dari sini, dapat kita ketahui untuk tipe 24-bit integer, yang dalam dunia audio menggunakan data type <code>unsigned int</code>, memiliki nilai <span class="math inline">\(0\)</span> atau <span class="math inline">\(-\infty\;\mathrm{dB}\)</span> sebagai nilai minimum dan <span class="math inline">\(2^{23}-1=8388607\)</span> sebagai nilai maksimum (<span class="math inline">\(0\;\mathrm{dB}\)</span>). <span class="math inline">\(8 388 607\)</span> adalah jumlah level kuantisasi pada satu sisi gelombang pada <code>int24</code>, di sini dapat disebut sebagai resolusinya.</p>
-<p>Bagaimana dengan <code>float</code>? Karena aturannya yang lebih rumit dan rentang yang dibatasi <span class="math inline">\(\pm 1\)</span>, maka kita akan mengunakan bantuan pemrograman, kali ini dengan <code>C++</code> karena manipulasi <code>bit</code> sebuah data paling mudah dilakukan di <code>C++</code>.</p>
+<p>Bagaimana dengan <code>float</code>? Karena aturannya yang lebih rumit dan rentang yang dibatasi <span class="math inline">\(\pm 1\)</span>, maka kita akan mengunakan bantuan pemrograman, kali ini dengan bahasa pemrograman <code>rust</code> yang mempermudah manipulasi tipe data <code>float</code> (<code>f32</code>). Kita akan mencoba melakukan beberapa pengujian terhadap <code>float32</code> dan <code>int24</code>.</p>
 <section id="menghitung-level-kuantisasi-float32" class="level3">
-<h3 class="anchored" data-anchor-id="menghitung-level-kuantisasi-float32">Menghitung level kuantisasi <code>float32</code></h3>
-<p>Seperti pada <code>int24</code> di atas, kita akan menghitung resolusi satu sisi (<span class="math inline">\(0\)</span> ke titik maksimal, dalam <code>float</code> berarti <span class="math inline">\(1\)</span>).</p>
-<p>Pertama, kita impor beberapa <em>header</em> yang diperlukan:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="pp">#include </span><span class="im">&lt;cmath&gt;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Kemudian masuk ke fungsi <code>main</code>, kita cek apakah tipe data <code>float</code> memiliki lebar data yang sama dengan <code>unsigned float</code> pada perangkat, sebagai syarat dari algoritma berikutnya.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>    <span class="kw">static_assert</span><span class="op">(</span><span class="kw">sizeof</span><span class="op">(</span><span class="dt">unsigned</span> <span class="dt">int</span><span class="op">)</span> <span class="op">==</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">float</span><span class="op">));</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>    <span class="co">// ...</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Kemudian untuk memasukkan nilai heksadesimal ke <code>float</code>, yang dibutuhkan untuk mendapatkan data yang tepat, gunakan cara berikut:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> uint_repr <span class="op">=</span> <span class="bn">0x00800000</span><span class="op">;</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>    <span class="dt">float</span> start <span class="op">=</span> <span class="op">*(</span><span class="dt">float</span><span class="op">*)&amp;</span>uint_repr<span class="op">;</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a></span>
-<span id="cb7-4"><a href="#cb7-4"></a>    uint_repr <span class="op">=</span> <span class="bn">0x3f80000</span><span class="op">;</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a>    <span class="dt">float</span> end <span class="op">=</span> <span class="op">*(</span><span class="dt">float</span><span class="op">*)&amp;</span>uint_repr<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Pada potongan kode diatas, nilai heksadesimal <code>0x00800000</code> dan <code>0x03f80000</code> masing-masing merupakan nilai normal terkecil setelah <span class="math inline">\(0\)</span>, dan <span class="math inline">\(1\)</span>. Kemudian dilakukan perhitungan jumlah angka <code>float</code> yang tersedia di antara kedua nilai tersebut dengan cara:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a>    <span class="dt">size_t</span> nstep <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a></span>
-<span id="cb8-3"><a href="#cb8-3"></a>    <span class="cf">while</span><span class="op">(</span>start <span class="op">&lt;</span> end<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>        start <span class="op">=</span> <span class="bu">std::</span>nextafter<span class="op">(</span>start<span class="op">,</span> end<span class="op">);</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>        nstep<span class="op">++;</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a>    <span class="op">}</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a></span>
-<span id="cb8-8"><a href="#cb8-8"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Jumlah level "</span> <span class="op">&lt;&lt;</span> nstep <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Fungsi <code>std::nextafter(start, end)</code> mengembalikan nilai <code>float</code> selanjutnya yang dari <code>start</code> menuju <code>end</code>. Jumlah perulangan hingga nilai <code>start</code> mencapai nilai <code>end</code> disimpan pada variabel <code>nstep</code>, yang menjadi nilai yang kita cari.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="`0x00800000`?">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<h3 class="anchored" data-anchor-id="menghitung-level-kuantisasi-float32">1. Menghitung level kuantisasi <code>float32</code></h3>
+<p>Seperti pada <code>int24</code> di atas, kita akan menghitung resolusi satu sisi (<span class="math inline">\(0\)</span> ke <span class="math inline">\(+1\)</span>), dilambangkan <span class="math inline">\(N_{Q_{[\mathrm{Nmin},1]}}\)</span>.</p>
+<p>Program dimulai dengan definisi <code>start</code> dan <code>stop</code> yang menyimpan data biner masing-masing nilai normal terkecil dan satu<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, dalam bentuk biner dan direpresentasikan dalam notasi heksadesimal.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">let</span> start <span class="op">=</span> <span class="dv">0x00800000</span><span class="op">;</span> <span class="co">// == 0b00000000_10000000_00000000_00000000 == 1.175494e-38</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">let</span> stop  <span class="op">=</span> <span class="dv">0x3f800000</span><span class="op">;</span> <span class="co">// == 0b00111111_10000000_00000000_00000000 == 1.0</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled" title="kenapa `0x00800000`?">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<code>0x00800000</code>?
+kenapa <code>0x00800000</code>?
 </div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Kenapa kita mulai dari nilai normal terkecil <code>0x00800000</code> bukan dari <span class="math inline">\(0\)</span> itu sendiri? Karena pada dunia audio digital, pemrosesan sinyal float umumnya dilakukan dengan men<em>disable</em> subnormal sehingga nilai tersebut dianggap 0, dengan tujuan meningkatkan performa<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>Karena pada aplikasinya, terutama dalam pemrosesan audio, rentang dibawah itu (<a href="../24int-vs-32float/#nilai-subnormaldenormal">subnormal</a>) dinonaktifkan atau dianggap 0 karena alasan performa<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+</div>
+</div>
+<p>Selanjutnya, masing-masing representasi biner tersebut di<em>cast</em> menjadi bilangan <code>float32</code> dengan memanfaatkan <em>method</em> <code>from_bits</code> dari tipe <code>f32</code><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">let</span> fstart <span class="op">=</span> <span class="dt">f32</span><span class="pp">::</span>from_bits(start)<span class="op">;</span> <span class="co">// == 1.175494e-38</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">let</span> fstop  <span class="op">=</span> <span class="dt">f32</span><span class="pp">::</span>from_bits(stop)<span class="op">;</span>  <span class="co">// == 1.0</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Kemudian variable <code>step</code> dan <code>current</code> digunakan untuk masing-masing menghitung jumlah level dan menyimpan nilai level sementara:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">let</span> <span class="kw">mut</span> step<span class="op">:</span> <span class="dt">usize</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">let</span> <span class="kw">mut</span> current <span class="op">=</span> fstart<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Perhitungan dilakukan dengan memanfaatkan method <code>next_up</code> dari tipe <code>f32</code> yang memberikan nilai <code>f32</code> selanjutnya yang dapat direpresentasikan oleh data tersebut<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. Menggunakan <em>loop</em> <code>while</code>, program menghitung jumlah nilai-nilai yang mungkin antara <code>fstart</code> dan <code>fstop</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1"></a><span class="cf">while</span> current <span class="op">&lt;</span> fstop <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>    step <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>    current <span class="op">=</span> current<span class="op">.</span>next_up()<span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Selanjutnya kita gunakan kode berikut untuk menampilkan jumlah step yang kita cari, disamping nilai awal dan nilai akhir yang telah ditentukan:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1"></a><span class="pp">println!</span>(<span class="st">"start: u32 {} f32 {:e}"</span><span class="op">,</span> start<span class="op">,</span> fstart)<span class="op">;</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="pp">println!</span>(<span class="st">"stop: u32 {} f32 {:e}"</span><span class="op">,</span> stop<span class="op">,</span> fstop)<span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">// ...</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="pp">println!</span>(<span class="st">"There's {} level between {:e} and {:e}"</span><span class="op">,</span> step<span class="op">,</span> fstart<span class="op">,</span> fstop)<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Maka program akan memberikan output:</p>
+<pre data-code-line-numbers="false"><code>start: u32 8388608 f32 1.1754944e-38
+stop: u32 1065353216 f32 1e0
+There's 1056964608 level between 1.1754944e-38 and 1e0</code></pre>
+<p>Dapat dilihat bahwa terdapat <span class="math inline">\(1056964608\)</span> level antara nilai tengah (digantikan nilai normal minimum disini) dengan nilai maksimum (<span class="math inline">\(1.0\)</span>). Sementara, <code>int24</code> memberikan nilai <span class="math inline">\(8388607\)</span> sehingga terdapat rasio perbedaan sebesar <span class="math inline">\(126\)</span>, meleset <span class="math inline">\(2\)</span> (dari <span class="math inline">\(256\)</span>) kali lipat jika dihitung secara sederhana dari perbedaan jumlah bit kedua tipe data tersebut.</p>
+<p><span class="math inline">\(126\)</span> kali lipat bukanlah rasio yang kecil untuk perbandingan resolusi, sebagai contoh perbandingan resolusi gambar dengan membandingkan jumlah <em>pixel</em> <strong>4K</strong> (<span class="math inline">\(3840\times2160\)</span>) dengan <strong>360p</strong> (<span class="math inline">\(640\times360\)</span>) hanya mencapai <span class="math inline">\(36\)</span> kali, hampir 4 kali lebih kecil dari perbandingan resolusi <code>float32</code> dan <code>int24</code>, dan tentu pembaca tahu bagaimana perbedaan kualitas antara 4K dengan 360p.</p>
+<div id="fig-res-comp" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-4k" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./4kx.jpg" class="img-fluid figure-img" data-ref-parent="fig-res-comp"></p>
+<figcaption class="figure-caption">(a) 4K</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-360p" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./sdx.jpg" class="img-fluid figure-img" data-ref-parent="fig-res-comp"></p>
+<figcaption class="figure-caption">(b) 360p</figcaption>
+</figure>
 </div>
 </div>
 </div>
-<p>Ketika program di atas dikompilasi dan dijalankan, nilai yang dikeluarkan ialah sebesar <span class="math inline">\(1 056 964 608\)</span>. Jumlah level itu, adalah <strong>persis <span class="math inline">\(126\)</span> kali level dari 24-bit <em>integer</em></strong>. Tentu nilai ini meleset dari perkiraan intuitif <span class="math inline">\(256\)</span> kali, sedikit kurang dari setengahnya.</p>
-<p>Meskipun begitu, angka tersebut masih lebih dari cukup untuk memberikan peningkatan resolusi yang signifikan. Sebagai pembanding, perbandingan jumlah pixel antara resolusi 4K (<span class="math inline">\(3840\times2160\)</span>) terhadap 360p (<span class="math inline">\(640\times360\)</span>) hanyalah sebesar <span class="math inline">\(36\)</span> kali lipat, dan anda tentu tahu seberapa jauh peningkatan kualitas video yang dapat anda rasakan dari perbedaan kedua resolusi tersebut.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="dari $0$">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p></p><figcaption class="figure-caption">Gambar&nbsp;1: 4K vs.&nbsp;360p (Buka di tab baru jika gambar terlalu kecil)</figcaption><p></p>
+</figure>
 </div>
-<div class="callout-title-container flex-fill">
-dari <span class="math inline">\(0\)</span>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Jika anda memasukkan nilai subnormal dalam kalkulasi program di atas dengan mengatur nilai start dengan <code>0</code> alih alih <code>0x00800000</code> seperti pada kode diatas:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">// ...</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> uint_repr <span class="op">=</span> <span class="bn">0x0</span><span class="op">;</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>    <span class="dt">float</span> start <span class="op">=</span> <span class="op">*(</span><span class="dt">float</span><span class="op">*)&amp;</span>uint_repr<span class="op">;</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="co">// ...</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>maka program akan memberikan keluaran <span class="math inline">\(1065353216\)</span>, dan kini resolusinya menjadi <span class="math inline">\(127\)</span> kali lipat <code>int24</code>. <em>Worth it?</em></p>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="wrapping-up" class="level2">
-<h2 class="anchored" data-anchor-id="wrapping-up"><em>Wrapping Up</em></h2>
-<p>Dari percobaan dan analisis kecil-kecilan di atas, kita dapat mengambil kesimpulan bahwa tipe data 32-bit <em>floating-point</em> memang lebih memiliki resolusi yang lebih tinggi, <span class="math inline">\(126\)</span> kali, dari 24-bit <em>signed integer</em>. Hal ini menunjukkan bahwa <code>float32</code> memang lebih baik dari <code>int24</code> dalam menyimpan data audio, <strong>secara kuantitatif</strong>.</p>
 <blockquote class="blockquote">
-<p>“<em>Enter Psychoacoustics</em>”</p>
+<p><strong>Kesimpulan 1</strong>: Sebuah sinyal <code>float32</code> akan memiliki resolusi <strong>126 kali</strong> resolusi sinyal <code>int24</code>.</p>
 </blockquote>
+</section>
+<section id="level-kuantisasi-yang-digunakan-pada-sebuah-file-wav" class="level3">
+<h3 class="anchored" data-anchor-id="level-kuantisasi-yang-digunakan-pada-sebuah-file-wav">2. Level kuantisasi yang digunakan pada sebuah <em>file</em> WAV</h3>
+<p>Selanjutnya, mari lakukan analisis dari sisi praktis, yaitu dengan menghitung jumlah level yang terpakai pada sebuah <em>file</em> WAV. Pertanyaannya adalah apakah sebuah <em>file</em> <code>float32</code> akan menggunakan semua <span class="math inline">\(2\times1056964608\approx2.113\times10^9\)</span> dan apakah <em>file</em> <code>int24</code> akan menggunakan semua <span class="math inline">\(2^{24}=16,777,216\)</span>?</p>
+<p>Langkah dalam melakukan percobaan ini ialah dengan membuka sebuah <em>file</em> WAV, lalu menyimpan setiap nilai titik <em>sample</em> ke sebuah <em>set</em> yang hanya menyimpan nilai yang unik dan kemudian menghitung jumlah elemen pada <em>set</em> tersebut untuk menemukan jumlah level yang digunakan oleh masing-masing format. Karena perbandingan sesama bilangan float merupakan hal yang rumit<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>, maka kita gunakan represenasi binernya dalam bentuk <code>int32</code>.</p>
+<p>Program menggunakan <code>std::collections::HashSet</code> dari <em>standard library</em> untuk struktur data <em>set</em> yang dibutuhkan dan <em>crate</em> <code>wav</code> untuk mempermudah pembacaan <em>file</em> WAV.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">use</span> <span class="pp">std::</span><span class="op">{</span><span class="pp">collections::</span>HashSet<span class="op">,</span> <span class="pp">fs::</span>File<span class="op">,</span> <span class="pp">path::</span><span class="dt">Path</span><span class="op">};</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="kw">use</span> <span class="pp">wav::</span>BitDepth<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Misalkan <em>file</em> bernama “sound.wav”, maka selanjutnya data dan <em>header</em> (yang berisi informasi seperti <em>sample rate</em>, <em>bit depth</em>, dsb.) dapat dibaca dengan cara berikut:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">let</span> filename <span class="op">=</span> <span class="st">"sound.wav"</span><span class="op">;</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="kw">let</span> <span class="kw">mut</span> sound <span class="op">=</span> <span class="pp">File::</span>open(<span class="dt">Path</span><span class="pp">::</span>new(filename))<span class="op">?;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="kw">let</span> (header<span class="op">,</span> data) <span class="op">=</span> <span class="pp">wav::</span>read(<span class="op">&amp;</span><span class="kw">mut</span> sound)<span class="op">?;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Jangan lupa deklarasikan <em>set</em> yang akan digunakan:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">let</span> <span class="kw">mut</span> set <span class="op">=</span> <span class="pp">HashSet::</span>new()<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Selanjutnya, sesuai dengan cara kerja <em>crate</em> wav dimana variable <code>data</code> yang didapat dari <em>method</em> <code>wav::read</code> adalah sebuah <strong>enumerasi</strong> <em>bit depth</em>, maka kita akan melakukan <em>pattern matching</em>, dalam hal ini kita hanya peduli dengan <code>ThirtyTwoFloat</code> sebagai <code>float32</code> dan <code>TwentyFour</code> sebagai <code>int24</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb14-1"><a href="#cb14-1"></a><span class="cf">match</span> data <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>  <span class="pp">BitDepth::</span>ThirtyTwoFloat(v) <span class="op">=&gt;</span> <span class="op">{</span> <span class="co">/* proses tipe float32 dalam v */</span><span class="op">},</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>  <span class="pp">BitDepth::</span>TwentyFour(v) <span class="op">=&gt;</span> <span class="op">{</span><span class="co">/* proses int24 */</span><span class="op">},</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>  _ <span class="op">=&gt;</span> <span class="op">{</span><span class="co">/* abaikan bit depth lainnya */</span><span class="op">},</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Pada <code>ThirtyTwoFloat</code>, kita hanya perlu melakukan insersi data <em>sample</em> yang telah dikonversi ke bentuk biner dalam tipe <code>u32</code> yang diperoleh dengan <em>method</em> <code>f32::to_bits</code>:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">// ...</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="pp">BitDepth::</span>ThirtyTwoFloat(v) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="cf">for</span> sample <span class="kw">in</span> v <span class="op">{</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>    set<span class="op">.</span>insert(sample<span class="op">.</span>to_bits())<span class="op">;</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>  <span class="op">}</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="op">},</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="co">// ...</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Semantara itu, pada <code>TwentyFour</code>, kita perlu menyentuh <code>unsafe</code> karena data yang dibaca adalah <code>i32</code>, sementara untuk menyamai dengan <em>case</em> di atas, <code>HashSet</code> yang kita gunakan hanya akan menerima <code>u32</code>, untuk itu kita akan melakukan konversi <code>transmute</code> pada Rust yang harus dilakukan dalam blok <code>unsafe</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">// ...</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="pp">BitDepth::</span>TwentyFour(v) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>    <span class="cf">for</span> sample <span class="kw">in</span> v <span class="op">{</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>        <span class="kw">let</span> as_u32<span class="op">:</span> <span class="dt">u32</span><span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a></span>
+<span id="cb16-6"><a href="#cb16-6"></a>        <span class="kw">unsafe</span> <span class="op">{</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a>            as_u32 <span class="op">=</span> <span class="pp">mem::</span>transmute(sample)<span class="op">;</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a>        <span class="op">}</span></span>
+<span id="cb16-9"><a href="#cb16-9"></a></span>
+<span id="cb16-10"><a href="#cb16-10"></a>        set<span class="op">.</span>insert(as_u32)<span class="op">;</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a>    <span class="op">}</span></span>
+<span id="cb16-12"><a href="#cb16-12"></a><span class="op">},</span></span>
+<span id="cb16-13"><a href="#cb16-13"></a><span class="co">// ...</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Terakhir, setelah melakukan proses di atas dalam <em>pattern matching</em>, informasi-informasi yang didapatkan dapat ditampilkan kurang lebih seperti:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb17-1"><a href="#cb17-1"></a><span class="pp">println!</span>(</span>
+<span id="cb17-2"><a href="#cb17-2"></a>    <span class="st">"'{}' (format: {}, channels: {}, sampling rate: {} Hz, bit depth: {} bits) has {} uniques samples"</span><span class="op">,</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>    filename<span class="op">,</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>    header<span class="op">.</span>audio_format<span class="op">,</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>    header<span class="op">.</span>channel_count<span class="op">,</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a>    header<span class="op">.</span>sampling_rate<span class="op">,</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a>    header<span class="op">.</span>bits_per_sample<span class="op">,</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a>    set<span class="op">.</span>len()</span>
+<span id="cb17-9"><a href="#cb17-9"></a>)<span class="op">;</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Kode di atas akan menampilkan nama <em>file</em>, audio format (<span class="math inline">\(1\)</span> untuk <code>int</code>, <span class="math inline">\(3\)</span> untuk <code>float</code>), <em>sampling rate</em>, <em>bit depth</em> dan jumlah level yang digunakan yang kita cari. Sebagai contoh:</p>
+<pre data-code-line-numbers="false"><code>'sound.wav' (format: 3, channels: 1, sampling rate: 44100 Hz, bit depth: 32 bits) has 485123 uniques samples</code></pre>
+<p>Untuk analisis ini, penulis melakuka pengujian pada beberapa <em>file</em> audio dengan format dan sinyal yang berbeda untuk melihat perbandingan level yang digunakan (“XXX” pada nama <em>file</em> berarti “f32” atau “i24” tergantung fotmat):</p>
+<div id="tbl-prc-cmp" class="anchored">
+<table class="table">
+<caption>Tabel&nbsp;1: Perbandingan beberapa <em>file</em> WAV (dalam jumlah level yang digunakan)</caption>
+<colgroup>
+<col style="width: 24%">
+<col style="width: 19%">
+<col style="width: 17%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nama File</th>
+<th>Level <code>float32</code></th>
+<th>Level <code>int24</code></th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>s1024XXX.wav</em></td>
+<td>219876</td>
+<td>219249</td>
+<td><em>pure</em> 1024 Hz <em>sine</em>, 44.1 kHz</td>
+</tr>
+<tr class="even">
+<td><em>nXXX.wav</em></td>
+<td>220131</td>
+<td>217022</td>
+<td><em>white noise</em>, 44.1 kHz</td>
+</tr>
+<tr class="odd">
+<td><em>s1024XXX-192k.wav</em></td>
+<td>947845</td>
+<td>935675</td>
+<td><em>pure</em> 1024 Hz <em>sine</em>, 44.1 kHz</td>
+</tr>
+<tr class="even">
+<td><em>nXXX-192k.wav</em></td>
+<td>953713</td>
+<td>642765</td>
+<td><em>white noise</em>, 44.1 kHz</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Sekilas dapat kita lihat dari jumlah level yang digunakan, <em>sample rate</em> lebih berpengaruh dari pada <em>bit depth</em>, <code>float32</code> dan <code>int24</code> juga menggunakan jumlah level yang relatif sama pada <em>sample rate</em> yang sama. Bahkan, bentuk sinyal, meskipun sama-sama minimal dibanding dengan <em>sample rate</em>, lebih berpengaruh terhadap jumlah level yang digunakan ketimbang <em>bit depth</em>.</p>
+<p>Nilai-nilai di atas tidak memberikan gambaran terhadap kualitas tetapi lebih ke peluang suatu <em>sample</em> untuk berada di nilai yang berbeda dan seharusnya semakin tinggi resolusi yang tersedia, semakin kecil peluang satu <em>sample</em> memiliki nilai yang sama dengan sample lainnya, terutama pada <em>sample</em> acak dan natural, seperti musik.</p>
+<p>Yang menarik bagi penulis, dan mungkin juga sebagaian dari pembaca, adalah nilai level yang digunakan oleh <code>int24</code> pada <em>white noise</em> dengan <em>sample rate</em> 192 kHz, kenapa terjadi <em>drop</em> level yang sangat signifikan, hingga lebih dari 30% dibanding <code>float32</code>? Sekali lagi, nilai-nilai ini tidak berkorelasi sama sekali dengan kualitas tetapi peluang untuk kejadian tersebut cukup menarik.</p>
+<p>Kesalahan algoritma? Penulis kemudian melakuan uji coba terhadap algoritma dengan cara mengambil sebuah <em>file</em> WAV 16-bit yang sudah ada, kemudian melakukan konversi <em>bit depth</em> dari <em>file</em> tersebut ke <code>float32</code> dan <code>int24</code>. Karena data sinyal telah terkuantisasi dari rekaman 16-bit, level yang digunakan oleh konversi <code>float32</code> dan <code>int24</code> dari <em>file</em> tersebut seharusnya memberikan nilai yang sama dan berada di sekitar <span class="math inline">\(2^{16}=65536\)</span>. Dan benar, dari <em>file</em> didapatkan keluaran berikut:</p>
+<pre data-code-line-numbers="false"><code>'pn35a-f32.wav' (format: 3, channels: 2, sampling rate: 44100 Hz, bit depth: 32 bits) has 65536 uniques samples
+'pn35a-i24.wav' (format: 1, channels: 2, sampling rate: 44100 Hz, bit depth: 24 bits) has 65536 uniques samples</code></pre>
+<!-- ??? -->
 
 
+</section>
 </section>
 
 
@@ -490,7 +592,11 @@ dari <span class="math inline">\(0\)</span>
 <li id="fn1"><p>Istilah yang lebih tepat disini sebenarnya ialah <a href="https://en.wikipedia.org/wiki/Unit_in_the_last_place"><strong>ulp</strong></a> atau <em>unit of least precision</em>, tetapi untuk tidak memperkeruh istilah, mari gunakan saja <span class="math inline">\(\varepsilon\)</span> yang pada beberapa kondisi berkorespondensi terhadap <strong>ulp</strong> sebagai hal yang sama.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p><a href="https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues" class="uri">https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p><a href="https://docs.juce.com/master/classScopedNoDenormals.html" class="uri">https://docs.juce.com/master/classScopedNoDenormals.html</a>, sebuah fitur <em>high-level</em> untuk menonaktifkan subnormal pada CPU untuk sementara pada JUCE, framework yang dapat digunakan untuk memprogram VST. Mekanisme dasarnya sendiri dapat dilihat di <a href="https://en.wikipedia.org/wiki/Subnormal_number#Disabling_subnormal_floats_at_the_code_level">sini</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p><a href="https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues" class="uri">https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><a href="https://en.wikipedia.org/wiki/Single-precision_floating-point_format#Notable_single-precision_cases" class="uri">https://en.wikipedia.org/wiki/Single-precision_floating-point_format#Notable_single-precision_cases</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p><a href="https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues" class="uri">https://en.wikipedia.org/wiki/Subnormal_number#Performance_issues</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p><a href="https://doc.rust-lang.org/std/primitive.f32.html#method.from_bits" class="uri">https://doc.rust-lang.org/std/primitive.f32.html#method.from_bits</a><a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p><em>Method</em> <code>f32::next_up</code> hingga waktu penulisan artikel ini masih berstatus eksperimental sehingga dibutuhkan <code>rust</code> versi <strong><em>nightly</em></strong> untuk dapat menggunakannya: <a href="https://doc.rust-lang.org/std/primitive.f32.html#method.next_up" class="uri">https://doc.rust-lang.org/std/primitive.f32.html#method.next_up</a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>error pembulatan, batasan representasi, toleransi perbandingan, hingga algoritma membuat perbandingan dua nilai <code>float</code> menjadi tidak pasti dan dalam pemrograman tidak dianjurkan (dianjurkan perbandingan dengan nilai toleransi yang ditentukan), <a href="https://floating-point-gui.de/errors/comparison/" class="uri">https://floating-point-gui.de/errors/comparison/</a>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

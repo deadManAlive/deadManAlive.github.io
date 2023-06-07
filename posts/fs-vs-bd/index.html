@@ -111,6 +111,7 @@ background-size: cover;
 </style>
 <script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="../../runtime.js"></script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -127,7 +128,7 @@ background-size: cover;
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -205,7 +206,7 @@ background-size: cover;
     <div class="quarto-title column-body">
       <h1 class="title">Musitech: Sample Rate &amp; Bit Depth</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">Musictech</div>
+                <div class="quarto-category">Musitech</div>
                 <div class="quarto-category">Back To Basic</div>
               </div>
                   </div>
@@ -234,7 +235,7 @@ background-size: cover;
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Mencari"></div>
@@ -287,8 +288,8 @@ background-size: cover;
     <h2 id="toc-title">Daftar Isi</h2>
    
   <ul>
-  <li><a href="#amplitudo-a-frekuensi-f-dan-fasa-phi" id="toc-amplitudo-a-frekuensi-f-dan-fasa-phi" class="nav-link active" data-scroll-target="#amplitudo-a-frekuensi-f-dan-fasa-phi">Amplitudo (<span class="math inline">\(A\)</span>), Frekuensi (<span class="math inline">\(f\)</span>), dan Fasa (<span class="math inline">\(\phi\)</span>)</a></li>
-  <li><a href="#sample-rate-f_s-dan-bit-depth-b" id="toc-sample-rate-f_s-dan-bit-depth-b" class="nav-link" data-scroll-target="#sample-rate-f_s-dan-bit-depth-b">Sample Rate (<span class="math inline">\(f_s\)</span>) dan Bit Depth (<span class="math inline">\(b\)</span>)</a>
+  <li><a href="#amplitudo-frekuensi-dan-fasa" id="toc-amplitudo-frekuensi-dan-fasa" class="nav-link active" data-scroll-target="#amplitudo-frekuensi-dan-fasa">Amplitudo, Frekuensi, dan Fasa</a></li>
+  <li><a href="#sample-rate-dan-bit-depth" id="toc-sample-rate-dan-bit-depth" class="nav-link" data-scroll-target="#sample-rate-dan-bit-depth">Sample Rate dan Bit Depth</a>
   <ul>
   <li><a href="#aliasing" id="toc-aliasing" class="nav-link" data-scroll-target="#aliasing"><em>Aliasing</em></a></li>
   <li><a href="#overshoot" id="toc-overshoot" class="nav-link" data-scroll-target="#overshoot"><em>Overshoot</em></a></li>
@@ -302,8 +303,8 @@ background-size: cover;
 
 
 
-<section id="amplitudo-a-frekuensi-f-dan-fasa-phi" class="level2">
-<h2 class="anchored" data-anchor-id="amplitudo-a-frekuensi-f-dan-fasa-phi">Amplitudo (<span class="math inline">\(A\)</span>), Frekuensi (<span class="math inline">\(f\)</span>), dan Fasa (<span class="math inline">\(\phi\)</span>)</h2>
+<section id="amplitudo-frekuensi-dan-fasa" class="level2">
+<h2 class="anchored" data-anchor-id="amplitudo-frekuensi-dan-fasa">Amplitudo, Frekuensi, dan Fasa</h2>
 <p>Untuk mengetahui perihal <em>sample rate</em> dan <em>bit depth</em>, maka parameter-parameter penting dari sebuah gelombang wajib untuk dipahami, yaitu:</p>
 <ul>
 <li>Amplitudo (<span class="math inline">\(A\)</span>): Besaran perpindahan gelombang.</li>
@@ -423,8 +424,8 @@ y(t) = A\sin(2\pi f t + \phi)
 </div>
 </div>
 </section>
-<section id="sample-rate-f_s-dan-bit-depth-b" class="level2">
-<h2 class="anchored" data-anchor-id="sample-rate-f_s-dan-bit-depth-b">Sample Rate (<span class="math inline">\(f_s\)</span>) dan Bit Depth (<span class="math inline">\(b\)</span>)</h2>
+<section id="sample-rate-dan-bit-depth" class="level2">
+<h2 class="anchored" data-anchor-id="sample-rate-dan-bit-depth">Sample Rate dan Bit Depth</h2>
 <p>Dari simulasi di atas, dapat dilihat bahwa sebuah gelombang menduduki dimensi 2 <span class="math inline">\(\mathbb{R}^2\)</span> atas sumbu waktu <span class="math inline">\(t\)</span> dan ruang <span class="math inline">\(y\)</span>. Sebuah gambar digital dapat dibilang berada pada ruang 3 dimensi (2 dimensi ruang <span class="math inline">\(x\)</span> dan <span class="math inline">\(y\)</span> serta 1 dimensi warna <span class="math inline">\(c\)</span>, meskipun sebenarnya dimensi warna lebih rumit dari pada itu). Seperti yang pembaca pasti ketahui, sebuah gambar memiliki resolusi pada ketiga dimensi tersebut, yaitu <strong>pixel</strong> pada <span class="math inline">\(x\)</span> dan <span class="math inline">\(y\)</span>, <strong>bit</strong> pada <span class="math inline">\(c\)</span>. Demikian pula dengan gelombang (audio), <strong><em>sample rate</em></strong> (<span class="math inline">\(f_s\)</span>) <strong>adalah resolusi waktu</strong> <span class="math inline">\(t\)</span> dan <strong><em>bit depth</em></strong> (<span class="math inline">\(b\)</span>) <strong>adalah resolusi ruang</strong> <span class="math inline">\(y\)</span>.</p>
 <p>Hal tersebut dapat dilihat dari simulasi berikut dimana <em>sample rate</em> mempengaruhi kerapatan <em>sample</em> terhadap sumbu <span class="math inline">\(t\)</span>, sementara <em>bit depth</em> mempengaruhi kerapatan <em>sample</em> terhadap sumbu <span class="math inline">\(y\)</span>.</p>
 <div class="cell panel-input card bg-light p-2">

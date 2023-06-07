@@ -29,8 +29,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./notes.html" rel="next">
-<link href="./about.html" rel="prev">
 <link href="./favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-listing/list.min.js"></script>
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
@@ -118,7 +116,7 @@ background-size: cover;
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -209,7 +207,7 @@ background-size: cover;
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Mencari"></div>
@@ -271,103 +269,146 @@ background-size: cover;
 
 
 <div class="quarto-listing quarto-listing-container-custom" id="listing-listing">
-  <h2 class="anchored">Mei 2023</h2>
-  <div>
+<script>
+  const __run = () => {
+    const __fragment = window.location.hash;
+    const __kv = __fragment.slice(1).split('=');
+    if (__kv.length != 2 || __kv[0] != 'category') {
+      const __arc_cat = document.querySelector(".arc-cat-title");
+      __arc_cat.style.display = "none";
+      return;
+    }
+    const __cat = decodeURIComponent(__kv[1]);
+    /*
+    */
+    const __arc_cat = document.getElementById("cat-title");
+    __arc_cat.textContent = __cat;
+    const __cards = document.querySelectorAll(".cat-card");
+    for (__card of __cards) {
+      const __cats = __card.getAttribute("data-categories").split("&");
+      if (!__cats.includes(__cat)) {
+        __card.style.display = "none";
+      }
+    }
+    const __months = document.querySelectorAll(".month-cat");
+    for (__month of __months) {
+      const __cats = __month.getAttribute("data-categories").split("&");
+      if (!__cats.includes(__cat)) {
+        __month.style.display = "none";
+      }
+    }
+  };
+  window.addEventListener("load", (event) => {
+    __run();
+  });
+</script>
+<div class="arc-cat-title">
+  <h3 style="text-transform: none;" class="anchored">Artikel-artikel terkait "<span id="cat-title"></span>".</h3>
+  <hr>
+</div>
+  <div class="month-cat" data-categories="Musitech&amp;Extra&amp;Musitech&amp;Analisis">
+    <h2 class="anchored">Mei 2023</h2>
     <div>
-      <a href="./posts/extra-konverter/index.html" style="text-decoration: none;">
-        <div class="arc-card">
-          <div class="arc-card-image" style="background-image: url('/posts/extra-konverter/image.jpg');">
-          </div>
-          <div style="padding: 1em; width: 100%;">
-            <h5 class="no-anchor card-title listing-title">Musitech: EXTRA - Konverter <code>float32</code> dan <code>int24</code></h5>
-            <hr style="margin-bottom: 5px;">
-            <div class="listing-category arc-date">
-              14 Mei
+      <div class="cat-card" data-categories="Musitech&amp;Extra">
+        <a href="./posts/extra-konverter/index.html" style="text-decoration: none;">
+          <div class="arc-card">
+            <div class="arc-card-image" style="background-image: url('/posts/extra-konverter/image.jpg');">
             </div>
-            <div class="card-text listing-description arc-desc">
-              Beberapa tools konversi data (WIP)
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-    <div>
-      <a href="./posts/24int-vs-32float-ii/index.html" style="text-decoration: none;">
-        <div class="arc-card">
-          <div class="arc-card-image" style="background-image: url('/posts/24int-vs-32float-ii/image.jpg');">
-          </div>
-          <div style="padding: 1em; width: 100%;">
-            <h5 class="no-anchor card-title listing-title">Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part II</h5>
-            <hr style="margin-bottom: 5px;">
-            <div class="listing-category arc-date">
-              12 Mei
-            </div>
-            <div class="card-text listing-description arc-desc">
-              Setelah membahas sedikit tentang dasar sistem <em>floating-…</em><strong></strong><strong><em></em></strong>
+            <div style="padding: 1em; width: 100%;">
+              <h5 class="no-anchor card-title listing-title">Musitech: EXTRA - Konverter <code>float32</code> dan <code>int24</code></h5>
+              <hr style="margin-bottom: 5px;">
+              <div class="listing-category arc-date">
+                14 Mei
+              </div>
+              <div class="card-text listing-description arc-desc">
+                Beberapa tools konversi data (WIP)
+              </div>
             </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
+      <div class="cat-card" data-categories="Musitech&amp;Analisis">
+        <a href="./posts/24int-vs-32float-ii/index.html" style="text-decoration: none;">
+          <div class="arc-card">
+            <div class="arc-card-image" style="background-image: url('/posts/24int-vs-32float-ii/image.jpg');">
+            </div>
+            <div style="padding: 1em; width: 100%;">
+              <h5 class="no-anchor card-title listing-title">Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part II</h5>
+              <hr style="margin-bottom: 5px;">
+              <div class="listing-category arc-date">
+                12 Mei
+              </div>
+              <div class="card-text listing-description arc-desc">
+                Setelah membahas sedikit tentang dasar sistem <em>floating-…</em><strong></strong><strong><em></em></strong>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
-  <h2 class="anchored">Apr 2023</h2>
-  <div>
+  <div class="month-cat" data-categories="Musitech&amp;Back To Basic&amp;C++&amp;Pemrograman">
+    <h2 class="anchored">Apr 2023</h2>
     <div>
-      <a href="./posts/fs-vs-bd/index.html" style="text-decoration: none;">
-        <div class="arc-card">
-          <div class="arc-card-image" style="background-image: url('/posts/fs-vs-bd/image.jpg');">
-          </div>
-          <div style="padding: 1em; width: 100%;">
-            <h5 class="no-anchor card-title listing-title">Musitech: Sample Rate &amp; Bit Depth</h5>
-            <hr style="margin-bottom: 5px;">
-            <div class="listing-category arc-date">
-              28 Apr
+      <div class="cat-card" data-categories="Musitech&amp;Back To Basic">
+        <a href="./posts/fs-vs-bd/index.html" style="text-decoration: none;">
+          <div class="arc-card">
+            <div class="arc-card-image" style="background-image: url('/posts/fs-vs-bd/image.jpg');">
             </div>
-            <div class="card-text listing-description arc-desc">
-              Untuk mengetahui perihal <em>sample rate</em> dan <em>bit depth</em>, maka parameter-parameter penting dari sebuah…
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-    <div>
-      <a href="./posts/prime-template/index.html" style="text-decoration: none;">
-        <div class="arc-card">
-          <div class="arc-card-image" style="background-image: url('/posts/prime-template/image.jpg');">
-          </div>
-          <div style="padding: 1em; width: 100%;">
-            <h5 class="no-anchor card-title listing-title">CXX: Template Metaprogramming Praktis Pada C++11</h5>
-            <hr style="margin-bottom: 5px;">
-            <div class="listing-category arc-date">
-              14 Apr
-            </div>
-            <div class="card-text listing-description arc-desc">
-              <strong><em>Template metaprogramming</em></strong> merupak…<em></em><em></em><em></em><em></em><em></em><em></em><em></em><em></em>
+            <div style="padding: 1em; width: 100%;">
+              <h5 class="no-anchor card-title listing-title">Musitech: Sample Rate &amp; Bit Depth</h5>
+              <hr style="margin-bottom: 5px;">
+              <div class="listing-category arc-date">
+                28 Apr
+              </div>
+              <div class="card-text listing-description arc-desc">
+                Untuk mengetahui perihal <em>sample rate</em> dan <em>bit depth</em>, maka parameter-parameter penting dari sebuah…
+              </div>
             </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
+      <div class="cat-card" data-categories="C++&amp;Pemrograman">
+        <a href="./posts/prime-template/index.html" style="text-decoration: none;">
+          <div class="arc-card">
+            <div class="arc-card-image" style="background-image: url('/posts/prime-template/image.jpg');">
+            </div>
+            <div style="padding: 1em; width: 100%;">
+              <h5 class="no-anchor card-title listing-title">CXX: Template Metaprogramming Praktis Pada C++11</h5>
+              <hr style="margin-bottom: 5px;">
+              <div class="listing-category arc-date">
+                14 Apr
+              </div>
+              <div class="card-text listing-description arc-desc">
+                <strong><em>Template metaprogramming</em></strong> merupak…<em></em><em></em><em></em><em></em><em></em><em></em><em></em><em></em>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
-  <h2 class="anchored">Mar 2023</h2>
-  <div>
+  <div class="month-cat" data-categories="Musitech&amp;Analisis">
+    <h2 class="anchored">Mar 2023</h2>
     <div>
-      <a href="./posts/24int-vs-32float/index.html" style="text-decoration: none;">
-        <div class="arc-card">
-          <div class="arc-card-image" style="background-image: url('/posts/24int-vs-32float/image.jpg');">
-          </div>
-          <div style="padding: 1em; width: 100%;">
-            <h5 class="no-anchor card-title listing-title">Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part I</h5>
-            <hr style="margin-bottom: 5px;">
-            <div class="listing-category arc-date">
-              31 Mar
+      <div class="cat-card" data-categories="Musitech&amp;Analisis">
+        <a href="./posts/24int-vs-32float/index.html" style="text-decoration: none;">
+          <div class="arc-card">
+            <div class="arc-card-image" style="background-image: url('/posts/24int-vs-32float/image.jpg');">
             </div>
-            <div class="card-text listing-description arc-desc">
-              Perdebatan tentang kualitas audio digital sudah…<em></em><em></em><em></em><em></em>
+            <div style="padding: 1em; width: 100%;">
+              <h5 class="no-anchor card-title listing-title">Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part I</h5>
+              <hr style="margin-bottom: 5px;">
+              <div class="listing-category arc-date">
+                31 Mar
+              </div>
+              <div class="card-text listing-description arc-desc">
+                Perdebatan tentang kualitas audio digital sudah…<em></em><em></em><em></em><em></em>
+              </div>
             </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </div>
   </div>
 <style>
@@ -416,6 +457,11 @@ background-size: cover;
     .arc-card {
       width: 100%;
     }
+  }
+  #cat-title {
+    font-variant: small-caps;
+    text-decoration: underline;
+    font-style: italic;
   }
 </style>
 <div class="listing-no-matching d-none">
@@ -655,18 +701,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
-  <div class="nav-page nav-page-previous">
-      <a href="./about.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Tentang</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="./notes.html" class="pagination-link">
-        <span class="nav-page-text">Catatan</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
