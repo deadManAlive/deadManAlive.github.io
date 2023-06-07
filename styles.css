@@ -35,6 +35,6 @@ div.quarto-category {
 
 p.first-paragraph::first-letter {
     initial-letter: 3;
-    margin-right: 2px;
+    margin-right: 5px;
     font-family: 'Times New Roman', Times, serif;
 }

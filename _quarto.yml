@@ -50,7 +50,7 @@ website:
             file: archive.qmd
           - text: Catatan
             file: notes.qmd
-    style: floating
+    style: docked
     alignment: center
   page-footer:
     left: "[![cc-by-sa](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)](/disclaimer.qmd \"Dilisensikan oleh Muhammad Rafky Alfarrakhan.S\")"
