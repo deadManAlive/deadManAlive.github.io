@@ -1,0 +1,411 @@
+---
+title: "Musitech: AM & FM"
+author: "Dead Man"
+date: "2023-04-28"
+categories: [Musitech, Back To Basic]
+image: "image.jpg"
+title-block-banner: "image.jpg"
+format:
+  html:
+    echo: false
+draft: true
+---
+
+## Amplitude Modulation
+
+$$
+\begin{align*}
+    m(t) &= f(f_m, \phi_m, t) \\
+    y(t) &= [1+m(t)]\cdot\sin(2\pi f_ct)
+\end{align*}
+$$
+
+```{ojs}
+function findSignalEnvelope(signal) {
+  // Step 1: Compute the magnitude of the signal
+  const magnitude = signal.map(sample => Math.abs(sample));
+
+  // Step 2: Apply low-pass filter (optional, but recommended)
+  const smoothedMagnitude = applyLowPassFilter(magnitude);
+
+  // Step 3: Perform peak detection
+  const peakIndices = findPeaks(smoothedMagnitude);
+
+  // Step 4: Connect the peak points to form the envelope curve
+  const envelope = interpolateEnvelope(signal, peakIndices);
+
+  return envelope;
+}
+
+// Helper function to apply a low-pass filter (e.g., moving average)
+function applyLowPassFilter(signal, windowSize = 5) {
+  const smoothedSignal = [];
+  const halfWindowSize = Math.floor(windowSize / 2);
+
+  for (let i = 0; i < signal.length; i++) {
+    let sum = 0;
+    let count = 0;
+
+    for (let j = i - halfWindowSize; j <= i + halfWindowSize; j++) {
+      if (j >= 0 && j < signal.length) {
+        sum += signal[j];
+        count++;
+      }
+    }
+
+    smoothedSignal.push(sum / count);
+  }
+
+  return smoothedSignal;
+}
+
+// Helper function to find peak indices in the signal
+function findPeaks(signal) {
+  const peaks = [];
+
+  for (let i = 1; i < signal.length - 1; i++) {
+    if (signal[i] > signal[i - 1] && signal[i] > signal[i + 1]) {
+      peaks.push(i);
+    }
+  }
+
+  return peaks;
+}
+
+// Helper function to interpolate the envelope points
+function interpolateEnvelope(signal, peakIndices) {
+  const envelope = [];
+
+  // Iterate over each sample in the original signal
+  for (let i = 0; i < signal.length; i++) {
+    // Find the closest peak index on the left
+    let leftPeakIndex = peakIndices.find(index => index <= i);
+
+    // Find the closest peak index on the right
+    let rightPeakIndex = peakIndices.find(index => index >= i);
+
+    // If no peak index found on the left or right, use the nearest available
+    if (leftPeakIndex === undefined) leftPeakIndex = rightPeakIndex;
+    if (rightPeakIndex === undefined) rightPeakIndex = leftPeakIndex;
+
+    // Interpolate the envelope value based on the nearest peak indices
+    const leftValue = signal[leftPeakIndex];
+    const rightValue = signal[rightPeakIndex];
+    const t = (i - leftPeakIndex) / (rightPeakIndex - leftPeakIndex);
+    const interpolatedValue = leftValue + (rightValue - leftValue) * t;
+
+    envelope.push(interpolatedValue);
+  }
+
+  return envelope;
+}
+```
+
+```{ojs}
+//| panel: input
+viewof k = Inputs.range(
+    [0.1, 2],
+    {
+        value: 0.5,
+        step: 0.01,
+        label: tex`k`
+    }
+)
+viewof frm = Inputs.range(
+    [0.1, 1],
+    {
+        value: 0.5,
+        step: 0.01,
+        label: tex`f_m\;(\mathrm{Hz})`
+    }
+)
+viewof phim = Inputs.range(
+    [-3.14, 3.14],
+    {
+        value: 0,
+        step: 0.01,
+        label: tex`\phi_m\;(\mathrm{rad})`
+    }
+)
+viewof frc = Inputs.range(
+    [10, 20],
+    {
+        value: 5,
+        step: 0.1,
+        label: tex`f_c\;(\mathrm{Hz})`
+    }
+)
+```
+
+```{ojs}
+T = Array.from({length: 1000}, (_, i) => i * 0.002);
+carrier = (frequency) => T.map((t) => {
+  return {
+    Symbol: "Carrier",
+    x: t,
+    y: Math.sin(2 * Math.PI * frequency * t)
+  }
+});
+modulator = (frequency) => T.map((t) => {
+  return {
+    Symbol: "Modulator",
+    x: t,
+    y: (Math.cos(2 * (Math.PI * frequency * t + phim)) + Math.cos(3 * (Math.PI * frequency * t + phim))  + Math.cos(5 * (Math.PI * frequency * t + phim))) / 3
+  }
+});
+
+csig = carrier(frc);
+msig = modulator(frm);
+sig = csig.map((obj, idx) => {
+    const mval = msig[idx].y;
+    const modv = (1 + mval * k) * 2 / 3;
+    return {
+        Symbol: "Signal",
+        x: T[idx],
+        y: modv * obj.y,
+    };
+});
+penv = findSignalEnvelope(sig.map((v) => v.y));
+senv = penv.map((v, idx) => ({
+    Symbol: "Envelope",
+    x: T[idx],
+    y: Math.abs(v) || 0,
+}));
+```
+
+```{ojs}
+//| label: fig-amplitude-modulation
+//| fig-cap: "Modulasi amplitudo"
+
+Plot.plot({
+  symbol: {legend: true},
+  grid: true,
+  x: {
+    label: "t"
+  },
+  y: {
+    label: "y",
+    domain: [-2, 2],
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.ruleX([0]),
+    Plot.line(msig, {x: "x", y: "y", stroke: "blue", strokeOpacity: 0.5, strokeWidth: 2}),
+    Plot.line(csig, {x: "x", y: "y", stroke: "red", strokeOpacity: 0.25, strokeWidth: 2}),
+    Plot.line(sig, {x: "x", y: "y", stroke: "green", strokeWidth: 2}),
+    Plot.line(senv, {x: "x", y: "y", stroke: "blue", strokeOpacity: 0.5, strokeDasharray: [5, 5], strokeWidth: 2}),
+    Plot.frame()
+  ]
+})
+```
+
+## Frequency Modulation
+
+$$
+\begin{align*}
+    m(t) &= f(f_m, \phi_m, t) \\
+    y(t) &= \sin(2\pi[f_c+m(t)]t)
+\end{align*}
+$$
+
+$$
+    y(t)=\sin\Big(2\pi\int_0^t[f_c+m(\tau)]d\tau\Big)
+$$
+
+$$
+\begin{align*}
+    y(t) &= \sin\Big(2\pi\int_0^t[f_c+m(\tau)]d\tau\Big)\\
+    &= \sin\Big(2\pi\int_0^tf_cd\tau+2\pi\int_0^tm(\tau)d\tau\Big)\\
+    &= \sin\Big(2\pi f_ct+2\pi\int_0^tm(\tau)d\tau\Big)\\
+\end{align*}
+$$
+
+Digunakan input sederhana $m(t)=\sin{(2\pi f_mt+\phi_m)}$:
+
+$$
+\begin{align*}
+    y(t) &= \sin\Big(2\pi f_ct+2\pi\int_0^tm(\tau)d\tau\Big)\\
+    &= \sin\Big(2\pi f_ct+2\pi\int_0^t[\sin{(2\pi f_m\tau+\phi_m)}]d\tau\Big)\\
+    &= \sin\Bigg(2\pi f_ct+2\pi\frac{-\cos{(2\pi f_m\tau+\phi_m)}}{2\pi f_m}\Bigg|_0^t\Bigg)\\
+    &= \sin\Bigg(2\pi f_ct+2\pi\frac{-\cos{(2\pi f_mt+\phi_m)}+\cos{\phi_m}}{2\pi f_m}\Bigg)\\
+    &= \boxed{\sin\Bigg(2\pi f_ct-\frac{\cos{(2\pi f_mt+\phi_m)}+\cos{\phi_m}}{f_m}\Bigg)}\\
+\end{align*}
+$$
+
+$$
+    y(t) = \sin\Bigg(2\pi f_ct-\frac{m(t)+\cos{(\phi_m)}}{f_m}\Bigg)
+$$
+
+```{ojs}
+//| panel: input
+viewof fk = Inputs.range(
+    [0.1, 2],
+    {
+        value: 0.5,
+        step: 0.01,
+        label: tex`k`
+    }
+)
+viewof ffrm = Inputs.range(
+    [0.1, 1],
+    {
+        value: 0.5,
+        step: 0.01,
+        label: tex`f_m\;(\mathrm{Hz})`
+    }
+)
+viewof fphim = Inputs.range(
+    [-3.14, 3.14],
+    {
+        value: 0,
+        step: 0.01,
+        label: tex`\phi_m\;(\mathrm{rad})`
+    }
+)
+viewof ffrc = Inputs.range(
+    [10, 20],
+    {
+        value: 5,
+        step: 0.1,
+        label: tex`f_c\;(\mathrm{Hz})`
+    }
+)
+```
+
+```{ojs}
+fmodulator = (frequency) => T.map((t) => {
+  return {
+    Symbol: "Modulator",
+    x: t,
+    y: Math.cos(2 * (Math.PI * frequency * t + fphim))
+  }
+});
+
+fcsig = carrier(ffrc);
+fmsig = fmodulator(ffrm);
+
+fsig = fcsig.map((obj, idx) => {
+    const cpart = 2 * Math.PI * ffrc * T[idx];
+    const mpart = (Math.cos(2 * Math.PI * ffrm * T[idx] + fphim) + Math.cos(fphim)) / ffrm;
+    const fval = Math.sin(cpart - fk * 12 * mpart);
+    return {
+        Symbol: "Signal",
+        x: T[idx],
+        y: fval,
+    };
+});
+```
+
+```{ojs}
+//| label: fig-frequensi-modulation
+//| fig-cap: "Modulasi frekuensi"
+
+Plot.plot({
+  symbol: {legend: true},
+  grid: true,
+  x: {
+    label: "t"
+  },
+  y: {
+    label: "y",
+    domain: [-1.25, 1.25],
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.ruleX([0]),
+    Plot.line(fmsig, {x: "x", y: "y", stroke: "blue", strokeOpacity: 0.5, strokeWidth: 2}),
+    Plot.line(fcsig, {x: "x", y: "y", stroke: "red", strokeOpacity: 0.25, strokeWidth: 2}),
+    Plot.line(fsig, {x: "x", y: "y", stroke: "green", strokeWidth: 2}),
+    Plot.frame()
+  ]
+})
+```
+
+## Extra: Phase Modulation
+
+$$
+    y(t)=sin(2\pi f_ct+m(t)+\phi_c)
+$$
+
+```{ojs}
+//| panel: input
+viewof pfrm = Inputs.range(
+    [0.1, 10],
+    {
+        value: 3,
+        step: 0.01,
+        label: tex`f_m\;(\mathrm{Hz})`
+    }
+)
+viewof pphim = Inputs.range(
+    [-3.14, 3.14],
+    {
+        value: 0,
+        step: 0.01,
+        label: tex`\phi_m\;(\mathrm{rad})`
+    }
+)
+viewof pfrc = Inputs.range(
+    [0.1, 20],
+    {
+        value: 2,
+        step: 0.1,
+        label: tex`f_c\;(\mathrm{Hz})`
+    }
+)
+viewof pphic = Inputs.range(
+    [-3.14, 3.14],
+    {
+        value: 0,
+        step: 0.01,
+        label: tex`\phi_c\;(\mathrm{rad})`
+    }
+)
+```
+
+```{ojs}
+pmodulator = (frequency) => T.map((t) => {
+  return {
+    Symbol: "Modulator",
+    x: t,
+    y: Math.cos(2 * (Math.PI * frequency * t + pphim))
+  }
+});
+
+pcsig = carrier(pfrc);
+pmsig = pmodulator(pfrm);
+
+psig = pcsig.map((obj, idx) => {
+    const cpart = 2 * Math.PI * pfrc * T[idx];
+    return {
+        Symbol: "Signal",
+        x: T[idx],
+        y: Math.sin(cpart + pmsig[idx].y + pphic)
+    };
+});
+```
+
+```{ojs}
+//| label: fig-phase-modulation
+//| fig-cap: "Modulasi fasa"
+
+Plot.plot({
+  symbol: {legend: true},
+  grid: true,
+  x: {
+    label: "t"
+  },
+  y: {
+    label: "y",
+    domain: [-1.25, 1.25],
+  },
+  marks: [
+    Plot.ruleY([0]),
+    Plot.ruleX([0]),
+    Plot.line(pmsig, {x: "x", y: "y", stroke: "blue", strokeOpacity: 0.25, strokeWidth: 2}),
+    Plot.line(pcsig, {x: "x", y: "y", stroke: "red", strokeOpacity: 0.25, strokeWidth: 2}),
+    Plot.line(psig, {x: "x", y: "y", stroke: "green", strokeWidth: 2}),
+    Plot.frame()
+  ]
+})
+```

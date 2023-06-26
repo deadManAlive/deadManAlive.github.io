@@ -1,5 +1,5 @@
 ---
-title: "Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part II"
+title: "Musitech: 24-Bit Integer vs. 32-Bit Floating-Point, Part II [WIP]"
 author: "Dead Man"
 date: "2023-05-12"
 categories: [Musitech, Analisis]
@@ -7,7 +7,8 @@ image: "image.jpg"
 title-block-banner: "image.jpg"
 format:
   html:
-    echo: false 
+    echo: false
+draft: true
 ---
 
 Setelah membahas sedikit tentang dasar sistem *floating-point* pada [bagian pertama](../24int-vs-32float/index.qmd), mari kita lanjutkan pembahasan secara lebih spesifik mengenai perbandingan **24-bit integer** vs. **32-bit *floating-point***.
@@ -166,7 +167,11 @@ stop: u32 1065353216 f32 1e0
 There's 1056964608 level between 1.1754944e-38 and 1e0
 ```
 
-Dapat dilihat bahwa terdapat $1056964608$ level antara nilai tengah (digantikan nilai normal minimum disini) dengan nilai maksimum ($1.0$). Sementara, `int24` memberikan nilai $8388607$ sehingga terdapat rasio perbedaan sebesar $126$, meleset $2$ (dari $256$) kali lipat jika dihitung secara sederhana dari perbedaan jumlah bit kedua tipe data tersebut.
+Dapat dilihat bahwa terdapat $1056964608$ level antara nilai tengah (digantikan nilai normal minimum disini) dengan nilai maksimum ($1.0$). Sementara, `int24` memberikan nilai $8388608$ sehingga terdapat rasio perbedaan sebesar $126$, meleset $2$ (dari $256$) kali lipat jika dihitung secara sederhana dari perbedaan jumlah bit kedua tipe data tersebut.
+
+:::{.callout-note title="$8388608$" collapse="true"}
+Not hehe.
+:::
 
 $126$ kali lipat bukanlah rasio yang kecil untuk perbandingan resolusi, sebagai contoh perbandingan resolusi gambar dengan membandingkan jumlah *pixel* **4K** ($3840\times2160$) dengan **360p** ($640\times360$) hanya mencapai $36$ kali, hampir 4 kali lebih kecil dari perbandingan resolusi `float32` dan `int24`, dan tentu pembaca tahu bagaimana perbedaan kualitas antara 4K dengan 360p.
 
@@ -286,11 +291,11 @@ Nilai-nilai di atas tidak memberikan gambaran terhadap kualitas tetapi lebih ke 
 
 Yang menarik bagi penulis, dan mungkin juga sebagaian dari pembaca, adalah nilai level yang digunakan oleh `int24` pada *white noise* dengan *sample rate* 192 kHz, kenapa terjadi *drop* level yang sangat signifikan, hingga lebih dari 30% dibanding `float32`? Sekali lagi, nilai-nilai ini tidak berkorelasi sama sekali dengan kualitas tetapi peluang untuk kejadian tersebut cukup menarik.
 
-Kesalahan algoritma? Penulis kemudian melakuan uji coba terhadap algoritma dengan cara mengambil sebuah *file* WAV 16-bit yang sudah ada, kemudian melakukan konversi *bit depth* dari *file* tersebut ke `float32` dan `int24`. Karena data sinyal telah terkuantisasi dari rekaman 16-bit, level yang digunakan oleh konversi `float32` dan `int24` dari *file* tersebut seharusnya memberikan nilai yang sama dan berada di sekitar $2^{16}=65536$. Dan benar, dari *file* didapatkan keluaran berikut:
+Kesalahan algoritma? Penulis kemudian melakuan uji coba terhadap algoritma dengan cara mengambil sebuah [*file*](https://soundcloud.com/virtual-riot/4-producers-1-sample-pn35a-virtual-riot-remix-free-download) WAV 16-bit yang sudah ada, kemudian melakukan konversi *bit depth* dari *file* tersebut ke `float32` dan `int24`. Karena data sinyal telah terkuantisasi dari rekaman 16-bit, level yang digunakan oleh konversi `float32` dan `int24` dari *file* tersebut seharusnya memberikan nilai yang sama dan berada di sekitar $2^{16}=65536$. Dan benar, dari *file* didapatkan keluaran berikut:
 
 ```{code-line-numbers="false"}
-'pn35a-f32.wav' (format: 3, channels: 2, sampling rate: 44100 Hz, bit depth: 32 bits) has 65536 uniques samples
-'pn35a-i24.wav' (format: 1, channels: 2, sampling rate: 44100 Hz, bit depth: 24 bits) has 65536 uniques samples
+'pn35a-f32.wav' (..., 44100 Hz, bit depth: 32 bits) has 65536 uniques samples
+'pn35a-i24.wav' (..., 44100 Hz, bit depth: 24 bits) has 65536 uniques samples
 ```
 
 <!-- ??? -->

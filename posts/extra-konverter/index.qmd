@@ -1,5 +1,5 @@
 ---
-title: "Musitech: EXTRA - Konverter `float32` dan `int24`"
+title: "Musitech: EXTRA - Konverter `float32` dan `int24` [WIP]"
 author: "Dead Man"
 date: "2023-05-14"
 categories: [Musitech, Extra]
@@ -11,7 +11,8 @@ format:
     include-in-header:
       - text: |
           <script src="./assets/func.js"></script>
-description: Beberapa tools konversi data (WIP)
+description: Beberapa tools konversi data
+draft: true
 ---
 
 ## Konverter
