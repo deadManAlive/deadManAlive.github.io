@@ -445,7 +445,23 @@ kenapa <code>0x00800000</code>?
 <pre data-code-line-numbers="false"><code>start: u32 8388608 f32 1.1754944e-38
 stop: u32 1065353216 f32 1e0
 There's 1056964608 level between 1.1754944e-38 and 1e0</code></pre>
-<p>Dapat dilihat bahwa terdapat <span class="math inline">\(1056964608\)</span> level antara nilai tengah (digantikan nilai normal minimum disini) dengan nilai maksimum (<span class="math inline">\(1.0\)</span>). Sementara, <code>int24</code> memberikan nilai <span class="math inline">\(8388607\)</span> sehingga terdapat rasio perbedaan sebesar <span class="math inline">\(126\)</span>, meleset <span class="math inline">\(2\)</span> (dari <span class="math inline">\(256\)</span>) kali lipat jika dihitung secara sederhana dari perbedaan jumlah bit kedua tipe data tersebut.</p>
+<p>Dapat dilihat bahwa terdapat <span class="math inline">\(1056964608\)</span> level antara nilai tengah (digantikan nilai normal minimum disini) dengan nilai maksimum (<span class="math inline">\(1.0\)</span>). Sementara, <code>int24</code> memberikan nilai <span class="math inline">\(8388608\)</span> sehingga terdapat rasio perbedaan sebesar <span class="math inline">\(126\)</span>, meleset <span class="math inline">\(2\)</span> (dari <span class="math inline">\(256\)</span>) kali lipat jika dihitung secara sederhana dari perbedaan jumlah bit kedua tipe data tersebut.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="$8388608$">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="math inline">\(8388608\)</span>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Not hehe.</p>
+</div>
+</div>
+</div>
 <p><span class="math inline">\(126\)</span> kali lipat bukanlah rasio yang kecil untuk perbandingan resolusi, sebagai contoh perbandingan resolusi gambar dengan membandingkan jumlah <em>pixel</em> <strong>4K</strong> (<span class="math inline">\(3840\times2160\)</span>) dengan <strong>360p</strong> (<span class="math inline">\(640\times360\)</span>) hanya mencapai <span class="math inline">\(36\)</span> kali, hampir 4 kali lebih kecil dari perbandingan resolusi <code>float32</code> dan <code>int24</code>, dan tentu pembaca tahu bagaimana perbedaan kualitas antara 4K dengan 360p.</p>
 <div id="fig-res-comp" class="quarto-layout-panel">
 <figure class="figure">
@@ -576,9 +592,9 @@ There's 1056964608 level between 1.1754944e-38 and 1e0</code></pre>
 <p>Sekilas dapat kita lihat dari jumlah level yang digunakan, <em>sample rate</em> lebih berpengaruh dari pada <em>bit depth</em>, <code>float32</code> dan <code>int24</code> juga menggunakan jumlah level yang relatif sama pada <em>sample rate</em> yang sama. Bahkan, bentuk sinyal, meskipun sama-sama minimal dibanding dengan <em>sample rate</em>, lebih berpengaruh terhadap jumlah level yang digunakan ketimbang <em>bit depth</em>.</p>
 <p>Nilai-nilai di atas tidak memberikan gambaran terhadap kualitas tetapi lebih ke peluang suatu <em>sample</em> untuk berada di nilai yang berbeda dan seharusnya semakin tinggi resolusi yang tersedia, semakin kecil peluang satu <em>sample</em> memiliki nilai yang sama dengan sample lainnya, terutama pada <em>sample</em> acak dan natural, seperti musik.</p>
 <p>Yang menarik bagi penulis, dan mungkin juga sebagaian dari pembaca, adalah nilai level yang digunakan oleh <code>int24</code> pada <em>white noise</em> dengan <em>sample rate</em> 192 kHz, kenapa terjadi <em>drop</em> level yang sangat signifikan, hingga lebih dari 30% dibanding <code>float32</code>? Sekali lagi, nilai-nilai ini tidak berkorelasi sama sekali dengan kualitas tetapi peluang untuk kejadian tersebut cukup menarik.</p>
-<p>Kesalahan algoritma? Penulis kemudian melakuan uji coba terhadap algoritma dengan cara mengambil sebuah <em>file</em> WAV 16-bit yang sudah ada, kemudian melakukan konversi <em>bit depth</em> dari <em>file</em> tersebut ke <code>float32</code> dan <code>int24</code>. Karena data sinyal telah terkuantisasi dari rekaman 16-bit, level yang digunakan oleh konversi <code>float32</code> dan <code>int24</code> dari <em>file</em> tersebut seharusnya memberikan nilai yang sama dan berada di sekitar <span class="math inline">\(2^{16}=65536\)</span>. Dan benar, dari <em>file</em> didapatkan keluaran berikut:</p>
-<pre data-code-line-numbers="false"><code>'pn35a-f32.wav' (format: 3, channels: 2, sampling rate: 44100 Hz, bit depth: 32 bits) has 65536 uniques samples
-'pn35a-i24.wav' (format: 1, channels: 2, sampling rate: 44100 Hz, bit depth: 24 bits) has 65536 uniques samples</code></pre>
+<p>Kesalahan algoritma? Penulis kemudian melakuan uji coba terhadap algoritma dengan cara mengambil sebuah <a href="https://soundcloud.com/virtual-riot/4-producers-1-sample-pn35a-virtual-riot-remix-free-download"><em>file</em></a> WAV 16-bit yang sudah ada, kemudian melakukan konversi <em>bit depth</em> dari <em>file</em> tersebut ke <code>float32</code> dan <code>int24</code>. Karena data sinyal telah terkuantisasi dari rekaman 16-bit, level yang digunakan oleh konversi <code>float32</code> dan <code>int24</code> dari <em>file</em> tersebut seharusnya memberikan nilai yang sama dan berada di sekitar <span class="math inline">\(2^{16}=65536\)</span>. Dan benar, dari <em>file</em> didapatkan keluaran berikut:</p>
+<pre data-code-line-numbers="false"><code>'pn35a-f32.wav' (..., 44100 Hz, bit depth: 32 bits) has 65536 uniques samples
+'pn35a-i24.wav' (..., 44100 Hz, bit depth: 24 bits) has 65536 uniques samples</code></pre>
 <!-- ??? -->
 
 
