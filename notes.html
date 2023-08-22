@@ -40,10 +40,10 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
+  "panel-placement": "end",
   "type": "textbox",
   "limit": 20,
   "language": {
@@ -70,8 +70,10 @@ ul.task-list li input[type="checkbox"] {
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="DMB - Catatan">
+<meta property="og:description" content="">
 <meta property="og:site-name" content="DMB">
 <meta name="twitter:title" content="DMB - Catatan">
+<meta name="twitter:description" content="">
 <meta name="twitter:creator" content="@lngtmknmndng_">
 <meta name="twitter:card" content="summary">
 </head>
@@ -84,12 +86,13 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./logo.png" alt="" class="navbar-logo">
+    <img src="./favicon.png" alt="" class="navbar-logo">
     </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">DMB</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Mencari"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -100,16 +103,16 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Beranda</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
- <span class="menu-text">Tentang</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./archive.html" rel="" target="">
  <span class="menu-text">Arsip</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./notes.html" rel="" target="" aria-current="page">
  <span class="menu-text">Catatan</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html" rel="" target="">
+ <span class="menu-text">Tentang</span></a>
   </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto tools-wide">
@@ -161,6 +164,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#dead-mans-tools" id="toc-dead-mans-tools" class="nav-link active" data-scroll-target="#dead-mans-tools"><em>Dead Man’s Tools</em></a></li>
+  <li><a href="#bahasa-pemrograman" id="toc-bahasa-pemrograman" class="nav-link" data-scroll-target="#bahasa-pemrograman">Bahasa Pemrograman</a></li>
   </ul>
 </nav>
     </div>
@@ -182,7 +186,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><a href="https://ubuntu.com/wsl">Windows Subsystem for Linux</a> (WSL)</td>
-<td>Untuk menjalankan berbagai macam distro Linux di Windows. Untuk mendapatkan <em>best of both worlds</em> (<em>user-frindly</em> Windows + <em>developer-friendly</em> Linux), test aplikasi <em>cross-platform</em>, isolasi <em>environment</em>, dsb.</td>
+<td>Untuk mendapatkan <em>best of both worlds</em> (<em>user-frindly</em> Windows + <em>developer-friendly</em> Linux), test aplikasi <em>cross-platform</em>, isolasi <em>environment</em>, dsb. Dapat digunakan untuk menjalankan beberapa distro (Ubuntu, Arch, Debian, dsb.).</td>
 </tr>
 <tr class="even">
 <td><a href="https://code.visualstudio.com/">Visual Studio Code</a></td>
@@ -203,6 +207,52 @@ ul.task-list li input[type="checkbox"] {
 <tr class="even">
 <td><a href="https://godbolt.org/">Compiler Explorer</a></td>
 <td>Website yang menyediakan tools untuk mengkompilasi, <em>disaassembly</em>, dan mengeksekusi berbagai macam bahasa pemrograman dan <em>compiler</em>. Dapat digunakan untuk dengan cepat menguji algoritma, membandingkan <em>compiler</em> dan bahasa pemrograman, serta mengecek efisiensi program yang ditulis.</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.msys2.org/">MSYS2</a></td>
+<td><em>Environment</em> Unix di Windows.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bahasa-pemrograman" class="level2">
+<h2 class="anchored" data-anchor-id="bahasa-pemrograman">Bahasa Pemrograman</h2>
+<p>Beberapa bahasa pemrograman yang penulis rekomendasikan. Sebagian besar digunakan dalam penulisan blog ini (langsung/tak langsung).</p>
+<table class="table">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 95%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Bahasa</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>C</td>
+<td>Pendahulu C++, lebih sederhana dengan sintaks yang sangat mirip. Selain pemrograman <em>legacy, embedded</em> dan/atau <em>bare metal</em> (termasuk <em>operating system</em>), belakangan lebih sering digunakan dalam lingkup akademi.</td>
+</tr>
+<tr class="even">
+<td>C++</td>
+<td>Bahasa penting dalam DSP, <em>embedded</em>, pengembangan <em>game</em>, <em>competitive programming</em>, dan banyak lagi. Terkenal rumit tetapi dapat digunakan untuk pemrograman performa tinggi. <strong><em>Highly recommended</em></strong> jika ingin mempelajari <em>computer science</em> secara umum.</td>
+</tr>
+<tr class="odd">
+<td>JavaScript</td>
+<td>Salah satu bahasa utama dalam pemrograman web.</td>
+</tr>
+<tr class="even">
+<td>Julia</td>
+<td>Alternatif Python. Penulis menggunakannya karena memiliki <em>type system</em> yang lebih berguna dari Python.</td>
+</tr>
+<tr class="odd">
+<td>Python</td>
+<td>Bahasa yang tergolong relatif mudah dipelajari, sangat membantu dalam <em>prototyping</em>. Terkenal sebagai bahasa utama dalam <em>machine learning</em>. <strong><em>Recommended</em></strong> jika ingin segera membuat aplikasi yang dapat bekerja.</td>
+</tr>
+<tr class="even">
+<td>Rust</td>
+<td>Alternatif dari C (dan C++). Terkenal untuk <em>compiler</em>nyayang <em>strict</em> untuk menghindari <em>pitfalls</em> dalam C/C++. <strong><em>Not recommended</em></strong> untuk pemula yang baru/akan mempelajari pemrograman.</td>
 </tr>
 </tbody>
 </table>

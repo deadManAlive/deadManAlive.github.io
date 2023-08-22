@@ -9,7 +9,7 @@
 <meta name="author" content="Dead Man">
 <meta name="dcterms.date" content="2023-04-14">
 
-<title>DMB - CXX: Template Metaprogramming Praktis Pada C++11</title>
+<title>DMB - CXX: Compile Time Function Menggunakan Template Metaprogramming</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -76,10 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
+  "panel-placement": "end",
   "type": "textbox",
   "limit": 20,
   "language": {
@@ -115,18 +115,18 @@ background-size: cover;
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="DMB - CXX: Template Metaprogramming Praktis Pada C++11">
+<meta property="og:title" content="DMB - CXX: Compile Time Function Menggunakan Template Metaprogramming">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://deadManAlive.github.io/posts/prime-template/image.jpg">
 <meta property="og:site-name" content="DMB">
-<meta name="twitter:title" content="DMB - CXX: Template Metaprogramming Praktis Pada C++11">
+<meta name="twitter:title" content="DMB - CXX: Compile Time Function Menggunakan Template Metaprogramming">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://deadManAlive.github.io/posts/prime-template/image.jpg">
 <meta name="twitter:creator" content="@lngtmknmndng_">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar docked nav-fixed">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -134,24 +134,21 @@ background-size: cover;
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../logo.png" alt="" class="navbar-logo">
+    <img src="../../favicon.png" alt="" class="navbar-logo">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">DMB</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Mencari"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="../../index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Beranda</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../about.html" rel="" target="">
- <span class="menu-text">Tentang</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../archive.html" rel="" target="">
@@ -160,6 +157,10 @@ background-size: cover;
   <li class="nav-item">
     <a class="nav-link" href="../../notes.html" rel="" target="">
  <span class="menu-text">Catatan</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Tentang</span></a>
   </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto tools-wide">
@@ -184,25 +185,12 @@ background-size: cover;
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">CXX: Template Metaprogramming Praktis Pada C++11</li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Mencari" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">CXX: Template Metaprogramming Praktis Pada C++11</h1>
+      <h1 class="title">CXX: Compile Time Function Menggunakan Template Metaprogramming</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">C++</div>
                 <div class="quarto-category">Pemrograman</div>
@@ -233,53 +221,6 @@ background-size: cover;
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Mencari"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Laman</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alihkan bagian">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Beranda</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../about.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Tentang</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../archive.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Arsip</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Catatan</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
@@ -309,7 +250,7 @@ background-size: cover;
 
 
 
-<p><strong><em>Template metaprogramming</em></strong> merupakan salah satu fitur paling <em>powerful</em> dari C++. <em>Template metaprogramming</em>, alih-alih menulis program untuk di<em>compile</em> seperti pada umumnya, dapat disebut sebagai pemrograman pada <em>compiler</em> itu sendiri (“<em>metaprogramming</em>”): sebuah template memerintahkan <em>compiler</em> untuk “menulis” source code <em>intermediate</em> tergantung pada parameter-parameter dan aturan-aturan <em>template</em>nya.</p>
+<p><strong><em>Template metaprogramming</em></strong> merupakan salah satu fitur yang sangat <em>powerful</em> dari C++. <em>Template metaprogramming</em>, alih-alih menulis program untuk di<em>compile</em> seperti pada umumnya, dapat disebut sebagai pemrograman pada <em>compiler</em> itu sendiri (“<em>metaprogramming</em>”): sebuah template memerintahkan <em>compiler</em> untuk “menulis” source code <em>intermediate</em> tergantung pada parameter-parameter dan aturan-aturan <em>template</em>nya.</p>
 <p><em>Template metaprogramming</em> merupakan salah satu bentuk polimorfisme, tepatnya <em>compile-time polymorpism</em> karena implementasi <em>generic</em> dari tiap tipe ditentukan pada <em>compile-time</em>, dibanding pada <em>runtime</em> (<em>runtime polymorphism</em>) secara dinamis. Kelebihan <em>compile-time polymorphisme</em> tentu adalah tidak adanya <em>overhead</em> untuk <em>dynamic dispatch</em> seperti pada <em>runtime polymorphism</em> dan <strong>error</strong> pada interface dapat diketahui dari awal di tahap kompilasi, meskipun penggunaan <em>compile-time polymorpism</em> mengorbankan fleksibilitas dari penggunaan <strong>RTPm</strong>.</p>
 <p>Pada artikel ini, <em>template metaprogramming</em> akan didalami dengan membuat <em>compile-time function</em> untuk mengecek apakah suatu bilangan adalah bilangan prima (<em>primality test</em>). Beberapa hal yang diharapkan untuk didapatkan setelah mengikuti artikel ini ialah:</p>
 <ul>
@@ -493,19 +434,19 @@ Catatan
 <dl class="code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-18" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-18" data-code-annotation="1" data-code-lines="2"><strong>Pengecekan I</strong></span>
+<span data-code-annotation="1" data-code-lines="2" data-code-cell="annotated-cell-18"><strong>Pengecekan I</strong></span>
 </dd>
 <dt data-target-cell="annotated-cell-18" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-18" data-code-annotation="2" data-code-lines="6"><strong>Pengecekan II</strong></span>
+<span data-code-annotation="2" data-code-lines="6" data-code-cell="annotated-cell-18"><strong>Pengecekan II</strong></span>
 </dd>
 <dt data-target-cell="annotated-cell-18" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-18" data-code-annotation="3" data-code-lines="10"><strong>Perulangan</strong></span>
+<span data-code-annotation="3" data-code-lines="10" data-code-cell="annotated-cell-18"><strong>Perulangan</strong></span>
 </dd>
 <dt data-target-cell="annotated-cell-18" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-18" data-code-annotation="4" data-code-lines="11"><strong>Pengecekan III</strong></span>
+<span data-code-annotation="4" data-code-lines="11" data-code-cell="annotated-cell-18"><strong>Pengecekan III</strong></span>
 </dd>
 </dl>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -680,7 +621,7 @@ Tip
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><strong>C++20</strong> memperkenalkan <em>keyword</em> baru <code>consteval</code> yang digunakan pada sebuah fungsi untuk menjadikannya <em>immediate function</em> yang akan dievaluasi pada <em>compile=time</em>, jadi tidak usah repot-repot menggunakan cara di atas jika menggunakan keyword ini. Maka jerih payah kita di atas dapat secara praktis ditukar dengan:</p>
+<p><strong>C++20</strong> memperkenalkan <em>keyword</em> baru <code>consteval</code> yang digunakan pada sebuah fungsi untuk menjadikannya <em>immediate function</em> yang akan dievaluasi pada <em>compile-time</em>, jadi tidak usah repot-repot menggunakan cara di atas jika menggunakan keyword ini (Dengan catatan input yang valid berupa <em>compile-time constant</em> pula.). Maka jerih payah kita di atas dapat secara praktis ditukar dengan:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw">consteval</span> <span class="dt">bool</span> isPrime<span class="op">(</span><span class="dt">int</span> n<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb34-2"><a href="#cb34-2"></a>    <span class="co">// ...persis fungsi di atas...</span></span>
 <span id="cb34-3"><a href="#cb34-3"></a><span class="op">}</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>

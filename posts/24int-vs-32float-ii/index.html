@@ -8,7 +8,7 @@
 
 <meta name="author" content="Dead Man">
 
-<title>DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II [WIP]</title>
+<title>DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -75,10 +75,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
+  "panel-placement": "end",
   "type": "textbox",
   "limit": 20,
   "language": {
@@ -114,18 +114,18 @@ background-size: cover;
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II [WIP]">
+<meta property="og:title" content="DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://deadManAlive.github.io/posts/24int-vs-32float-ii/image.jpg">
 <meta property="og:site-name" content="DMB">
-<meta name="twitter:title" content="DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II [WIP]">
+<meta name="twitter:title" content="DMB - Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://deadManAlive.github.io/posts/24int-vs-32float-ii/image.jpg">
 <meta name="twitter:creator" content="@lngtmknmndng_">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar docked nav-fixed">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -133,24 +133,21 @@ background-size: cover;
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../logo.png" alt="" class="navbar-logo">
+    <img src="../../favicon.png" alt="" class="navbar-logo">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">DMB</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Mencari"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Alihkan navigasi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="../../index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Beranda</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../about.html" rel="" target="">
- <span class="menu-text">Tentang</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../archive.html" rel="" target="">
@@ -159,6 +156,10 @@ background-size: cover;
   <li class="nav-item">
     <a class="nav-link" href="../../notes.html" rel="" target="">
  <span class="menu-text">Catatan</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Tentang</span></a>
   </li>  
 </ul>
             <div class="quarto-navbar-tools ms-auto tools-wide">
@@ -183,25 +184,12 @@ background-size: cover;
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-        <i class="bi bi-layout-text-sidebar-reverse"></i>
-      </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II [WIP]</li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alihkan bilah sisi" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Mencari" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-  </nav>
 </header>
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II [WIP]</h1>
+      <h1 class="title">Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part II</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">Musitech</div>
                 <div class="quarto-category">Analisis</div>
@@ -232,53 +220,6 @@ background-size: cover;
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Mencari"></div>
-        </div>
-        </div>
-    <div class="sidebar-menu-container"> 
-    <ul class="list-unstyled mt-1">
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Laman</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alihkan bagian">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Beranda</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../about.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Tentang</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../archive.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Arsip</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../notes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Catatan</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
@@ -287,13 +228,14 @@ background-size: cover;
   <ul>
   <li><a href="#headroom" id="toc-headroom" class="nav-link active" data-scroll-target="#headroom"><em>Headroom</em></a>
   <ul>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">“<span class="math inline">\([-1,1]\)</span>”</a></li>
+  <li><a href="#dari--1-ke-1" id="toc-dari--1-ke-1" class="nav-link" data-scroll-target="#dari--1-ke-1">Dari -1 Ke 1</a></li>
   <li><a href="#mubazir" id="toc-mubazir" class="nav-link" data-scroll-target="#mubazir">Mubazir?</a></li>
   </ul></li>
   <li><a href="#bit-signed-integer-vs-32-bit-floating-point" id="toc-bit-signed-integer-vs-32-bit-floating-point" class="nav-link" data-scroll-target="#bit-signed-integer-vs-32-bit-floating-point">24-Bit Signed Integer vs 32-Bit Floating-Point</a>
   <ul>
-  <li><a href="#menghitung-level-kuantisasi-float32" id="toc-menghitung-level-kuantisasi-float32" class="nav-link" data-scroll-target="#menghitung-level-kuantisasi-float32">1. Menghitung level kuantisasi <code>float32</code></a></li>
+  <li><a href="#sec-quantization-level" id="toc-sec-quantization-level" class="nav-link" data-scroll-target="#sec-quantization-level">1. Menghitung level kuantisasi <code>float32</code></a></li>
   <li><a href="#level-kuantisasi-yang-digunakan-pada-sebuah-file-wav" id="toc-level-kuantisasi-yang-digunakan-pada-sebuah-file-wav" class="nav-link" data-scroll-target="#level-kuantisasi-yang-digunakan-pada-sebuah-file-wav">2. Level kuantisasi yang digunakan pada sebuah <em>file</em> WAV</a></li>
+  <li><a href="#quantization-error" id="toc-quantization-error" class="nav-link" data-scroll-target="#quantization-error">3. <em>Quantization Error</em></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -337,8 +279,8 @@ IEEE 754
 <p>Artikel ini dan artikel <a href="../24int-vs-32float">bagian pertama</a> membatasi bahasan pada <em>floating-point</em> 32-bit yang terstandardisasi dalam IEEE 754 (IEEE <em>Standard for Floating-Point Arithmetic</em>) <code>binary32</code> (<em>single-precision floating-point format</em>), yang dalam artikel ini akan dirujuk secara bergantian sebagai “<em>floating-point</em>”, <code>float</code>, ataupun <code>float32</code>. <em>Floating-point</em> dengan lebar data lainnya, seperi <em>double-precision</em> (64-bit), memiliki struktur yang berbeda dan mungkin akan dibahas di lain kesempatan.</p>
 </div>
 </div>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section">“<span class="math inline">\([-1,1]\)</span>”</h3>
+<section id="dari--1-ke-1" class="level3">
+<h3 class="anchored" data-anchor-id="dari--1-ke-1">Dari -1 Ke 1</h3>
 <p>Jawaban dari pertanyaan di atas ialah meskipun format <code>float32</code> mampu menyimpan data yang sangat besar, hingga <span class="math inline">\(3.40 \times 10 ^{38}\)</span>, penggunaan <code>float32</code> pada dunia audio menggunakan nilai ternormalisasi. Dengan kata lain, dalam dunia digital audio, <strong>nilai yang digunakan hanya pada rentang</strong> <span class="math inline">\(-1\)</span> hingga <span class="math inline">\(1\)</span>, dan umumnya juga dibatasi menggunakan nilai <a href="../24int-vs-32float/#nilai-subnormaldenormal">normal</a>.</p>
 <p>Apa konsekuensi dari hal ini? Dengan begitu maka 0 dBFS berada pada nilai <span class="math inline">\(-1\)</span> atau <span class="math inline">\(1\)</span>, dan dapat menyimpan nilai yang lebih besar <span class="math inline">\(3.40 \times 10 ^{38}\)</span> (<span class="math inline">\(+770\;\mathrm{dB}\)</span>) kali ataupun <span class="math inline">\(8.51 \times 10 ^{38}\)</span> kali lebih kecil (<span class="math inline">\(-759\;\mathrm{dB}\)</span>) relatif dari 0 dBFS. Sangat besar (dan kecil) dan sangat lebih dari cukup untuk mendukung rekaman audio seekstrim apa pun.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="$+770;\mathrm{dB}$??">
@@ -406,8 +348,8 @@ Tinggi dan Berat
 <p>Kembali ke pertanyaan pemicu dari seri artikel ini, “Seberapa jauh perbedaan kualitas 24-bit int dengan 32-bit FP?”. Sekilas, cukup dari lebar data kita bisa saja menyebut bahwa <code>float32</code> memiliki resolusi sebesar <span class="math inline">\(2^{31-23} = 256\)</span> kali resolusi <code>int24</code>. Tetapi, mengingat aturan representasi pada <code>float</code> tidak sesederhana pada <code>int</code>, maka kita akan mencoba menghitung level kuantisasi pada masing-masing tipe, dimana kualitas dari tipe data pembawa sinyal dapat dilihat dari jumlah level kuantisasi ini (divisualisasikan di <a href="../fs-vs-bd/#fig-adc">laman ini</a>, yang pada jenis data <strong>integer</strong> memiliki hubungan <span class="math inline">\(N=2^b\)</span> dengan <span class="math inline">\(N\)</span> jumlah level kuantisasi dan <span class="math inline">\(b\)</span> bit-depth.</p>
 <p>Dari sini, dapat kita ketahui untuk tipe 24-bit integer, yang dalam dunia audio menggunakan data type <code>unsigned int</code>, memiliki nilai <span class="math inline">\(0\)</span> atau <span class="math inline">\(-\infty\;\mathrm{dB}\)</span> sebagai nilai minimum dan <span class="math inline">\(2^{23}-1=8388607\)</span> sebagai nilai maksimum (<span class="math inline">\(0\;\mathrm{dB}\)</span>). <span class="math inline">\(8 388 607\)</span> adalah jumlah level kuantisasi pada satu sisi gelombang pada <code>int24</code>, di sini dapat disebut sebagai resolusinya.</p>
 <p>Bagaimana dengan <code>float</code>? Karena aturannya yang lebih rumit dan rentang yang dibatasi <span class="math inline">\(\pm 1\)</span>, maka kita akan mengunakan bantuan pemrograman, kali ini dengan bahasa pemrograman <code>rust</code> yang mempermudah manipulasi tipe data <code>float</code> (<code>f32</code>). Kita akan mencoba melakukan beberapa pengujian terhadap <code>float32</code> dan <code>int24</code>.</p>
-<section id="menghitung-level-kuantisasi-float32" class="level3">
-<h3 class="anchored" data-anchor-id="menghitung-level-kuantisasi-float32">1. Menghitung level kuantisasi <code>float32</code></h3>
+<section id="sec-quantization-level" class="level3">
+<h3 class="anchored" data-anchor-id="sec-quantization-level">1. Menghitung level kuantisasi <code>float32</code></h3>
 <p>Seperti pada <code>int24</code> di atas, kita akan menghitung resolusi satu sisi (<span class="math inline">\(0\)</span> ke <span class="math inline">\(+1\)</span>), dilambangkan <span class="math inline">\(N_{Q_{[\mathrm{Nmin},1]}}\)</span>.</p>
 <p>Program dimulai dengan definisi <code>start</code> dan <code>stop</code> yang menyimpan data biner masing-masing nilai normal terkecil dan satu<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, dalam bentuk biner dan direpresentasikan dalam notasi heksadesimal.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode numberSource rust number-lines code-with-copy"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">let</span> start <span class="op">=</span> <span class="dv">0x00800000</span><span class="op">;</span> <span class="co">// == 0b00000000_10000000_00000000_00000000 == 1.175494e-38</span></span>
@@ -446,7 +388,7 @@ kenapa <code>0x00800000</code>?
 stop: u32 1065353216 f32 1e0
 There's 1056964608 level between 1.1754944e-38 and 1e0</code></pre>
 <p>Dapat dilihat bahwa terdapat <span class="math inline">\(1056964608\)</span> level antara nilai tengah (digantikan nilai normal minimum disini) dengan nilai maksimum (<span class="math inline">\(1.0\)</span>). Sementara, <code>int24</code> memberikan nilai <span class="math inline">\(8388608\)</span> sehingga terdapat rasio perbedaan sebesar <span class="math inline">\(126\)</span>, meleset <span class="math inline">\(2\)</span> (dari <span class="math inline">\(256\)</span>) kali lipat jika dihitung secara sederhana dari perbedaan jumlah bit kedua tipe data tersebut.</p>
-<div class="callout callout-style-default callout-note callout-titled" title="$8388608$">
+<div class="callout callout-style-default callout-tip callout-titled" title="$8388608$">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -458,7 +400,7 @@ There's 1056964608 level between 1.1754944e-38 and 1e0</code></pre>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Not hehe.</p>
+<p>Jika anda mencoba menjalankan program diatas antara dua perpangkatan <span class="math inline">\(2\)</span> (yaitu <span class="math inline">\(1\)</span> dan <span class="math inline">\(2\)</span>, <span class="math inline">\(2\)</span> dan <span class="math inline">\(4\)</span>, <span class="math inline">\(4\)</span> dan <span class="math inline">\(8\)</span>, dan seterusnya) maka nilai <span class="math inline">\(8388608\)</span> akan selalu keluar sebagai output dari program di atas. Nilai tersebut adalah <span class="math inline">\(2^23\)</span> atau memiliki lebar yang tepat sama dengan lebar data <em>mantissa</em>/koefisien pada <em>float32</em>. <strong><em>Mengapa hal tersebut dapat terjadi?</em></strong></p>
 </div>
 </div>
 </div>
@@ -546,7 +488,7 @@ There's 1056964608 level between 1.1754944e-38 and 1e0</code></pre>
 <p>Untuk analisis ini, penulis melakuka pengujian pada beberapa <em>file</em> audio dengan format dan sinyal yang berbeda untuk melihat perbandingan level yang digunakan (“XXX” pada nama <em>file</em> berarti “f32” atau “i24” tergantung fotmat):</p>
 <div id="tbl-prc-cmp" class="anchored">
 <table class="table">
-<caption>Tabel&nbsp;1: Perbandingan beberapa <em>file</em> WAV (dalam jumlah level yang digunakan)</caption>
+<caption>Tabel&nbsp;1: Perbandingan beberapa <em>file</em> WAV (dalam jumlah level yang digunakan). Sampel dibuat menggunakan <em>software</em> Acoustica 7.1.16</caption>
 <colgroup>
 <col style="width: 24%">
 <col style="width: 19%">
@@ -578,24 +520,174 @@ There's 1056964608 level between 1.1754944e-38 and 1e0</code></pre>
 <td><em>s1024XXX-192k.wav</em></td>
 <td>947845</td>
 <td>935675</td>
-<td><em>pure</em> 1024 Hz <em>sine</em>, 44.1 kHz</td>
+<td><em>pure</em> 1024 Hz <em>sine</em>, 192 kHz</td>
 </tr>
 <tr class="even">
 <td><em>nXXX-192k.wav</em></td>
 <td>953713</td>
 <td>642765</td>
-<td><em>white noise</em>, 44.1 kHz</td>
+<td><em>white noise</em>, 192 kHz</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>Sekilas dapat kita lihat dari jumlah level yang digunakan, <em>sample rate</em> lebih berpengaruh dari pada <em>bit depth</em>, <code>float32</code> dan <code>int24</code> juga menggunakan jumlah level yang relatif sama pada <em>sample rate</em> yang sama. Bahkan, bentuk sinyal, meskipun sama-sama minimal dibanding dengan <em>sample rate</em>, lebih berpengaruh terhadap jumlah level yang digunakan ketimbang <em>bit depth</em>.</p>
-<p>Nilai-nilai di atas tidak memberikan gambaran terhadap kualitas tetapi lebih ke peluang suatu <em>sample</em> untuk berada di nilai yang berbeda dan seharusnya semakin tinggi resolusi yang tersedia, semakin kecil peluang satu <em>sample</em> memiliki nilai yang sama dengan sample lainnya, terutama pada <em>sample</em> acak dan natural, seperti musik.</p>
-<p>Yang menarik bagi penulis, dan mungkin juga sebagaian dari pembaca, adalah nilai level yang digunakan oleh <code>int24</code> pada <em>white noise</em> dengan <em>sample rate</em> 192 kHz, kenapa terjadi <em>drop</em> level yang sangat signifikan, hingga lebih dari 30% dibanding <code>float32</code>? Sekali lagi, nilai-nilai ini tidak berkorelasi sama sekali dengan kualitas tetapi peluang untuk kejadian tersebut cukup menarik.</p>
-<p>Kesalahan algoritma? Penulis kemudian melakuan uji coba terhadap algoritma dengan cara mengambil sebuah <a href="https://soundcloud.com/virtual-riot/4-producers-1-sample-pn35a-virtual-riot-remix-free-download"><em>file</em></a> WAV 16-bit yang sudah ada, kemudian melakukan konversi <em>bit depth</em> dari <em>file</em> tersebut ke <code>float32</code> dan <code>int24</code>. Karena data sinyal telah terkuantisasi dari rekaman 16-bit, level yang digunakan oleh konversi <code>float32</code> dan <code>int24</code> dari <em>file</em> tersebut seharusnya memberikan nilai yang sama dan berada di sekitar <span class="math inline">\(2^{16}=65536\)</span>. Dan benar, dari <em>file</em> didapatkan keluaran berikut:</p>
-<pre data-code-line-numbers="false"><code>'pn35a-f32.wav' (..., 44100 Hz, bit depth: 32 bits) has 65536 uniques samples
-'pn35a-i24.wav' (..., 44100 Hz, bit depth: 24 bits) has 65536 uniques samples</code></pre>
-<!-- ??? -->
+<p>Yang menarik bagi penulis, dan mungkin juga sebagaian dari pembaca, adalah nilai level yang digunakan oleh <code>int24</code> pada <em>white noise</em> dengan <em>sample rate</em> 192 kHz, kenapa terjadi <em>drop</em> level yang sangat signifikan, hingga lebih dari 30% dibanding <code>float32</code>?</p>
+<div id="tbl-prc-cmp-aud" class="anchored">
+<table class="table">
+<caption>Tabel&nbsp;2: Perbandingan dengan algoritma yang sama, tetapi sampel dibuat menggunakan <em>software</em> Audacity 3.0.2</caption>
+<colgroup>
+<col style="width: 24%">
+<col style="width: 19%">
+<col style="width: 17%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nama File</th>
+<th>Level <code>float32</code></th>
+<th>Level <code>int24</code></th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>s1024XXX.wav</em></td>
+<td>11045</td>
+<td>102921</td>
+<td><em>pure</em> 1024 Hz <em>sine</em>, 44.1 kHz</td>
+</tr>
+<tr class="even">
+<td><em>nXXX.wav</em></td>
+<td>32722</td>
+<td>160907</td>
+<td><em>white noise</em>, 44.1 kHz</td>
+</tr>
+<tr class="odd">
+<td><em>s1024XXX-192k.wav</em></td>
+<td>2934</td>
+<td>8117</td>
+<td><em>pure</em> 1024 Hz <em>sine</em>, 192 kHz</td>
+</tr>
+<tr class="even">
+<td><em>nXXX-192k.wav</em></td>
+<td>32768</td>
+<td>355430</td>
+<td><em>white noise</em>, 192 kHz</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Tabel di atas, dengan sampel dibuat dengan software yang berbeda, menghasilkan nilai yang lebih tidak terprediksi, tetapi dengan satu hal yang konsisten: sampel unik yang digunakan oleh format <code>float32</code> selalu lebih kecil dari <code>int24</code>. Apa yang sebenarnya terjadi?</p>
+<p>Kesalahan algoritma? Untuk itu penulis melakukan verifikasi algoritma program dengan menulis program lain dengan bahasa pemrograman Julia yang mempermudah membaca sampel unik pada sebuah file WAV:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1"></a><span class="im">using</span> <span class="bu">WAV</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a>dir <span class="op">=</span> <span class="st">"bin"</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a></span>
+<span id="cb19-5"><a href="#cb19-5"></a>files <span class="op">=</span> <span class="fu">readdir</span>(dir)</span>
+<span id="cb19-6"><a href="#cb19-6"></a></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="co"># membaca tiap file di dalam folder "bin"</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a><span class="cf">for</span> file <span class="kw">in</span> files</span>
+<span id="cb19-9"><a href="#cb19-9"></a>    filename <span class="op">=</span> <span class="fu">joinpath</span>(dir, file)</span>
+<span id="cb19-10"><a href="#cb19-10"></a></span>
+<span id="cb19-11"><a href="#cb19-11"></a>    y, fs <span class="op">=</span> <span class="fu">wavread</span>(filename, format<span class="op">=</span><span class="st">"native"</span>) <span class="co"># membaca file wav sebagai array denga tipe sesuai format WAV</span></span>
+<span id="cb19-12"><a href="#cb19-12"></a>    </span>
+<span id="cb19-13"><a href="#cb19-13"></a>    <span class="fu">println</span>(filename)</span>
+<span id="cb19-14"><a href="#cb19-14"></a>    <span class="fu">println</span>(<span class="fu">typeof</span>(y))</span>
+<span id="cb19-15"><a href="#cb19-15"></a>    <span class="fu">println</span>(<span class="fu">length</span>(<span class="fu">unique</span>(y))) <span class="co"># menampilkan jumlah elemen dengan nilai unik pada array sampel</span></span>
+<span id="cb19-16"><a href="#cb19-16"></a>    <span class="fu">println</span>()</span>
+<span id="cb19-17"><a href="#cb19-17"></a><span class="cf">end</span></span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dan didapatkan hasil yang serupa dengan program di atas, sehingga dapat disebut tidak terdapat kesalahan pada algoritma program. Verifikasi selanjutnya adalah dengan membaca sebuah file musik yang di render <em>native</em> ke <code>float32</code> (juga memberikan nilai sampel unik yang rendah, jauh di bawah level kuantisasi). Pun demikian ketika penulis mencoba menghitung nilai unik dari generasi nilai random terus menerus dalam kurun waktu tertentu: meskipun nilai random yang dikeluarkan hampir selalu unik, jumlahnya tidak seberapa dibanding level kuantisasi yang tersedia.</p>
+<div id="fig-random-trial" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<div id="fig-trial" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./trial.jpg" class="img-fluid figure-img" data-ref-parent="fig-random-trial"></p>
+<figcaption class="figure-caption">(a) Trial</figcaption>
+</figure>
+</div>
+<figcaption class="figure-caption">Gambar&nbsp;2: Output program yang menghitung sampel unik dari generasi sampel random yang di generasi terus menerus selama <span class="math inline">\(180000\)</span> milidetik (3 menit).</figcaption>
+</figure>
+</div>
+<p>Dari gambar di atas, pada bagian float (“<code>&lt;F32&gt;</code>”), terlihat bahwa terdapat lebih dari 1 milyar level (<span class="math inline">\(1\;056\;964\;608\)</span>) kuantisasi antara nilai normal minimal (<span class="math inline">\(1.1755\cdot10^{-38}\)</span>) dan <span class="math inline">\(1.0\)</span>. Generasi nilai random selama <span class="math inline">\(3\)</span> menit (<span class="math inline">\(180\;000\)</span> milidetik) memberikan <span class="math inline">\(502\;727\;841\)</span> nilai unik dari <span class="math inline">\(678\;049\;968\)</span>, dengan kata lain <span class="math inline">\(74\;\%\)</span> sample yang digenerasi memiliki nilai yang unik. Jumlah nilai unik yang dihasilkan adalah <span class="math inline">\(48\;\%\)</span> dari nilai yang digenerasi.</p>
+<p>Sementara itu, pada “<code>&lt;I24&gt;</code>”, sample unik yang dihasilkan hanya <span class="math inline">\(2\;\%\)</span> dari sampel yang dihasilkan. Hal tersebut terjadi karena semua level kuantisasi yang ada telah digunakan seluruhnya <span class="math inline">\(16\;777\;216=2^{24}\)</span>, sehingga rasio nilai unik dan level kuantisasi menjadi <span class="math inline">\(100\;\%\)</span>. Hal ini setidaknya bisa memberikan gambaran kenapa level terpakai pada sebuah file <code>float32</code> cenderung lebih sedikit dari <code>int24</code> pada beberapa kasus. Dan hal ini tidak mempengaruhi kualitas format karena lebih berhubung dengan kondisi sinyal itu sendiri.</p>
+</section>
+<section id="quantization-error" class="level3">
+<h3 class="anchored" data-anchor-id="quantization-error">3. <em>Quantization Error</em></h3>
+<p>Pengujian terakhir dan mungkin yang dapat menjawab pertanyaan dari artikel ini ialah pengukuran <em>quantization error</em> (<strong>QE</strong>), yaitu perubahan yang terjadi pada sinyal digital akibat adanya pembulatan nilai karena jumlah level kuantisasi yang terbatas. Sekilas, menurut intuisi, dengan semakin besar lebar data maka semakin kecil pula QE yang didapatkan. Secara matematis, nilai QE maksimum didapatkan sebagai selisih antar level kuantisasi: <span class="math inline">\(\frac{1}{2^N}\)</span>, dalam desibel menjadi:</p>
+<p><span id="eq-m2d"><span class="math display">\[
+e=20\log{\frac{1}{2^N}}
+\tag{1}\]</span></span></p>
+<div class="callout callout-style-default callout-note callout-titled" title="*Noise Floor*">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<em>Noise Floor</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Nilai QE maksimum juga dikenal sebagai tingkat <em>noise floor</em> dari sebuah format rekaman digital. <em>Noise floor</em> sebenarnya dari sebuah rekaman sendiri juga dipengaruhi oleh <em>noise</em> selama rekaman, <em>noise</em> perangkat analog, dan sebagainya.</p>
+</div>
+</div>
+</div>
+<p>Dari persamaan tersebut, didapatkan QE data dengan <span class="math inline">\(N\)</span> 24-bit memiliki maksimum error <span class="math inline">\(-144.49\)</span> dB dan 32-bit <span class="math inline">\(-192.66\)</span> dB. Tetapi pada praktiknya, apakah benar demikian, mengingat pada <code>float32</code> nilai yang digunakan hanya dibatasi pada rentang <span class="math inline">\(-1&lt;n&lt;1\)</span>? Maka sekali lagi kita menggunakan bantuan pemrograman, kali ini kembali dengan Julia:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource julia number-lines code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1"></a><span class="im">using</span> <span class="bu">WAV</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="im">using</span> <span class="bu">Printf</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a></span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="st">"""</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="st">Convert linear value to decibel</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a><span class="st">"""</span></span>
+<span id="cb20-7"><a href="#cb20-7"></a><span class="fu">m2d</span>(x<span class="op">::</span><span class="dt">AbstractFloat</span>)<span class="op">::</span><span class="dt">AbstractFloat </span><span class="op">=</span> <span class="fl">20</span> <span class="op">*</span> <span class="fu">log10</span>(x)</span>
+<span id="cb20-8"><a href="#cb20-8"></a></span>
+<span id="cb20-9"><a href="#cb20-9"></a><span class="fu">println</span>(<span class="fu">precision</span>(<span class="dt">BigFloat</span>))</span>
+<span id="cb20-10"><a href="#cb20-10"></a></span>
+<span id="cb20-11"><a href="#cb20-11"></a><span class="co"># sample rate, signal duration, and signal freq</span></span>
+<span id="cb20-12"><a href="#cb20-12"></a>fs <span class="op">=</span> <span class="fl">192e3</span></span>
+<span id="cb20-13"><a href="#cb20-13"></a>T <span class="op">=</span> <span class="fl">5</span></span>
+<span id="cb20-14"><a href="#cb20-14"></a>f <span class="op">=</span> <span class="fu">BigFloat</span>(<span class="fl">1440.0</span>)</span>
+<span id="cb20-15"><a href="#cb20-15"></a></span>
+<span id="cb20-16"><a href="#cb20-16"></a><span class="co"># time space, output</span></span>
+<span id="cb20-17"><a href="#cb20-17"></a>t <span class="op">=</span> <span class="fu">range</span>(<span class="fu">BigFloat</span>(<span class="fl">0.0</span>), <span class="fu">prevfloat</span>(<span class="fu">BigFloat</span>(T <span class="op">*</span> <span class="fl">1.0</span>)), length<span class="op">=</span><span class="fu">convert</span>(<span class="dt">Integer</span>, T <span class="op">*</span> fs))</span>
+<span id="cb20-18"><a href="#cb20-18"></a>y <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fu">sin</span>.(<span class="fl">2</span>pi <span class="op">*</span> f <span class="op">*</span> t) <span class="op">.+</span> <span class="fu">sin</span>.(<span class="fl">2</span>pi <span class="op">*</span> <span class="fl">2</span> <span class="op">*</span> f <span class="op">*</span> t) <span class="op">*</span> <span class="fl">0.5</span></span>
+<span id="cb20-19"><a href="#cb20-19"></a></span>
+<span id="cb20-20"><a href="#cb20-20"></a><span class="co"># down convert to f32</span></span>
+<span id="cb20-21"><a href="#cb20-21"></a>yf32 <span class="op">=</span> <span class="fu">convert</span>(<span class="dt">Array</span>{<span class="dt">Float32</span>}, y)</span>
+<span id="cb20-22"><a href="#cb20-22"></a></span>
+<span id="cb20-23"><a href="#cb20-23"></a><span class="co"># original vs f32 diff.</span></span>
+<span id="cb20-24"><a href="#cb20-24"></a>dyf32 <span class="op">=</span> <span class="fu">abs</span>.(y <span class="op">.-</span> <span class="fu">convert</span>(<span class="dt">Array</span>{<span class="dt">BigFloat</span>}, yf32))</span>
+<span id="cb20-25"><a href="#cb20-25"></a></span>
+<span id="cb20-26"><a href="#cb20-26"></a><span class="fu">println</span>(<span class="st">"F32"</span>)</span>
+<span id="cb20-27"><a href="#cb20-27"></a><span class="pp">@printf</span> <span class="st">"Max diff: %.3f dB</span><span class="sc">\n</span><span class="st">"</span> <span class="fu">m2d</span>(<span class="fu">maximum</span>(dyf32))</span>
+<span id="cb20-28"><a href="#cb20-28"></a><span class="pp">@printf</span> <span class="st">"Min diff: %.3f dB</span><span class="sc">\n</span><span class="st">"</span> <span class="fu">m2d</span>(<span class="fu">minimum</span>(dyf32))</span>
+<span id="cb20-29"><a href="#cb20-29"></a><span class="pp">@printf</span> <span class="st">"Avg diff: %.3f dB</span><span class="sc">\n</span><span class="st">"</span> <span class="fu">m2d</span>(<span class="fu">sum</span>(dyf32) <span class="op">/</span> <span class="fu">length</span>(dyf32))</span>
+<span id="cb20-30"><a href="#cb20-30"></a></span>
+<span id="cb20-31"><a href="#cb20-31"></a><span class="co"># manual map to value limited (2^23) i32</span></span>
+<span id="cb20-32"><a href="#cb20-32"></a>yi24 <span class="op">=</span> <span class="fu">map</span>(x <span class="op">-&gt;</span> <span class="fu">convert</span>(<span class="dt">Int32</span>, <span class="fu">round</span>(x <span class="op">*</span> <span class="fl">2</span><span class="op">^</span><span class="fl">23</span>)), y)</span>
+<span id="cb20-33"><a href="#cb20-33"></a></span>
+<span id="cb20-34"><a href="#cb20-34"></a><span class="co"># ori. vs i32(i24) diff.</span></span>
+<span id="cb20-35"><a href="#cb20-35"></a>dyi24 <span class="op">=</span> <span class="fu">abs</span>.(y <span class="op">.-</span> <span class="fu">convert</span>(<span class="dt">Array</span>{<span class="dt">BigFloat</span>}, <span class="fu">map</span>(x <span class="op">-&gt;</span> x <span class="op">/</span> (<span class="fl">2</span><span class="op">^</span><span class="fl">23</span>), yi24)))</span>
+<span id="cb20-36"><a href="#cb20-36"></a></span>
+<span id="cb20-37"><a href="#cb20-37"></a><span class="fu">println</span>(<span class="st">"I24"</span>)</span>
+<span id="cb20-38"><a href="#cb20-38"></a><span class="pp">@printf</span> <span class="st">"Max diff: %.3f dB</span><span class="sc">\n</span><span class="st">"</span> <span class="fu">m2d</span>(<span class="fu">maximum</span>(dyi24))</span>
+<span id="cb20-39"><a href="#cb20-39"></a><span class="pp">@printf</span> <span class="st">"Min diff: %.3f dB</span><span class="sc">\n</span><span class="st">"</span> <span class="fu">m2d</span>(<span class="fu">minimum</span>(dyi24))</span>
+<span id="cb20-40"><a href="#cb20-40"></a><span class="pp">@printf</span> <span class="st">"Avg diff: %.3f dB</span><span class="sc">\n</span><span class="st">"</span> <span class="fu">m2d</span>(<span class="fu">sum</span>(dyi24) <span class="op">/</span> <span class="fu">length</span>(dyi24))</span></code><button title="Salin ke Papan Klip" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Program tersebut membuat sebuah input dengan tipe data <code>BigFloat</code>, sebuah tipe dari library <a href="https://www.mpfr.org/">GNU MPFR</a> yang memiliki presisi jauh diatas <code>float32</code>, <code>float64</code>, dan <code>float128</code> sekalipun. Input dengan tipe tersebut digunakan sebagai acuan dan kemudian dikonversi masing-masing ke <code>float32</code> dan <code>int32</code> (dengan simulasi <code>i24</code> dengan mengalikan nilai ternormalisasi dengan <span class="math inline">\(2^{32}\)</span>). Proses konversi ini akan “memangkas” informasi acuan sehingga dapat dimuat ke tipe yang lebih rendah. QE kemudian dihitung dengan melihat perbedaan antara nilai acuan dengan masing-masing data <code>float32</code> dan <code>int32</code> yang dikonversi kembali ke <code>BigFloat</code>. Dari program tersebut di dapatkan hasil sebagai berikut:</p>
+<div id="fig-qe-res" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<div id="fig-eq" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="qe-res.jpg" class="img-fluid figure-img" data-ref-parent="fig-qe-res"></p>
+<figcaption class="figure-caption">(a)</figcaption>
+</figure>
+</div>
+<figcaption class="figure-caption">Gambar&nbsp;3: Kalkulasi <em>quantization error</em> dengan Julia</figcaption>
+</figure>
+</div>
+<p>Menarik, bukan? Sementara <code>int24</code> memiliki QE maksimum sesuai dengan persamaan (<a href="#eq-m2d">Perhitungan&nbsp;1</a>) di atas, yaitu <span class="math inline">\(-144.4\)</span> dB, <code>float32</code> melesat tinggi menjadi <span class="math inline">\(-150.515\)</span> dB alih-alih <span class="math inline">\(-192\)</span> dB, atau sekitar <span class="math inline">\(46\)</span> dB (<span class="math inline">\(125\)</span> kali) lebih tinggi. Perhatikan bahwa nilai EQ <span class="math inline">\(-150.515\)</span> tepat merupakan QE dari data dengan <span class="math inline">\(N=25\)</span> bit, semenatara itu menurut perhitungan <a href="#sec-quantization-level">sebelumnya</a>, rentang <span class="math inline">\(-1&lt;n&lt;1\)</span> seharusnya memiliki <span class="math inline">\(2\;\times\;1\;056\;964\;608 \approx 2^{31}\)</span>, <strong>kemana perginya 6 bit data ini?</strong></p>
 
 
 </section>
