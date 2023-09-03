@@ -1,0 +1,94 @@
+/*-- scss:defaults --*/
+
+$body-bg: #222;
+$body-color: #fff;
+$link-color: #00bc8c;
+$text-muted: #888;
+$table-border-color: #444;
+
+$input-bg: #fff;
+$input-color: #303030;
+$input-border-color: $body-bg;
+$input-group-addon-color: #abd5bd;
+$input-group-addon-bg: #444;
+$input-placeholder-color: #888;
+
+$form-check-input-bg: #fff;
+$form-check-input-border: none;
+$form-select-disabled-color: #888;
+$form-file-button-color: $input-group-addon-color;
+$form-file-button-bg: $input-group-addon-bg;
+$form-file-button-hover-bg: darken($form-file-button-bg, 5%);
+
+$dropdown-bg: #222;
+$dropdown-border-color: #444;
+$dropdown-divider-bg: #444;
+$dropdown-link-color: #fff;
+$dropdown-link-hover-color: #fff;
+$dropdown-link-hover-bg: #375a7f;
+
+$nav-link-disabled-color: #abd5bd;
+$nav-tabs-border-color: #444;
+$nav-tabs-link-hover-border-color: $nav-tabs-border-color $nav-tabs-border-color transparent;
+$nav-tabs-link-active-color: #fff;
+$nav-tabs-link-active-border-color: $nav-tabs-border-color $nav-tabs-border-color transparent;
+
+$navbar-dark-color: rgba(#fff, .6);
+$navbar-dark-hover-color: #fff;
+$navbar-light-color: rgba(#222, .7);
+$navbar-light-hover-color: #222;
+$navbar-light-active-color: #222;
+$navbar-light-toggler-border-color: rgba(#222, .1);
+
+$pagination-color: #fff;
+$pagination-bg: #00bc8c;
+$pagination-border-width: 0;
+$pagination-border-color: transparent;
+$pagination-hover-color: #fff;
+$pagination-hover-bg: lighten(#00bc8c, 10%);
+$pagination-hover-border-color: transparent;
+$pagination-active-bg: $pagination-hover-bg ;
+$pagination-active-border-color: transparent;
+$pagination-disabled-color: #fff;
+$pagination-disabled-bg: darken(#00bc8c, 15%);
+$pagination-disabled-border-color: transparent;
+
+$card-cap-bg: #444;
+$card-bg: #303030;
+
+$popover-bg: #303030;
+$popover-header-bg: #444;
+
+$toast-background-color: #444;
+$toast-header-background-color: #303030;
+
+$modal-content-bg: #303030;
+$modal-content-border-color: #444;
+$modal-header-border-color: #444;
+
+// Progress bars
+
+$progress-bg: #444;
+
+// List group
+
+$list-group-color: $body-color ;
+$list-group-bg: #303030;
+$list-group-border-color: #444;
+$list-group-hover-bg: #444;
+$list-group-action-hover-color: $list-group-color ;
+$list-group-action-active-bg: #222;
+
+// Breadcrumbs
+
+$breadcrumb-bg: #444;
+
+// Close
+
+$btn-close-color: #fff;
+$btn-close-opacity: .4;
+$btn-close-hover-opacity: 1;
+
+// Code
+
+$pre-color: inherit;

@@ -11,19 +11,18 @@ website:
   twitter-card:
     creator: "@lngtmknmndng_"
   open-graph: true
-  back-to-top-navigation: true
   navbar:
-    logo: logo.png
+    logo: favicon.png
     pinned: true
     left: 
       - text: Beranda
         file: index.qmd
-      - text: Tentang
-        file: about.qmd
       - text: Arsip
         file: archive.qmd
       - text: Catatan
         file: notes.qmd
+      - text: Tentang
+        file: about.qmd
     tools:
       - icon: github
         text: Github
@@ -38,18 +37,6 @@ website:
             href: "javascript:location.href = 'mailto:' + ['embryon.id','gmail.com'].join('@')"
           - text: LinkedIn
             url: https://www.linkedin.com/in/rafky-alfa
-  sidebar:
-    contents:
-      - section: "Laman"
-        contents: 
-          - text: Beranda
-            file: index.qmd
-          - text: Tentang
-            file: about.qmd
-          - text: Arsip
-            file: archive.qmd
-          - text: Catatan
-            file: notes.qmd
     style: docked
     alignment: center
   page-footer:
@@ -62,14 +49,15 @@ website:
         href: https://twitter.com/lngtmknmndng_
   search:
     type: textbox
-    location: sidebar
   comments:
     hypothesis:
       theme: clean
       openSidebar: false
 format:
   html:
-    theme: lux
+    theme:
+      light: litera
+      dark: [litera, dark.scss]
     css: styles.css
     smooth-scroll: true
     toc: true

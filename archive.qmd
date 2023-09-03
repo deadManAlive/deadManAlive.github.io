@@ -5,4 +5,5 @@ title-block-banner: index.png
 listing:
     contents: posts
     template: archive.ejs
+description-meta: Laman arsip yang mengurutkan konten Dead Man's Blog terhadap waktu
 ---

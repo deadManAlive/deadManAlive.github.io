@@ -12,6 +12,7 @@ page-layout: full
 title-block-banner: "index.png"
 sidebar: false
 back-to-top-navigation: false
+description-meta: Dead Man's Blog, sebuah blog terkait komputer, pengolahan sinyal, dan musik
 ---
 
 

@@ -5,6 +5,7 @@ date: "2023-03-31"
 categories: [Musitech, Analisis]
 image: "image.jpg"
 title-block-banner: "image.jpg"
+description-meta: Artikel terkait perbedaan dasar antara format audio 24 bit integer dan 32 bit float
 ---
 
 Perdebatan tentang kualitas audio digital sudah dimulai sejak munculnya rekaman digital itu sendiri, sekitar 1970an. *Fast forward* ke awal-90an, dominasi rekaman analog mulai tergantikan oleh rekaman digital berbentuk CD sejak perkenalannya di pertengahan 80an (dilansir dari [RIAA](https://www.riaa.com/u-s-sales-database/)). Rekaman analog kemudian tidak pernah bersinar kembali terhadap rekaman digital yang berubah-ubah bentuk: CD digantikan oleh *download* sejak akhir 2000an, dan kemudian layanan *streaming* mulai menguasai pasar (juga *overall* mendorong industri musik) sejak pertengahan 2010an.
@@ -13,7 +14,7 @@ Menariknya, perdebatan tidak berhenti disitu saja, tetapi dengan fleksibilitas d
 
 > Benarkah hal tersebut? Seberapa jauh perbedaan kualitas antara **24-bit integer** dengan **32-bit floating-point**?
 
-Penulis akan mencoba membahas tentang hal ini dalam dua artikel. Artikel pertama ini terkait tentang *integer* dan *floating-point* itu sendiri, tetapi jika ternyata sudah familiar dengan seluk-beluk kedua hal tersebut, pembaca dapat langsung membaca analisis di [bagian kedua](../24int-vs-32float-ii/index.qmd).
+Penulis akan mencoba membahas tentang hal ini dalam dua artikel. Artikel pertama ini terkait tentang *integer* dan *floating-point* itu sendiri, tetapi jika ternyata sudah familiar dengan seluk-beluk kedua hal tersebut, pembaca dapat langsung membaca analisis di [bagian kedua](<!-- ../24int-vs-32float-ii/index.qmd -->).
 
 <hr>
 
@@ -244,7 +245,7 @@ Dalam kalimat yang lebih familiar dalam audio, tidak adanya rentang denormal dan
 
 : Normal vs. Subnormal {#tbl-normal}
 
-Sampai di sini, pembaca seharusnya sudah memiliki pemahaman dasar terkait perbedaan kerja data `int` dan `float`. [Artikel selanjutnya](../24int-vs-32float-ii/index.qmd) akan menyediakan analisis perbedaan **integer 24-bit** vs. **floating-point 32-bit** dan beberapa miskonsepsi terkait.
+Sampai di sini, pembaca seharusnya sudah memiliki pemahaman dasar terkait perbedaan kerja data `int` dan `float`. [Artikel selanjutnya](<!-- ../24int-vs-32float-ii/index.qmd -->) akan menyediakan analisis perbedaan **integer 24-bit** vs. **floating-point 32-bit** dan beberapa miskonsepsi terkait.
 
 ...
 

@@ -1,6 +1,7 @@
 ---
 title: "Tentang"
 image: profile.jpg
+title-block-banner: index.png
 about:
   template: marquee
   links:
@@ -13,7 +14,6 @@ about:
     - icon: github
       text: Github
       href: https://github.com/deadManAlive
-sidebar: false
 ---
 
 ## Siapa?

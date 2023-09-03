@@ -8,6 +8,7 @@ title-block-banner: "image.jpg"
 format:
   html:
     echo: false
+description-meta: Artikel terkait penjelasan pengaruh sample rate dan bit depth terhadap sebuah sinyal
 ---
 
 ## Amplitudo, Frekuensi, dan Fasa

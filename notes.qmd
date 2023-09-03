@@ -1,17 +1,26 @@
 ---
 title: Catatan
 page-layout: full
-title-block-banner: true
-sidebar: false
+title-block-banner: index.png
+description-meta: Beberapa catatan yang berisi tools, rekomendasi, dan hal lainnya dari penulis
 ---
 
 ## *Dead Man's Tools*
 
-| Tool                                                                                                           | Deskripsi                                                                                                                                                                                                                                                                                    |
-|-----------------|-------------------------------------------------------|
-| [Windows Subsystem for Linux](https://ubuntu.com/wsl) (WSL)                                                    | Untuk menjalankan berbagai macam distro Linux di Windows. Untuk mendapatkan *best of both worlds* (*user-frindly* Windows + *developer-friendly* Linux), test aplikasi *cross-platform*, isolasi *environment*, dsb.                                                                         |
-| [Visual Studio Code](https://code.visualstudio.com/)                                                           | Text editor paling populer untuk pemrograman. Dengan bantuan banyak ekstensi-ekstensi yang tersedia di [marketplace](https://marketplace.visualstudio.com/vscode), fungsionalitasnya dapat disesuikan dengan bahasa, framework, hingga kebutuhan dan preferensi *user*.                      |
-| [Scoop](https://scoop.sh/)                                                                                     | Alternatif `apt`, `pacman`, dsb. untuk Windows (meskipun lebih sebagai "*command line insaller*" dari pada "*package manager*"). Alternatif lain: [chocolatey](https://chocolatey.org/), [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/).                        |
-| [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-id&gl=id&rtc=1) | Terminal emulator terbaik untuk Windows, *built-in* sejak Windows 11.                                                                                                                                                                                                                        |
-| [Visual Studio](https://visualstudio.microsoft.com/) dan/atau *Build Tools*-nya                                | IDE + *bundle compiler*, *SDK*, *Library* untuk pemrograman di Windows menggunakan `C++`, `C#`, dll. Cukup <u>wajib</u> jika ingin mengkompilasi aplikasi dengan *compiler* utama Windows (**Visual C++**).                                                                                  |
-| [Compiler Explorer](https://godbolt.org/)                                                                      | Website yang menyediakan tools untuk mengkompilasi, *disaassembly*, dan mengeksekusi berbagai macam bahasa pemrograman dan *compiler*. Dapat digunakan untuk dengan cepat menguji algoritma, membandingkan *compiler* dan bahasa pemrograman, serta mengecek efisiensi program yang ditulis. |
+Beberapa rekomendasi *tools* yang dapat memudahkan *programming* (penulis menggunakan Microsoft Windows 10, *btw*):
+
+| Tool                                                         | Deskripsi                                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [Compiler Explorer](https://godbolt.org/)                    | Website yang menyediakan tools untuk mengkompilasi, *disaassembly*, dan mengeksekusi berbagai macam bahasa pemrograman dan *compiler*. Dapat digunakan untuk dengan cepat menguji algoritma, membandingkan *compiler* dan bahasa pemrograman, serta mengecek efisiensi program yang ditulis. |
+| [MSYS2](https://www.msys2.org/)                              | *Environment* Unix di Windows.                               |
+| [Projucer](https://juce.com/)                                | *Tool* GUI untuk menggenerasi projek JUCE, sebagai alternatif dari *setup* projek manual menggunakan CMake. |
+| [pyenv-win](https://github.com/pyenv-win/pyenv-win)          | *Tool* yang dapat digunakan untuk mengatur beberapa versi Python dalam satu sistem. |
+| [Scoop](https://scoop.sh/)                                   | Alternatif `apt`, `pacman`, dsb. untuk Windows (meskipun lebih sebagai "*command line installer*" dari pada "*package manager*"). Alternatif lain: [chocolatey](https://chocolatey.org/), [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/). |
+| [vcpkg](https://vcpkg.io/en/)                                | *Dependency manager* untuk C/C++, bahasa yang terkenal karena tidak memiliki *build system* yang *beginner friendly*. |
+| [Visual Studio Code](https://code.visualstudio.com/)         | Text editor paling populer untuk pemrograman. Dengan bantuan banyak ekstensi-ekstensi yang tersedia di [marketplace](https://marketplace.visualstudio.com/vscode), fungsionalitasnya dapat disesuikan dengan bahasa, framework, hingga kebutuhan dan preferensi *user*. |
+| [Visual Studio](https://visualstudio.microsoft.com/) dan/atau *Build Tools*-nya | IDE + *bundle compiler*, *SDK*, *Library* untuk pemrograman di Windows menggunakan `C++`, `C#`, dll. Cukup <u>wajib</u> jika ingin mengkompilasi aplikasi dengan *compiler* utama Windows (**Visual C++**), selain juga menjadi *dependency* untuk berbagai aplikasi *developer* lainnya. |
+| [Windows Subsystem for Linux](https://ubuntu.com/wsl) (WSL)  | *Virtual Machine* untuk Linux yang terintegrasi degan Windows. Untuk mendapatkan *best of both worlds* (*user-friendly* Windows + *developer-friendly* Linux), test aplikasi *cross-platform*, isolasi *environment*, dsb. Dapat digunakan untuk menjalankan beberapa distro (Arch, Debian, Ubuntu, dsb.). |
+| [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-id&gl=id&rtc=1) | Terminal emulator multi-tab yang dapat dikostumisasi, untuk Windows, *built-in* sejak Windows 11. |
+
+* Blog ini ditulis menggunakan [Quarto](https://quarto.org/), dengan beberapa *handcrafted* *style*, *script*, dan *template* yang digunakan di sana sini. *Source code* dari blog ini terdapat di [repo ini](https://github.com/deadManAlive/deadManAlive.github.io).
+* Beberapa laman, yang ditulis terpisah dari blog ini, seperti [float-binary converter](https://deadmanalive.github.io/bconv/) ([GitHub](https://github.com/deadManAlive/bconv)) dan [web audio spectrum analyzer](https://deadmanalive.github.io/wview/) ([GitHub](https://github.com/deadManAlive/wview)), umumnya adalah *client-side app* yang ditulis menggunakan [Svelte](https://svelte.dev/) ataupun HTML/JS murni, tanpa *backend*.
