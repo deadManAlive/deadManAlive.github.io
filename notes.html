@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Beberapa catatan yang berisi tools, rekomendasi, dan hal lainnya dari penulis">
 
 <title>DMB - Catatan</title>
 <style>
@@ -35,10 +36,12 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -66,6 +69,13 @@ ul.task-list li input[type="checkbox"] {
 }
 </script>
 <script async="" src="https://hypothes.is/embed.js"></script>
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background-image: url(index.png);
+background-size: cover;
+      }
+</style>
 
 
 <link rel="stylesheet" href="styles.css">
@@ -133,6 +143,7 @@ ul.task-list li input[type="checkbox"] {
           </li>
       </ul>
     </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
@@ -164,7 +175,6 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#dead-mans-tools" id="toc-dead-mans-tools" class="nav-link active" data-scroll-target="#dead-mans-tools"><em>Dead Man’s Tools</em></a></li>
-  <li><a href="#bahasa-pemrograman" id="toc-bahasa-pemrograman" class="nav-link" data-scroll-target="#bahasa-pemrograman">Bahasa Pemrograman</a></li>
   </ul>
 </nav>
     </div>
@@ -176,6 +186,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="dead-mans-tools" class="level2">
 <h2 class="anchored" data-anchor-id="dead-mans-tools"><em>Dead Man’s Tools</em></h2>
+<p>Beberapa rekomendasi <em>tools</em> yang dapat memudahkan <em>programming</em> (penulis menggunakan Microsoft Windows 10, <em>btw</em>):</p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -185,82 +196,56 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="https://ubuntu.com/wsl">Windows Subsystem for Linux</a> (WSL)</td>
-<td>Untuk mendapatkan <em>best of both worlds</em> (<em>user-frindly</em> Windows + <em>developer-friendly</em> Linux), test aplikasi <em>cross-platform</em>, isolasi <em>environment</em>, dsb. Dapat digunakan untuk menjalankan beberapa distro (Ubuntu, Arch, Debian, dsb.).</td>
-</tr>
-<tr class="even">
-<td><a href="https://code.visualstudio.com/">Visual Studio Code</a></td>
-<td>Text editor paling populer untuk pemrograman. Dengan bantuan banyak ekstensi-ekstensi yang tersedia di <a href="https://marketplace.visualstudio.com/vscode">marketplace</a>, fungsionalitasnya dapat disesuikan dengan bahasa, framework, hingga kebutuhan dan preferensi <em>user</em>.</td>
-</tr>
-<tr class="odd">
-<td><a href="https://scoop.sh/">Scoop</a></td>
-<td>Alternatif <code>apt</code>, <code>pacman</code>, dsb. untuk Windows (meskipun lebih sebagai “<em>command line insaller</em>” dari pada “<em>package manager</em>”). Alternatif lain: <a href="https://chocolatey.org/">chocolatey</a>, <a href="https://learn.microsoft.com/en-us/windows/package-manager/winget/">winget</a>.</td>
-</tr>
-<tr class="even">
-<td><a href="https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-id&amp;gl=id&amp;rtc=1">Windows Terminal</a></td>
-<td>Terminal emulator terbaik untuk Windows, <em>built-in</em> sejak Windows 11.</td>
-</tr>
-<tr class="odd">
-<td><a href="https://visualstudio.microsoft.com/">Visual Studio</a> dan/atau <em>Build Tools</em>-nya</td>
-<td>IDE + <em>bundle compiler</em>, <em>SDK</em>, <em>Library</em> untuk pemrograman di Windows menggunakan <code>C++</code>, <code>C#</code>, dll. Cukup <u>wajib</u> jika ingin mengkompilasi aplikasi dengan <em>compiler</em> utama Windows (<strong>Visual C++</strong>).</td>
-</tr>
-<tr class="even">
 <td><a href="https://godbolt.org/">Compiler Explorer</a></td>
 <td>Website yang menyediakan tools untuk mengkompilasi, <em>disaassembly</em>, dan mengeksekusi berbagai macam bahasa pemrograman dan <em>compiler</em>. Dapat digunakan untuk dengan cepat menguji algoritma, membandingkan <em>compiler</em> dan bahasa pemrograman, serta mengecek efisiensi program yang ditulis.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="https://www.msys2.org/">MSYS2</a></td>
 <td><em>Environment</em> Unix di Windows.</td>
 </tr>
-</tbody>
-</table>
-</section>
-<section id="bahasa-pemrograman" class="level2">
-<h2 class="anchored" data-anchor-id="bahasa-pemrograman">Bahasa Pemrograman</h2>
-<p>Beberapa bahasa pemrograman yang penulis rekomendasikan. Sebagian besar digunakan dalam penulisan blog ini (langsung/tak langsung).</p>
-<table class="table">
-<colgroup>
-<col style="width: 4%">
-<col style="width: 95%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Bahasa</th>
-<th>Keterangan</th>
-</tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td>C</td>
-<td>Pendahulu C++, lebih sederhana dengan sintaks yang sangat mirip. Selain pemrograman <em>legacy, embedded</em> dan/atau <em>bare metal</em> (termasuk <em>operating system</em>), belakangan lebih sering digunakan dalam lingkup akademi.</td>
+<td><a href="https://juce.com/">Projucer</a></td>
+<td><em>Tool</em> GUI untuk menggenerasi projek JUCE, sebagai alternatif dari <em>setup</em> projek manual menggunakan CMake.</td>
 </tr>
 <tr class="even">
-<td>C++</td>
-<td>Bahasa penting dalam DSP, <em>embedded</em>, pengembangan <em>game</em>, <em>competitive programming</em>, dan banyak lagi. Terkenal rumit tetapi dapat digunakan untuk pemrograman performa tinggi. <strong><em>Highly recommended</em></strong> jika ingin mempelajari <em>computer science</em> secara umum.</td>
+<td><a href="https://github.com/pyenv-win/pyenv-win">pyenv-win</a></td>
+<td><em>Tool</em> yang dapat digunakan untuk mengatur beberapa versi Python dalam satu sistem.</td>
 </tr>
 <tr class="odd">
-<td>JavaScript</td>
-<td>Salah satu bahasa utama dalam pemrograman web.</td>
+<td><a href="https://scoop.sh/">Scoop</a></td>
+<td>Alternatif <code>apt</code>, <code>pacman</code>, dsb. untuk Windows (meskipun lebih sebagai “<em>command line installer</em>” dari pada “<em>package manager</em>”). Alternatif lain: <a href="https://chocolatey.org/">chocolatey</a>, <a href="https://learn.microsoft.com/en-us/windows/package-manager/winget/">winget</a>.</td>
 </tr>
 <tr class="even">
-<td>Julia</td>
-<td>Alternatif Python. Penulis menggunakannya karena memiliki <em>type system</em> yang lebih berguna dari Python.</td>
+<td><a href="https://vcpkg.io/en/">vcpkg</a></td>
+<td><em>Dependency manager</em> untuk C/C++, bahasa yang terkenal karena tidak memiliki <em>build system</em> yang <em>beginner friendly</em>.</td>
 </tr>
 <tr class="odd">
-<td>Python</td>
-<td>Bahasa yang tergolong relatif mudah dipelajari, sangat membantu dalam <em>prototyping</em>. Terkenal sebagai bahasa utama dalam <em>machine learning</em>. <strong><em>Recommended</em></strong> jika ingin segera membuat aplikasi yang dapat bekerja.</td>
+<td><a href="https://code.visualstudio.com/">Visual Studio Code</a></td>
+<td>Text editor paling populer untuk pemrograman. Dengan bantuan banyak ekstensi-ekstensi yang tersedia di <a href="https://marketplace.visualstudio.com/vscode">marketplace</a>, fungsionalitasnya dapat disesuikan dengan bahasa, framework, hingga kebutuhan dan preferensi <em>user</em>.</td>
 </tr>
 <tr class="even">
-<td>Rust</td>
-<td>Alternatif dari C (dan C++). Terkenal untuk <em>compiler</em>nyayang <em>strict</em> untuk menghindari <em>pitfalls</em> dalam C/C++. <strong><em>Not recommended</em></strong> untuk pemula yang baru/akan mempelajari pemrograman.</td>
+<td><a href="https://visualstudio.microsoft.com/">Visual Studio</a> dan/atau <em>Build Tools</em>-nya</td>
+<td>IDE + <em>bundle compiler</em>, <em>SDK</em>, <em>Library</em> untuk pemrograman di Windows menggunakan <code>C++</code>, <code>C#</code>, dll. Cukup <u>wajib</u> jika ingin mengkompilasi aplikasi dengan <em>compiler</em> utama Windows (<strong>Visual C++</strong>), selain juga menjadi <em>dependency</em> untuk berbagai aplikasi <em>developer</em> lainnya.</td>
+</tr>
+<tr class="odd">
+<td><a href="https://ubuntu.com/wsl">Windows Subsystem for Linux</a> (WSL)</td>
+<td><em>Virtual Machine</em> untuk Linux yang terintegrasi degan Windows. Untuk mendapatkan <em>best of both worlds</em> (<em>user-friendly</em> Windows + <em>developer-friendly</em> Linux), test aplikasi <em>cross-platform</em>, isolasi <em>environment</em>, dsb. Dapat digunakan untuk menjalankan beberapa distro (Arch, Debian, Ubuntu, dsb.).</td>
+</tr>
+<tr class="even">
+<td><a href="https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-id&amp;gl=id&amp;rtc=1">Windows Terminal</a></td>
+<td>Terminal emulator multi-tab yang dapat dikostumisasi, untuk Windows, <em>built-in</em> sejak Windows 11.</td>
 </tr>
 </tbody>
 </table>
+<ul>
+<li>Blog ini ditulis menggunakan <a href="https://quarto.org/">Quarto</a>, dengan beberapa <em>handcrafted</em> <em>style</em>, <em>script</em>, dan <em>template</em> yang digunakan di sana sini. <em>Source code</em> dari blog ini terdapat di <a href="https://github.com/deadManAlive/deadManAlive.github.io">repo ini</a>.</li>
+<li>Beberapa laman, yang ditulis terpisah dari blog ini, seperti <a href="https://deadmanalive.github.io/bconv/">float-binary converter</a> (<a href="https://github.com/deadManAlive/bconv">GitHub</a>) dan <a href="https://deadmanalive.github.io/wview/">web audio spectrum analyzer</a> (<a href="https://github.com/deadManAlive/wview">GitHub</a>), umumnya adalah <em>client-side app</em> yang ditulis menggunakan <a href="https://svelte.dev/">Svelte</a> ataupun HTML/JS murni, tanpa <em>backend</em>.</li>
+</ul>
 
 
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Kembali ke atas</a></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -281,6 +266,121 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {

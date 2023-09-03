@@ -71,10 +71,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -183,6 +185,7 @@ background-size: cover;
           </li>
       </ul>
     </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alihkan mode gelap"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
@@ -894,7 +897,7 @@ background-size: cover;
 
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Kembali ke atas</a></main> <!-- /main -->
+</main> <!-- /main -->
 <script type="ojs-module-contents">
 {"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"function findSignalEnvelope(signal) {\r\n  // Step 1: Compute the magnitude of the signal\r\n  const magnitude = signal.map(sample => Math.abs(sample));\r\n\r\n  // Step 2: Apply low-pass filter (optional, but recommended)\r\n  const smoothedMagnitude = applyLowPassFilter(magnitude);\r\n\r\n  // Step 3: Perform peak detection\r\n  const peakIndices = findPeaks(smoothedMagnitude);\r\n\r\n  // Step 4: Connect the peak points to form the envelope curve\r\n  const envelope = interpolateEnvelope(signal, peakIndices);\r\n\r\n  return envelope;\r\n}\r\n\r\n// Helper function to apply a low-pass filter (e.g., moving average)\r\nfunction applyLowPassFilter(signal, windowSize = 5) {\r\n  const smoothedSignal = [];\r\n  const halfWindowSize = Math.floor(windowSize / 2);\r\n\r\n  for (let i = 0; i < signal.length; i++) {\r\n    let sum = 0;\r\n    let count = 0;\r\n\r\n    for (let j = i - halfWindowSize; j <= i + halfWindowSize; j++) {\r\n      if (j >= 0 && j < signal.length) {\r\n        sum += signal[j];\r\n        count++;\r\n      }\r\n    }\r\n\r\n    smoothedSignal.push(sum / count);\r\n  }\r\n\r\n  return smoothedSignal;\r\n}\r\n\r\n// Helper function to find peak indices in the signal\r\nfunction findPeaks(signal) {\r\n  const peaks = [];\r\n\r\n  for (let i = 1; i < signal.length - 1; i++) {\r\n    if (signal[i] > signal[i - 1] && signal[i] > signal[i + 1]) {\r\n      peaks.push(i);\r\n    }\r\n  }\r\n\r\n  return peaks;\r\n}\r\n\r\n// Helper function to interpolate the envelope points\r\nfunction interpolateEnvelope(signal, peakIndices) {\r\n  const envelope = [];\r\n\r\n  // Iterate over each sample in the original signal\r\n  for (let i = 0; i < signal.length; i++) {\r\n    // Find the closest peak index on the left\r\n    let leftPeakIndex = peakIndices.find(index => index <= i);\r\n\r\n    // Find the closest peak index on the right\r\n    let rightPeakIndex = peakIndices.find(index => index >= i);\r\n\r\n    // If no peak index found on the left or right, use the nearest available\r\n    if (leftPeakIndex === undefined) leftPeakIndex = rightPeakIndex;\r\n    if (rightPeakIndex === undefined) rightPeakIndex = leftPeakIndex;\r\n\r\n    // Interpolate the envelope value based on the nearest peak indices\r\n    const leftValue = signal[leftPeakIndex];\r\n    const rightValue = signal[rightPeakIndex];\r\n    const t = (i - leftPeakIndex) / (rightPeakIndex - leftPeakIndex);\r\n    const interpolatedValue = leftValue + (rightValue - leftValue) * t;\r\n\r\n    envelope.push(interpolatedValue);\r\n  }\r\n\r\n  return envelope;\r\n}\r\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"viewof k = Inputs.range(\r\n    [0.1, 2],\r\n    {\r\n        value: 0.5,\r\n        step: 0.01,\r\n        label: tex`k`\r\n    }\r\n)\r\nviewof frm = Inputs.range(\r\n    [0.1, 1],\r\n    {\r\n        value: 0.5,\r\n        step: 0.01,\r\n        label: tex`f_m\\;(\\mathrm{Hz})`\r\n    }\r\n)\r\nviewof phim = Inputs.range(\r\n    [-3.14, 3.14],\r\n    {\r\n        value: 0,\r\n        step: 0.01,\r\n        label: tex`\\phi_m\\;(\\mathrm{rad})`\r\n    }\r\n)\r\nviewof frc = Inputs.range(\r\n    [10, 20],\r\n    {\r\n        value: 5,\r\n        step: 0.1,\r\n        label: tex`f_c\\;(\\mathrm{Hz})`\r\n    }\r\n)\r\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"T = Array.from({length: 1000}, (_, i) => i * 0.002);\r\ncarrier = (frequency) => T.map((t) => {\r\n  return {\r\n    Symbol: \"Carrier\",\r\n    x: t,\r\n    y: Math.sin(2 * Math.PI * frequency * t)\r\n  }\r\n});\r\nmodulator = (frequency) => T.map((t) => {\r\n  return {\r\n    Symbol: \"Modulator\",\r\n    x: t,\r\n    y: (Math.cos(2 * (Math.PI * frequency * t + phim)) + Math.cos(3 * (Math.PI * frequency * t + phim))  + Math.cos(5 * (Math.PI * frequency * t + phim))) / 3\r\n  }\r\n});\r\n\r\ncsig = carrier(frc);\r\nmsig = modulator(frm);\r\nsig = csig.map((obj, idx) => {\r\n    const mval = msig[idx].y;\r\n    const modv = (1 + mval * k) * 2 / 3;\r\n    return {\r\n        Symbol: \"Signal\",\r\n        x: T[idx],\r\n        y: modv * obj.y,\r\n    };\r\n});\r\npenv = findSignalEnvelope(sig.map((v) => v.y));\r\nsenv = penv.map((v, idx) => ({\r\n    Symbol: \"Envelope\",\r\n    x: T[idx],\r\n    y: Math.abs(v) || 0,\r\n}));\r\n"},{"methodName":"interpret","cellName":"ojs-cell-4","inline":false,"source":"\r\nPlot.plot({\r\n  symbol: {legend: true},\r\n  grid: true,\r\n  x: {\r\n    label: \"t\"\r\n  },\r\n  y: {\r\n    label: \"y\",\r\n    domain: [-2, 2],\r\n  },\r\n  marks: [\r\n    Plot.ruleY([0]),\r\n    Plot.ruleX([0]),\r\n    Plot.line(msig, {x: \"x\", y: \"y\", stroke: \"blue\", strokeOpacity: 0.5, strokeWidth: 2}),\r\n    Plot.line(csig, {x: \"x\", y: \"y\", stroke: \"red\", strokeOpacity: 0.25, strokeWidth: 2}),\r\n    Plot.line(sig, {x: \"x\", y: \"y\", stroke: \"green\", strokeWidth: 2}),\r\n    Plot.line(senv, {x: \"x\", y: \"y\", stroke: \"blue\", strokeOpacity: 0.5, strokeDasharray: [5, 5], strokeWidth: 2}),\r\n    Plot.frame()\r\n  ]\r\n})\r\n"},{"methodName":"interpret","cellName":"ojs-cell-5","inline":false,"source":"viewof fk = Inputs.range(\r\n    [0.1, 2],\r\n    {\r\n        value: 0.5,\r\n        step: 0.01,\r\n        label: tex`k`\r\n    }\r\n)\r\nviewof ffrm = Inputs.range(\r\n    [0.1, 1],\r\n    {\r\n        value: 0.5,\r\n        step: 0.01,\r\n        label: tex`f_m\\;(\\mathrm{Hz})`\r\n    }\r\n)\r\nviewof fphim = Inputs.range(\r\n    [-3.14, 3.14],\r\n    {\r\n        value: 0,\r\n        step: 0.01,\r\n        label: tex`\\phi_m\\;(\\mathrm{rad})`\r\n    }\r\n)\r\nviewof ffrc = Inputs.range(\r\n    [10, 20],\r\n    {\r\n        value: 5,\r\n        step: 0.1,\r\n        label: tex`f_c\\;(\\mathrm{Hz})`\r\n    }\r\n)\r\n"},{"methodName":"interpret","cellName":"ojs-cell-6","inline":false,"source":"fmodulator = (frequency) => T.map((t) => {\r\n  return {\r\n    Symbol: \"Modulator\",\r\n    x: t,\r\n    y: Math.cos(2 * (Math.PI * frequency * t + fphim))\r\n  }\r\n});\r\n\r\nfcsig = carrier(ffrc);\r\nfmsig = fmodulator(ffrm);\r\n\r\nfsig = fcsig.map((obj, idx) => {\r\n    const cpart = 2 * Math.PI * ffrc * T[idx];\r\n    const mpart = (Math.cos(2 * Math.PI * ffrm * T[idx] + fphim) + Math.cos(fphim)) / ffrm;\r\n    const fval = Math.sin(cpart - fk * 12 * mpart);\r\n    return {\r\n        Symbol: \"Signal\",\r\n        x: T[idx],\r\n        y: fval,\r\n    };\r\n});\r\n"},{"methodName":"interpret","cellName":"ojs-cell-7","inline":false,"source":"\r\nPlot.plot({\r\n  symbol: {legend: true},\r\n  grid: true,\r\n  x: {\r\n    label: \"t\"\r\n  },\r\n  y: {\r\n    label: \"y\",\r\n    domain: [-1.25, 1.25],\r\n  },\r\n  marks: [\r\n    Plot.ruleY([0]),\r\n    Plot.ruleX([0]),\r\n    Plot.line(fmsig, {x: \"x\", y: \"y\", stroke: \"blue\", strokeOpacity: 0.5, strokeWidth: 2}),\r\n    Plot.line(fcsig, {x: \"x\", y: \"y\", stroke: \"red\", strokeOpacity: 0.25, strokeWidth: 2}),\r\n    Plot.line(fsig, {x: \"x\", y: \"y\", stroke: \"green\", strokeWidth: 2}),\r\n    Plot.frame()\r\n  ]\r\n})\r\n"},{"methodName":"interpret","cellName":"ojs-cell-8","inline":false,"source":"viewof pfrm = Inputs.range(\r\n    [0.1, 10],\r\n    {\r\n        value: 3,\r\n        step: 0.01,\r\n        label: tex`f_m\\;(\\mathrm{Hz})`\r\n    }\r\n)\r\nviewof pphim = Inputs.range(\r\n    [-3.14, 3.14],\r\n    {\r\n        value: 0,\r\n        step: 0.01,\r\n        label: tex`\\phi_m\\;(\\mathrm{rad})`\r\n    }\r\n)\r\nviewof pfrc = Inputs.range(\r\n    [0.1, 20],\r\n    {\r\n        value: 2,\r\n        step: 0.1,\r\n        label: tex`f_c\\;(\\mathrm{Hz})`\r\n    }\r\n)\r\nviewof pphic = Inputs.range(\r\n    [-3.14, 3.14],\r\n    {\r\n        value: 0,\r\n        step: 0.01,\r\n        label: tex`\\phi_c\\;(\\mathrm{rad})`\r\n    }\r\n)\r\n"},{"methodName":"interpret","cellName":"ojs-cell-9","inline":false,"source":"pmodulator = (frequency) => T.map((t) => {\r\n  return {\r\n    Symbol: \"Modulator\",\r\n    x: t,\r\n    y: Math.cos(2 * (Math.PI * frequency * t + pphim))\r\n  }\r\n});\r\n\r\npcsig = carrier(pfrc);\r\npmsig = pmodulator(pfrm);\r\n\r\npsig = pcsig.map((obj, idx) => {\r\n    const cpart = 2 * Math.PI * pfrc * T[idx];\r\n    return {\r\n        Symbol: \"Signal\",\r\n        x: T[idx],\r\n        y: Math.sin(cpart + pmsig[idx].y + pphic)\r\n    };\r\n});\r\n"},{"methodName":"interpret","cellName":"ojs-cell-10","inline":false,"source":"\r\nPlot.plot({\r\n  symbol: {legend: true},\r\n  grid: true,\r\n  x: {\r\n    label: \"t\"\r\n  },\r\n  y: {\r\n    label: \"y\",\r\n    domain: [-1.25, 1.25],\r\n  },\r\n  marks: [\r\n    Plot.ruleY([0]),\r\n    Plot.ruleX([0]),\r\n    Plot.line(pmsig, {x: \"x\", y: \"y\", stroke: \"blue\", strokeOpacity: 0.25, strokeWidth: 2}),\r\n    Plot.line(pcsig, {x: \"x\", y: \"y\", stroke: \"red\", strokeOpacity: 0.25, strokeWidth: 2}),\r\n    Plot.line(psig, {x: \"x\", y: \"y\", stroke: \"green\", strokeWidth: 2}),\r\n    Plot.frame()\r\n  ]\r\n})\r\n"},{"methodName":"interpretQuiet","source":"shinyInput('k')"},{"methodName":"interpretQuiet","source":"shinyInput('frm')"},{"methodName":"interpretQuiet","source":"shinyInput('phim')"},{"methodName":"interpretQuiet","source":"shinyInput('frc')"},{"methodName":"interpretQuiet","source":"shinyInput('fk')"},{"methodName":"interpretQuiet","source":"shinyInput('ffrm')"},{"methodName":"interpretQuiet","source":"shinyInput('fphim')"},{"methodName":"interpretQuiet","source":"shinyInput('ffrc')"},{"methodName":"interpretQuiet","source":"shinyInput('pfrm')"},{"methodName":"interpretQuiet","source":"shinyInput('pphim')"},{"methodName":"interpretQuiet","source":"shinyInput('pfrc')"},{"methodName":"interpretQuiet","source":"shinyInput('pphic')"}]}
 </script>
@@ -926,6 +929,121 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
