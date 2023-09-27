@@ -6,9 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Dead Man’s Blog, sebuah blog terkait komputer, pengolahan sinyal, dan musik">
+<meta name="author" content="Dead Man">
+<meta name="dcterms.date" content="2023-09-04">
+<meta name="description" content="Artikel ini membahas masalah akibat batasan panjang pada environment variable di Windows dan solusinya">
 
-<title>DMB - Dead Man’s Blog</title>
+<title>DMB - Environment Variables Di Windows Yang Merepotkan</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,26 +26,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -63,56 +63,27 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Kirim"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-author','listing-description','listing-date','listing-image','listing-reading-time','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <style>html{ scroll-behavior: smooth; }</style>
 <style>
 
       .quarto-title-block .quarto-title-banner {
-        background-image: url(index.png);
+        background-image: url(image.jpg);
 background-size: cover;
       }
 </style>
+<script src="../../runtime.js"></script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="DMB - Dead Man’s Blog">
-<meta property="og:image" content="https://deadmanalive.github.io/posts/fs-vs-bd/image.jpg">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="DMB - Environment Variables Di Windows Yang Merepotkan">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://deadmanalive.github.io/posts/win-env/image.jpg">
 <meta property="og:site-name" content="DMB">
-<meta name="twitter:title" content="DMB - Dead Man’s Blog">
-<meta name="twitter:image" content="https://deadmanalive.github.io/posts/fs-vs-bd/image.jpg">
+<meta name="twitter:title" content="DMB - Environment Variables Di Windows Yang Merepotkan">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://deadmanalive.github.io/posts/win-env/image.jpg">
 <meta name="twitter:creator" content="@lngtmknmndng_">
 <meta name="twitter:card" content="summary_large_image">
-<link rel='canonical' href='https://deadmanalive.github.io/index.html' />
 </head>
 
 <body class="nav-fixed">
@@ -122,10 +93,10 @@ background-size: cover;
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./favicon.png" alt="" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../favicon.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">DMB</span>
     </a>
   </div>
@@ -136,19 +107,19 @@ background-size: cover;
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Beranda</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./archive.html" rel="" target="">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
  <span class="menu-text">Arsip</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./notes.html" rel="" target="">
+    <a class="nav-link" href="../../notes.html" rel="" target="">
  <span class="menu-text">Catatan</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
+    <a class="nav-link" href="../../about.html" rel="" target="">
  <span class="menu-text">Tentang</span></a>
   </li>  
 </ul>
@@ -179,157 +150,84 @@ background-size: cover;
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Dead Man’s Blog</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Environment Variables Di Windows Yang Merepotkan</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Windows</div>
+                <div class="quarto-category">Sysadmin</div>
+              </div>
+                  </div>
   </div>
     
   
   <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Penulis</div>
+      <div class="quarto-title-meta-contents">
+               <p>Dead Man </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Diterbitkan</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">4 September 2023</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Kategori</h5><div class="quarto-listing-category category-cloud"><div class="category" data-category="Analisis"><span class="quarto-category-count category-cloud-4">Analisis</span></div><div class="category" data-category="Back To Basic"><span class="quarto-category-count category-cloud-4">Back To Basic</span></div><div class="category" data-category="C++"><span class="quarto-category-count category-cloud-4">C++</span></div><div class="category" data-category="Musitech"><span class="quarto-category-count category-cloud-7">Musitech</span></div><div class="category" data-category="Pemrograman"><span class="quarto-category-count category-cloud-4">Pemrograman</span></div></div></div>
-<!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
-
-
-
-
-
-
-
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="listing-actions-group">
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">Daftar Isi</h2>
+   
+  <ul>
+  <li><a href="#nested-environment-variable" id="toc-nested-environment-variable" class="nav-link active" data-scroll-target="#nested-environment-variable">Nested Environment Variable</a></li>
+  </ul>
+</nav>
     </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>Beberapa hari yang lalu, ketika penulis sedang melakukan instalasi CUDA Toolkit di laptop, tahap akhir instalasi memberitahukan untuk menambahkan beberapa direktori ke <code>PATH</code> karena <em>environment variable</em> tersebut sudah melebihi panjang maksimum. Pemberitahuan yang mudah terlewati dan mungkin dapat menjadi sumber masalah di kemudian waktu ketika pengguna menggunakan CUDA dan program tidak dapat mengakses beberapa <em>binary</em> atau <em>dependency</em> lainnya. <em>Anyway</em>, sebenarnya variable <code>PATH</code> pada laptop penulis telah lama melewati panjang maksimum 2047 karakter karena instalasi bermacam aplikasi, terutama melalui <a href="../../notes.html"><code>scoop</code></a>, yang secara otomatis menambahkan direktori ke <code>PATH</code>. Penulis tidak terlalu memusingkan hal tersebut karena menurut <a href="https://learn.microsoft.com/en-us/windows/win32/procthread/environment-variables">dokumentasi</a> Microsoft sendiri, panjang maksimum sebuah <em>environment variable</em> adalah 32,767. Sebagai catatan, batasan seperti ini tidak terdapat pada keluarga Unix (Linux dan Mac), satu poin plus lainnya dari <em>developer</em>.</p>
+<p>Tetapi hal yang menjengkelkan terjadi jika <em>user</em> ingin menambahkan nilai secara manual menggunakan <em>environment variable editor</em> pada <em>System Properties</em>. Hal seperti ini akan terjadi:</p>
+<div id="fig-exceed" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="pic1.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Gambar&nbsp;1: Sebuah <em>error message</em> akan ditampilkan jika ingin menambahkan nilai ke variabel yang melebihi 2047 karakter pada <em>environment variable editor</em> (<em>System Properties</em>).</figcaption>
+</figure>
 </div>
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="Musitech,Back To Basic" data-listing-date-sort="1682614800000" data-listing-file-modified-sort="1695789859647" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
-<a href="./posts/fs-vs-bd/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./posts/fs-vs-bd/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Musitech: Sample Rate &amp; Bit Depth
-</h5>
-<div class="listing-reading-time card-text text-muted">
-8 menit
+<p><em>Workaround</em>nya tentu menambahkan langsung string ke <code>PATH</code> menggunakan <strong>regedit</strong>, atau menggunakan aplikasi pihak ketiga seperi Rapid Enviroment Editor (yang tetap menampilkan <em>warning</em> untuk panjang variabel melebihi batas). Penulis, sebagai perfeksionis, tidak memilih melakukan hal tersebut karena selain hanya seperti solusi <em>bypass</em>, juga berpikir apakah tidak akan timbul masalah jika Windows melakukan update dan mungkin saja merombak <em>registry</em> yang bermasalah: Update Windows memang terkenal merusak hal-hal secara acak. Untuk itu penulis akan menggunakan <em>workaround</em> lainnya, yaitu <strong><em>nested environment variable</em></strong>.</p>
+<section id="nested-environment-variable" class="level2">
+<h2 class="anchored" data-anchor-id="nested-environment-variable">Nested Environment Variable</h2>
+<p>Misalkan beberapa variabel baru untuk 6 folder didefinisikan sebagai <code>VAR1=dir0,dir1,dir2</code> dan <code>VAR2=dir3,dir4,dir5</code> maka <code>PATH</code> dapat diset ke <code>PATH=%VAR1%,%VAR2%</code>. Ketika sebuah program berjalan, maka <code>%VAR1%,%VAR2%</code> akan disubstitusi oleh sistem operasi dengan nilainya menjadi <code>dir0,dir1,dir2,dir3,dir4,dir5</code> sebelum diteruskan ke program. Hal ini dapat membuat penggunaan karakter pada <code>PATH</code> ditekan sekecil mungkin.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="regedit">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Musitech'); return false;">
-Musitech
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Back To Basic'); return false;">
-Back To Basic
-</div>
-</div>
-<div class="card-text listing-description">
-Untuk mengetahui perihal <em>sample rate</em> dan <em>bit depth</em>, maka parameter-parameter penting dari sebuah gelombang wajib untuk dipahami, yaitu:
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Dead Man
-</div>
-<div class="listing-date">
-28 Apr 2023
+<div class="callout-title-container flex-fill">
+regedit
 </div>
 </div>
+<div class="callout-body-container callout-body">
+<p>Penyisipan variabel ke <code>PATH</code> sebaiknya dilakukan melalui <em>environment variable editor</em>, bukan <code>regedit</code>. Hal ini dikarenakan tipe data <code>PATH</code> <em>default</em> adalah <code>REG_SZ</code> yang mana variabel seperti <code>%VAR1%</code> tidak akan disubstitusi ke <code>dir0,dir1,dir2</code> melainkan tetap <code>%VAR1%</code>. Ketika <em>user</em> menyisipkan variabel pada <code>PATH</code> melalui <em>environment variable editor</em>, tipe data <code>PATH</code> akan secara otomatis berubah menjadi <code>REG_EXPAND_SZ</code> yang memungkinkan substitusi seperti di atas.</p>
 </div>
 </div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="C++,Pemrograman" data-listing-date-sort="1681405200000" data-listing-file-modified-sort="1693723232355" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13">
-<a href="./posts/prime-template/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./posts/prime-template/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-CXX: Compile Time Function Menggunakan Template Metaprogramming
-</h5>
-<div class="listing-reading-time card-text text-muted">
-13 menit
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('C++'); return false;">
-C++
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Pemrograman'); return false;">
-Pemrograman
-</div>
-</div>
-<div class="card-text listing-description">
-<strong><em>Template metaprogramming</em></strong> merupakan salah satu fitur yang sangat <em>powerful</em> dari C++. <em>Template metaprogramming</em>, alih-alih menulis program untuk di<em>compile</em> seperti pada umumnya, dapat…<em></em><em></em><em></em><em></em><em></em>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Dead Man
-</div>
-<div class="listing-date">
-14 Apr 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="2" data-categories="Musitech,Analisis" data-listing-date-sort="1680195600000" data-listing-file-modified-sort="1693723178483" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11">
-<a href="./posts/24int-vs-32float/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./posts/24int-vs-32float/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Musitech: 24-Bit Integer vs.&nbsp;32-Bit Floating-Point, Part I
-</h5>
-<div class="listing-reading-time card-text text-muted">
-11 menit
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Musitech'); return false;">
-Musitech
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Analisis'); return false;">
-Analisis
-</div>
-</div>
-<div class="card-text listing-description">
-Perdebatan tentang kualitas audio digital sudah dimulai sejak munculnya rekaman digital itu sendiri, sekitar 1970an. <em>Fast forward</em> ke awal-90an, dominasi rekaman analog mulai tergantikan oleh rekaman digital berbentuk CD sejak…<em></em><em></em><em></em>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Dead Man
-</div>
-<div class="listing-date">
-31 Mar 2023
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-Tidak ada yang cocok
-</div>
-</div></main> <!-- /main -->
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -681,7 +579,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left"><a href="./disclaimer.html" title="Dilisensikan oleh Muhammad Rafky Alfarrakhan.S"><img src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" class="img-fluid" alt="cc-by-sa"></a></div>   
+    <div class="nav-footer-left"><a href="../../disclaimer.html" title="Dilisensikan oleh Muhammad Rafky Alfarrakhan.S"><img src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" class="img-fluid" alt="cc-by-sa"></a></div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
@@ -704,5 +602,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

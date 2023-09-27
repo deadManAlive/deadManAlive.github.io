@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param {Element} element 
+ * @param {string} className 
+ */
 function setElementClass(element, className) {
     if (!element || !className) {
         return;
@@ -14,7 +19,6 @@ function setElementClass(element, className) {
     }
 }
 
-
 window.addEventListener("load", (_event) => {
     // drop cap
     const __e = document.querySelectorAll(".content p:first-of-type")[0];
@@ -24,6 +28,6 @@ window.addEventListener("load", (_event) => {
     const __pcat = document.querySelectorAll(".quarto-category a");
 
     __pcat.forEach((node, _k, _p) => {
-        node.href =  node.href.replace("/index.html#", "/archive.html#");
+        node.href = node.href.replace("/index.html#", "/archive.html#");
     })
 });

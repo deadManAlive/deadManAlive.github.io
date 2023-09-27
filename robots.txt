@@ -1,1 +1,1 @@
-Sitemap: https://deadManAlive.github.io/sitemap.xml
+Sitemap: https://deadmanalive.github.io/sitemap.xml

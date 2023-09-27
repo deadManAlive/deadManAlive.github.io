@@ -38,3 +38,7 @@ p.first-paragraph::first-letter {
     margin-right: 5px;
     font-family: 'Times New Roman', Times, serif;
 }
+
+svg[class^="plot-"] {
+    background: transparent;
+}

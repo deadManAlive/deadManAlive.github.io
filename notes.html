@@ -62,13 +62,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
-<script type="application/json" class="js-hypothesis-config">
-{
-  "theme": "clean",
-  "openSidebar": false
-}
-</script>
-<script async="" src="https://hypothes.is/embed.js"></script>
 <style>
 
       .quarto-title-block .quarto-title-banner {
@@ -77,6 +70,8 @@ background-size: cover;
       }
 </style>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="DMB - Catatan">
@@ -86,6 +81,7 @@ background-size: cover;
 <meta name="twitter:description" content="">
 <meta name="twitter:creator" content="@lngtmknmndng_">
 <meta name="twitter:card" content="summary">
+<link rel='canonical' href='https://deadmanalive.github.io/notes.html' />
 </head>
 
 <body class="nav-fixed">
@@ -174,7 +170,9 @@ background-size: cover;
     <h2 id="toc-title">Daftar Isi</h2>
    
   <ul>
-  <li><a href="#dead-mans-tools" id="toc-dead-mans-tools" class="nav-link active" data-scroll-target="#dead-mans-tools"><em>Dead Man’s Tools</em></a></li>
+  <li><a href="#glossary" id="toc-glossary" class="nav-link active" data-scroll-target="#glossary"><em>Glossary</em></a></li>
+  <li><a href="#dead-mans-tools" id="toc-dead-mans-tools" class="nav-link" data-scroll-target="#dead-mans-tools"><em>Dead Man’s Tools</em></a></li>
+  <li><a href="#dead-mans-resources" id="toc-dead-mans-resources" class="nav-link" data-scroll-target="#dead-mans-resources"><em>Dead Man’s Resources</em></a></li>
   </ul>
 </nav>
     </div>
@@ -184,13 +182,39 @@ background-size: cover;
 
 
 
+<section id="glossary" class="level2">
+<h2 class="anchored" data-anchor-id="glossary"><em>Glossary</em></h2>
+<p>Beberapa hal yang mungkin perlu penulis ketahui untuk menghindari kebingungan atau salah paham dalam membaca tulisan disini</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Istilah/Singkatan</th>
+<th>Pengertian</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(.\)</span> atau <span class="math inline">\(,\)</span></td>
+<td>Blog ini ditulis menggunakan titik sebagai <a href="https://en.wikipedia.org/wiki/Decimal_separator">pemisah desimal</a>, sehingga <span class="math inline">\(1.000\)</span> adalah <strong><em>satu koma nol</em></strong> dan <span class="math inline">\(1,000\)</span> adalah <strong><em>seribu</em></strong>.</td>
+</tr>
+<tr class="even">
+<td><em>Sample</em></td>
+<td>Kata “<strong><em>sample</em></strong>” memiliki artian yang berbeda dalam musik digital dan pemrosesan sinyal, dimana kedua topik tersebut juga berhubungan dan juga menjadi dua topik yang terkait dengan tulisan-tulisan dalam blog ini. Dalam blog ini, “<strong><em>sample</em></strong>” akan digunakan dalam konteks teknik yaitu “cuplikan diskrit dari sebuah sinyal dalam satu titik waktu” sedangkan “sebuah rekaman atau potongan rekaman suara” akan menggunakan istilah <strong><em>(audio) clip</em></strong> atau <strong><em>track</em></strong>.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="dead-mans-tools" class="level2">
 <h2 class="anchored" data-anchor-id="dead-mans-tools"><em>Dead Man’s Tools</em></h2>
 <p>Beberapa rekomendasi <em>tools</em> yang dapat memudahkan <em>programming</em> (penulis menggunakan Microsoft Windows 10, <em>btw</em>):</p>
 <table class="table">
 <thead>
 <tr class="header">
-<th>Tool</th>
+<th><em>Tool</em></th>
 <th>Deskripsi</th>
 </tr>
 </thead>
@@ -237,10 +261,32 @@ background-size: cover;
 </tr>
 </tbody>
 </table>
-<ul>
-<li>Blog ini ditulis menggunakan <a href="https://quarto.org/">Quarto</a>, dengan beberapa <em>handcrafted</em> <em>style</em>, <em>script</em>, dan <em>template</em> yang digunakan di sana sini. <em>Source code</em> dari blog ini terdapat di <a href="https://github.com/deadManAlive/deadManAlive.github.io">repo ini</a>.</li>
-<li>Beberapa laman, yang ditulis terpisah dari blog ini, seperti <a href="https://deadmanalive.github.io/bconv/">float-binary converter</a> (<a href="https://github.com/deadManAlive/bconv">GitHub</a>) dan <a href="https://deadmanalive.github.io/wview/">web audio spectrum analyzer</a> (<a href="https://github.com/deadManAlive/wview">GitHub</a>), umumnya adalah <em>client-side app</em> yang ditulis menggunakan <a href="https://svelte.dev/">Svelte</a> ataupun HTML/JS murni, tanpa <em>backend</em>.</li>
-</ul>
+</section>
+<section id="dead-mans-resources" class="level2">
+<h2 class="anchored" data-anchor-id="dead-mans-resources"><em>Dead Man’s Resources</em></h2>
+<p>Beberapa <em>resources</em> (<em>framework</em>, sumber, dsb.) yang digunakan oleh penulis terutama dalam penulisan blog ini.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th><em>Resource</em></th>
+<th>Deskripsi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://quarto.org/">Quarto</a></td>
+<td><em>Framework</em> yang digunakan untuk menulis blog ini, dengan beberapa <em>handcrafted</em> <em>style</em>, <em>script</em>, dan <em>template</em> yang digunakan di sana sini. <em>Source code</em> dari blog ini terdapat di <a href="https://github.com/deadManAlive/deadManAlive.github.io">repo ini</a>.</td>
+</tr>
+<tr class="even">
+<td><a href="https://svelte.dev/">Svelte</a></td>
+<td>Beberapa laman, yang ditulis terpisah dari blog ini, seperti <a href="https://deadmanalive.github.io/bconv/">float-binary converter</a> (<a href="https://github.com/deadManAlive/bconv">GitHub</a>) dan <a href="https://deadmanalive.github.io/wview/">web audio spectrum analyzer</a> (<a href="https://github.com/deadManAlive/wview">GitHub</a>), umumnya adalah <em>client-side app</em> yang ditulis menggunakan <em>framework</em> ini (ataupun HTML/JS murni), tanpa <em>backend</em>.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
