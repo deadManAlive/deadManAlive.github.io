@@ -1,0 +1,14 @@
+{
+  "name": "dmb-spotify-embed",
+  "version": "0.1.0",
+  "files": [
+    "dmb_spotify_embed_bg.wasm",
+    "dmb_spotify_embed.js",
+    "dmb_spotify_embed.d.ts"
+  ],
+  "module": "dmb_spotify_embed.js",
+  "types": "dmb_spotify_embed.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

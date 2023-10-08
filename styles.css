@@ -42,3 +42,7 @@ p.first-paragraph::first-letter {
 svg[class^="plot-"] {
     background: transparent;
 }
+
+main.content p {
+    text-align: justify !important;
+}
